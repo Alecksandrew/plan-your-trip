@@ -14,26 +14,26 @@ export default function List({
   const [selectedOption, setSelectedOption] = useState(initialOption);
 
   return (
-    <div className={className}>
+    <span className={className}>
       <Listbox value={selectedOption} onChange={setSelectedOption}>
-        <ListboxButton className="w-38  border rounded-sm text-sm bg-amber-800">
+        <ListboxButton className="min-w-38 p-0.5 border-2 border-paleta-01 rounded-sm active:rounded-none text-sm font-semibold bg-paleta-03">
           {selectedOption.name}
         </ListboxButton>
         <ListboxOptions
-          className="w-38 text-center text-sm bg-amber-800 "
+          className="w-38 text-center text-sm bg-paleta-03"
           anchor="bottom"
         >
           {options.map((option) => (
             <ListboxOption
               key={option.id}
               value={option}
-              className="data-focus:bg-amber-500"
+              className="data-focus:bg-paleta-01 data-focus:text-paleta-03"
             >
               {option.name}
             </ListboxOption>
           ))}
         </ListboxOptions>
       </Listbox>
-    </div>
+    </span>
   );
 }

@@ -1,6 +1,13 @@
 @import "tailwindcss";
 
-:root {
-    --Main-color: #D95D39;
-      
+@theme {
+  --color-paleta-01: #f26716;
+  --color-paleta-02: #d92525;
+  --color-paleta-03: #f2f2f2;
+  --color-paleta-04: #111827;
+
+  --color-paleta-dark-01: #ff7a33;
+  --color-paleta-dark-02: #ff4444;
+  --color-paleta-dark-03: #1f2937;
+  --color-paleta-dark-04: #e5e7eb;
 }
