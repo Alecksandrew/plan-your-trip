@@ -1,20 +1,30 @@
 import LabeledList from "./LabeledList";
 import List from "./List";
+import { FaSearch } from "react-icons/fa";
+import DatePicker from "./DatePicker";
+import MultipleSelectPlaceholder from "./MultipleSelectPlaceholder";
 
 export default function SearchSection() {
   return (
-    <form action="">
-      <label>
-        <span>Para onde você quer viajar?</span>
-        <input type="search" id="search" name="search" />
-      </label>
-      <label className="w-full bg-amber-600">
-        <span>Duração</span>
-        <input type="date" id="date" name="date" />
-      </label>
+    <form action="" className="flex flex-col gap-4">
+      <MultipleSelectPlaceholder />
+      <div className="flex ">
+        <label>
+          <span className="text-base font-bold">
+            Para onde você quer viajar?
+          </span>
+          <div className="flex items-center border-2">
+            <FaSearch />
+            <input type="search" id="search" name="search" className="flex-1" />
+          </div>
+        </label>
+        <label className="w-full bg-amber-600">
+          <span>Duração</span>
+          <DatePicker />
+        </label>
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 place-items-center">
         <LabeledList
-        
           title="Orçamento"
           optionsObject={[
             { id: 1, name: "Econômico" },
@@ -57,6 +67,9 @@ export default function SearchSection() {
           ]}
         />
       </div>
+      <button type="button" className="bg-paleta-01 rounded">
+        Search your itinerary
+      </button>
     </form>
   );
 }
