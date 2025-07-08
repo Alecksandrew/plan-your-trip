@@ -6,11 +6,24 @@ import {
 } from "@headlessui/react";
 import { useState } from "react";
 
+interface Option {
+  id: number;
+  name: string;
+};
+
+interface ListProps {
+  options: Option[];
+  initialOption: Option;
+  className?: string | null;
+}
+
+
+
 export default function List({
   options = [{ id: 1, name: "Durward Reynolds" }],
-  initialOption = { name: "Selecione uma opção" },
-  className = "",
-}) {
+  initialOption = { id: 0, name: "Selecione uma opção" },
+  className = null,
+}: ListProps) {
   const [selectedOption, setSelectedOption] = useState(initialOption);
 
   return (
