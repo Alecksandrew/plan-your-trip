@@ -1,11 +1,11 @@
 import ItineraryDay from "../components/ItineraryDay";
-import SearchSection from "../components/SearchSection";
+import FormSection from "../components/FormSection";
 
 export default function Home() {
   return (
     <>
     <ItineraryDay />
-    <SearchSection />
+    <FormSection />
     </>
   );
 }

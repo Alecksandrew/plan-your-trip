@@ -9,27 +9,28 @@ import { useState } from "react";
 interface Option {
   id: number;
   name: string;
-};
+}
 
 interface ListProps {
   options: Option[];
   initialOption: Option;
-  className?: string | null;
+  className?: string;
 }
 
-
-
 export default function List({
-  options = [{ id: 1, name: "Durward Reynolds" }],
+  options = [
+    { id: 1, name: "Durward Reynolds" },
+    { id: 2, name: "Eduardw Phills" },
+  ],
   initialOption = { id: 0, name: "Selecione uma opção" },
-  className = null,
+  className,
 }: ListProps) {
   const [selectedOption, setSelectedOption] = useState(initialOption);
 
   return (
     <span className={className}>
       <Listbox value={selectedOption} onChange={setSelectedOption}>
-        <ListboxButton className="min-w-38 p-0.5 border-2 border-paleta-01 rounded-sm active:rounded-none text-sm font-semibold bg-paleta-03">
+        <ListboxButton className="container w-38">
           {selectedOption.name}
         </ListboxButton>
         <ListboxOptions
