@@ -138,6 +138,6 @@
 
 @layer components {
   .container {
-    @apply min-w-38 h-10 p-0.5 border-2 border-paleta-01 rounded-sm text-sm font-semibold bg-paleta-03;
+    @apply min-w-38 h-10 p-0.5 border-2 border-paleta-01 rounded-sm text-sm font-semibold bg-paleta-03 px-2 leading-none;
   }
 }
