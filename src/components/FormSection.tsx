@@ -1,6 +1,6 @@
 import LabeledList from "./LabeledList";
 import SearchSection from "./SearchSection";
-import DatePicker from "./DatePicker/DatePicker";
+import DatePicker from "./DatePicker";
 import LabeledMultipleSelect from "./LabeledMultipleSelect";
 
 export default function FormSection() {

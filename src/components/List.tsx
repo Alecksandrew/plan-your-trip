@@ -13,8 +13,7 @@ interface Option {
 
 interface ListProps {
   options: Option[];
-  initialOption: Option;
-  className?: string;
+  initialOption?: Option;
 }
 
 export default function List({
@@ -22,8 +21,7 @@ export default function List({
     { id: 1, name: "Durward Reynolds" },
     { id: 2, name: "Eduardw Phills" },
   ],
-  initialOption = { id: 0, name: "Selecione uma opção" },
-  className,
+  initialOption = { id: 0, name: "Selecione uma opção" }
 }: ListProps) {
   const [selectedOption, setSelectedOption] = useState(initialOption);
 
