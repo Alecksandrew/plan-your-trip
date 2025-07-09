@@ -1,8 +1,8 @@
 import TouristAttractionCard from "./TouristAttractionCard";
 
 //interfaces
-import type { TouristAttractionCardProps } from "../sharedInterfaces/TouristAttractionInterface";
-import type { DailyItineraryProps } from "../sharedInterfaces/DailyItineraryInterface";
+import type { TouristAttractionCardProps } from "../../sharedInterfaces/TouristAttractionInterface";
+import type { DailyItineraryProps } from "../../sharedInterfaces/DailyItineraryInterface";
 
 export default function DailyItinerary({
   dayNumber,
@@ -27,9 +27,10 @@ export default function DailyItinerary({
       );
     }
 
-    attractions.map((attraction) => {
+    return attractions.map((attraction) => {
       return (
         <TouristAttractionCard
+          key={attraction.title}
           title={attraction.title}
           description={attraction.description}
           openingHours={attraction.openingHours}

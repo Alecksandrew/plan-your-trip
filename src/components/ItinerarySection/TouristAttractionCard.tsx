@@ -9,7 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 //Interfaces
-import type { TouristAttractionCardProps } from "../sharedInterfaces/TouristAttractionInterface";
+import type { TouristAttractionCardProps } from "../../sharedInterfaces/TouristAttractionInterface";
 
 export default function TouristAttractionCard({
   title,
@@ -36,7 +36,7 @@ export default function TouristAttractionCard({
         className="custom-container aspect-video"
       >
         <SwiperSlide>
-          <img src="" alt={`Imagem do ${title}`} />
+          <img src="../../assets/600x400.svg" alt={`Imagem do ${title}`} />
         </SwiperSlide>
         <SwiperSlide>
           <img src="" alt={`Imagem do ${title}`} />
