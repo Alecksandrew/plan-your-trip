@@ -5,11 +5,11 @@ import LabeledMultipleSelect from "./LabeledMultipleSelect";
 
 export default function FormSection() {
   return (
-    <form action="" className="flex flex-col gap-4">
+    <form action="" className="min-w-xs w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-2">
       
       <SearchSection/>
       <DatePicker />
-      <div className="grid grid-cols-2 sm:grid-cols-4 place-items-center">
+      <div className="grid grid-cols-2 gap-x-4 md:col-span-full">
         <LabeledList
           title="Orçamento"
           optionsObject={[
@@ -45,7 +45,8 @@ export default function FormSection() {
           ]}
         />
       </div>
-      <button type="button" className="bg-paleta-01 rounded">
+      <button type="button" className="custom-container
+       bg-paleta-01 color-paleta-03 w-full col-span-full mt-4">
         Search your itinerary
       </button>
     </form>
