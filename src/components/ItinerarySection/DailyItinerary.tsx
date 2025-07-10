@@ -8,6 +8,7 @@ export default function DailyItinerary({
   dayNumber,
   weather,
   attractionsOfTheDay,
+  temperature,
 }: DailyItineraryProps) {
   const weatherIcon = {
     Ensolarado: 1, //Icone de sol;
@@ -40,12 +41,12 @@ export default function DailyItinerary({
   }
 
   return (
-    <>
-      <div>
-        <h1>Dia {dayNumber}</h1>
-        <div>{weather}</div>
+    <div className="flex flex-col gap-5 border-2 border-paleta-01 rounded p-3 bg-paleta-03 shadow-xl">
+      <div className="flex justify-between items-center">
+        <h1 className="font-bold text-3xl bg-paleta-01 text-paleta-03 p-1 rounded" >Dia {dayNumber}</h1>
+        <div className="text-lg font-medium">{weather}{temperature}</div>
       </div>
       {renderTouristAttractionCard(attractionsOfTheDay)}
-    </>
+    </div>
   );
 }

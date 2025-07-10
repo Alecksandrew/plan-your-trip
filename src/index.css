@@ -9,6 +9,7 @@
   --color-paleta-02: #d92525;
   --color-paleta-03: #f2f2f2;
   --color-paleta-04: #111827;
+  --color-paleta-05: #FFF6EE;
 
   --color-paleta-dark-01: #ff7a33;
   --color-paleta-dark-02: #ff4444;
@@ -129,9 +130,10 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
   }
   body {
-    @apply bg-background text-foreground min-h-screen;
+    @apply bg-background text-foreground min-h-screen bg-paleta-05;
   }
 }
 

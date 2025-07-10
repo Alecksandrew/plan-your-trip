@@ -4,4 +4,5 @@ export interface DailyItineraryProps {
   dayNumber: number;
   weather: string;
   attractionsOfTheDay: TouristAttractionCardProps[];
+  temperature: number;
 }

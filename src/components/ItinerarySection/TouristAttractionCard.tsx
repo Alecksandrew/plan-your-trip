@@ -11,17 +11,19 @@ import "swiper/css/navigation";
 //Interfaces
 import type { TouristAttractionCardProps } from "../../sharedInterfaces/TouristAttractionInterface";
 
+import  cristoImg from "../../assets/cristo.jpg";
+
 export default function TouristAttractionCard({
   title,
   description,
   openingHours,
 }: TouristAttractionCardProps) {
   return (
-    <div>
-      <div>
-        <h2>{title}</h2>
-        <p>{description}</p>
-        <span>
+    <div className="sm:flex sm:gap-x-1">
+      <div className="sm:w-4/5">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        <p className="leading-tight">{description}</p>
+        <span className="flex items-center gap-2  mt-1 mb-3">
           <IoTimeOutline /> {openingHours}
         </span>
       </div>
@@ -33,16 +35,16 @@ export default function TouristAttractionCard({
         slidesPerView={1}
         onSlideChange={() => console.log("slide change")}
         onSwiper={(swiper) => console.log(swiper)}
-        className="custom-container aspect-video"
+        className="custom-container aspect-video sm:w-2/5"
       >
-        <SwiperSlide>
-          <img src="../../assets/600x400.svg" alt={`Imagem do ${title}`} />
+        <SwiperSlide >
+          <img src={cristoImg} alt={`Imagem do ${title}`} className="w-full h-full object-cover" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="" alt={`Imagem do ${title}`} />
+          <img src={null} alt={`Imagem do ${title}`} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="" alt={`Imagem do ${title}`} />
+          <img src={null} alt={`Imagem do ${title}`} />
         </SwiperSlide>
       </Swiper>
     </div>
