@@ -1,0 +1,15 @@
+# Variáveis de ambiente (NUNCA commitar!)
+.env
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
