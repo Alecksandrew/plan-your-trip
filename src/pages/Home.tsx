@@ -6,13 +6,21 @@ import MapsSection from "../components/MapsSection/MapsSection";
 import type { DailyItineraryProps } from '../sharedInterfaces/DailyItineraryInterface';
 import type { TouristAttractionCardProps } from '../sharedInterfaces/TouristAttractionInterface';
 
+interface mockedItinerary {
+  name: string;
+  roadmap: DailyItineraryProps[];
+}
+
 export default function Home() {
  
   //Testing with mocked values
- const mockAllDaysItinerary: DailyItineraryProps[] = [
+ const mockItinerary: mockedItinerary = {
+ name: "Rio de Janeiro",
+ roadmap:[
   {
     dayNumber: 1,
     weather: "Ensolarado",
+    temperature: 25,
     attractionsOfTheDay: [
       {
         title: "Cristo Redentor",
@@ -32,6 +40,7 @@ export default function Home() {
   {
     dayNumber: 2,
     weather: "Nublado",
+    temperature: 20,
     attractionsOfTheDay: [
       {
         title: "Jardim Botânico",
@@ -47,8 +56,8 @@ export default function Home() {
       } as TouristAttractionCardProps,
     ],
   },
-];
- 
+]
+};
  
   return (
     <>
@@ -57,7 +66,7 @@ export default function Home() {
       <p className="text-2xl">Roteiros personalizados para uma experiência inesquecível</p>
     </div>
     <FormSection />
-    <FullItinerary allDaysItinerary={mockAllDaysItinerary}/>
+    <FullItinerary allDaysItinerary={mockItinerary.roadmap} nameItinerary={mockItinerary.name}/>
     <MapsSection />
     </>
   );
