@@ -1,6 +1,7 @@
 
 import FormSection from "../components/FormsSection/FormSection";
 import FullItinerary from "../components/ItinerarySection/FullItinerary";
+import MapsSection from "../components/MapsSection/MapsSection";
 
 import type { DailyItineraryProps } from '../sharedInterfaces/DailyItineraryInterface';
 import type { TouristAttractionCardProps } from '../sharedInterfaces/TouristAttractionInterface';
@@ -53,6 +54,7 @@ export default function Home() {
     <>
     <FormSection />
     <FullItinerary allDaysItinerary={mockAllDaysItinerary}/>
+    <MapsSection />
     </>
   );
 }

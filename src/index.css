@@ -135,11 +135,19 @@
   body {
     @apply bg-background text-foreground min-h-screen bg-paleta-05;
   }
+
+  h2 {
+    @apply font-bold text-4xl
+  }
 }
 
 
 @layer components {
   .custom-container {
     @apply min-w-38 min-h-10 p-0.5 border-2 border-paleta-01 rounded-sm text-sm font-semibold bg-paleta-03 px-2 leading-none;
+  }
+
+  .custom-section {
+    @apply w-9/10 max-w-4xl mx-auto my-10
   }
 }

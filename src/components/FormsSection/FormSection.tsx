@@ -5,7 +5,7 @@ import LabeledMultipleSelect from "./LabeledMultipleSelect";
 
 export default function FormSection() {
   return (
-    <form action="" className="min-w-xs w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-2">
+    <form action="" className="sm:custom-section min-w-xs w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-2">
       
       <SearchSection/>
       <DatePicker />
