@@ -1,21 +1,13 @@
 // server.js - Servidor simples e seguro para API do Gemini
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import { createServer } from 'http';
 import { config } from 'dotenv';
 
 // Carrega variáveis do .env
 config();
 
-// Pega a chave API do ambiente
-const apiKey = process.env.GEMINI_API_KEY;
-
-if (!apiKey) {
-  console.error('❌ GEMINI_API_KEY não encontrada no arquivo .env');
-  process.exit(1);
-}
-
 // Cria o cliente Gemini
-const genAI = new GoogleGenerativeAI(apiKey);
+const ai = new GoogleGenAI({})
 
 // Função para processar requisições
 async function handleRequest(req, res) {
@@ -46,13 +38,11 @@ async function handleRequest(req, res) {
       try {
         const { message } = JSON.parse(body);
 
-        // Pega o modelo Gemini
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-        // Chama o Gemini
-        const result = await model.generateContent(message);
-        const response = await result.response;
-        const text = response.text();
+  const response = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: message
+        });
+        const text = response.text;
 
         // Retorna a resposta
         res.writeHead(200, { 'Content-Type': 'application/json' });

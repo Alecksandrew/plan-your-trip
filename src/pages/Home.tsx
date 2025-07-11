@@ -12,6 +12,9 @@ interface mockedItinerary {
 }
 
 export default function Home() {
+
+  const BACKEND_URL: string = 'http://localhost:3001';
+  const
  
   //Testing with mocked values
  const mockItinerary: mockedItinerary = {
