@@ -2,7 +2,7 @@ export default function DatePicker() {
   return (
     <div>
         <span className="text-base font-bold">Duração</span>
-        <div className="flex justify-between gap-4">
+        <div className="flex justify-between gap-2">
             <label className="flex flex-col w-fit flex-1">
                 <span>Data de início</span>
                 <input type="date" id="start" name="startDate" className="custom-container"/>

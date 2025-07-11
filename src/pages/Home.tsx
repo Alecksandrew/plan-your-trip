@@ -52,6 +52,10 @@ export default function Home() {
  
   return (
     <>
+    <div className="text-center custom-section">
+      <h1>Descubra seu próximo destino</h1>
+      <p className="text-2xl">Roteiros personalizados para uma experiência inesquecível</p>
+    </div>
     <FormSection />
     <FullItinerary allDaysItinerary={mockAllDaysItinerary}/>
     <MapsSection />
