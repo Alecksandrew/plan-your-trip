@@ -80,6 +80,7 @@ export default function Home() {
 `;
 
   useEffect(() => {
+    if(!formData) return;
     console.log(formData);
 
     function isThereForecastAvailable() {
@@ -103,8 +104,31 @@ export default function Home() {
       return 10 >= differenceInDays && differenceInDays > 0;
     }
 
+    async function fetchGeocodingData(placeName:string) {
+      if(!formData) return;
+
+      const BACKEND_URL: string = "http://localhost:3001/api/geocoding";
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ address: placeName }),
+      };
+
+      try {
+        const response = await fetch(BACKEND_URL, options);
+        return response.json();
+      }
+      catch(error) {
+        console.error("Erro ao buscar dados de geocodificação:", error);
+      }
+    }
+
     async function fetchWeatherData() {
       if(!isThereForecastAvailable()) return;
+
+      const geocodingData = await fetchGeocodingData(formData.destination)
 
       const BACKEND_URL: string = "http://localhost:3001/weather";
       const options = {
@@ -112,7 +136,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ city: formData.destination }),
+        body: JSON.stringify({ city: geocodingData.results[0].geometry.location }),
       };
 
       try {
@@ -146,6 +170,9 @@ export default function Home() {
       }
     }
 
+
+    const responseTest = fetchGeocodingData(formData.destination);
+    console.log(responseTest);
     /*fetchTripItineraryData(formData); PARADO POR AGORA*/
   }, [formData]);
 
