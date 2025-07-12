@@ -1,4 +1,5 @@
 import MultipleSelectList from "../FormsSection/MultipleSelectList";
+import type { SetArrayAction } from "../../sharedInterfaces/formInterfaces";
 
 interface OptionsObject {
   id: number;
@@ -6,20 +7,22 @@ interface OptionsObject {
 }
 
 interface LabeledListProps {
-    containerClassName?: string;
-    title: string;
-    optionsObject: OptionsObject[];
+  containerClassName?: string;
+  title: string;
+  optionsObject: OptionsObject[];
+  dispatchType: SetArrayAction["type"];
 }
 
-
-export default function LabeledMultipleSelectList({containerClassName, title, optionsObject}: LabeledListProps) {
-
-    return (
-        <label className={`${containerClassName} flex flex-col`}>
-            <span className="text-base font-bold" >{title}</span>
-            <MultipleSelectList
-                options={optionsObject}
-            />
-        </label>
-    )
+export default function LabeledMultipleSelectList({
+  containerClassName,
+  title,
+  optionsObject,
+  dispatchType,
+}: LabeledListProps) {
+  return (
+    <label className={`${containerClassName} flex flex-col`}>
+      <span className="text-base font-bold">{title}</span>
+      <MultipleSelectList options={optionsObject} dispatchType={dispatchType} />
+    </label>
+  );
 }

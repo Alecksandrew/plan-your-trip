@@ -13,9 +13,9 @@ import type {
   FormsState,
   FormsAction,
   SetStringAction,
-  OptionsObject
+  SetArrayAction,
+  OptionsObject,
 } from "../../sharedInterfaces/formInterfaces";
-
 
 function formsReducer(state: FormsState, action: FormsAction) {
   switch (action.type) {
@@ -54,15 +54,21 @@ const initialStateForms = {
 interface LabeledListProps {
   title: string;
   optionsObject: OptionsObject[];
-  dispatchType: SetStringAction['type'];
+  dispatchType: SetStringAction["type"];
+}
+
+interface LabeledMultipleSelectListProps {
+  title: string;
+  optionsObject: OptionsObject[];
+  dispatchType: SetArrayAction["type"];
 }
 
 export default function FormSection() {
   const [state, dispatch] = useReducer(formsReducer, initialStateForms);
 
-  console.log(state)
+  console.log(state);
 
-  const labeledListProps:LabeledListProps[] = [
+  const labeledListProps: LabeledListProps[] = [
     {
       title: "Orçamento",
       optionsObject: [
@@ -106,7 +112,7 @@ export default function FormSection() {
     });
   }
 
-  const LabeledMultipleSelectListProps = [
+  const LabeledMultipleSelectListProps: LabeledMultipleSelectListProps[] = [
     {
       title: "Transporte",
       optionsObject: [
@@ -116,6 +122,7 @@ export default function FormSection() {
         { id: 4, name: "Táxi/Uber" },
         { id: 5, name: "Bicicleta" },
       ],
+      dispatchType: "SET_TRANSPORTATION",
     },
     {
       title: "Estilo",
@@ -123,6 +130,7 @@ export default function FormSection() {
         { id: 1, name: "Pontos turísticos famosos" },
         { id: 2, name: "Jóias escondidas" },
       ],
+      dispatchType: "SET_STYLE",
     },
     {
       title: "Interesses",
@@ -137,6 +145,7 @@ export default function FormSection() {
         { id: 8, name: "Festivais" },
         { id: 9, name: "Vida noturna" },
       ],
+      dispatchType: "SET_INTERESTS",
     },
   ];
 
@@ -147,11 +156,11 @@ export default function FormSection() {
           key={list.title}
           title={list.title}
           optionsObject={list.optionsObject}
+          dispatchType={list.dispatchType}
         />
       );
     });
   }
-  
 
   return (
     <form

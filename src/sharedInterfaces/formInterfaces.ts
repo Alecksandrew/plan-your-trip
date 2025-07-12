@@ -14,7 +14,7 @@ export type SetStringAction = {
   payload: string;
 };
 
-type SetArrayAction = {
+export type SetArrayAction = {
   type: 'SET_TRANSPORTATION' | 'SET_STYLE' | 'SET_INTERESTS';
   payload: string[];
 };

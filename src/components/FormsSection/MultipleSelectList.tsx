@@ -4,7 +4,9 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { FormContext } from "../../contexts/formContext";
+import type { SetArrayAction } from "../../sharedInterfaces/formInterfaces";
 
 interface Option {
   id: number;
@@ -13,6 +15,7 @@ interface Option {
 
 interface MultipleSelectListProps {
   options: Option[];
+  dispatchType: SetArrayAction["type"];
 }
 
 export default function MultipleSelectList({
@@ -20,8 +23,18 @@ export default function MultipleSelectList({
     { id: 1, name: "Durward Reynolds" },
     { id: 2, name: "Eduardw Phills" },
   ],
+  dispatchType,
 }: MultipleSelectListProps) {
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+
+  const { dispatch } = useContext(FormContext);
+
+  useEffect(() => {
+    dispatch({
+      type: dispatchType,
+      payload: selectedOptions.map((option) => option.name),
+    });
+  }, [selectedOptions]);
 
   function isSelected(option: Option) {
     return selectedOptions.some((selected) => selected.id === option.id);
@@ -44,8 +57,8 @@ export default function MultipleSelectList({
               key={option.id}
               value={option}
               className={`data-focus:bg-paleta-01 data-focus:text-paleta-03 ${
-              isSelected(option) ? 'bg-paleta-01 text-paleta-03' : ''
-            }`}
+                isSelected(option) ? "bg-paleta-01 text-paleta-03" : ""
+              }`}
             >
               {option.name}
             </ListboxOption>
