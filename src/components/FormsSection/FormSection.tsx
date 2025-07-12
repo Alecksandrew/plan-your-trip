@@ -17,6 +17,7 @@ import type {
   OptionsObject,
 } from "../../sharedInterfaces/formInterfaces";
 
+
 function formsReducer(state: FormsState, action: FormsAction) {
   switch (action.type) {
     case "SET_DESTINATION":
@@ -63,7 +64,7 @@ interface LabeledMultipleSelectListProps {
   dispatchType: SetArrayAction["type"];
 }
 
-export default function FormSection() {
+export default function FormSection({getFormData}) {
   const [state, dispatch] = useReducer(formsReducer, initialStateForms);
 
   console.log(state);
@@ -162,10 +163,19 @@ export default function FormSection() {
     });
   }
 
+  function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    
+    if(!state.destination.trim()) return
+   
+    getFormData(state);
+  }
+
   return (
     <form
       action=""
       className="custom-section grid grid-cols-1 md:grid-cols-2 gap-2"
+      onSubmit={handleFormSubmit}
     >
       <FormContext.Provider value={{ dispatch }}>
         <SearchSection />
@@ -176,7 +186,7 @@ export default function FormSection() {
         </div>
       </FormContext.Provider>
       <button
-        type="button"
+        type="submit"
         className="custom-container
        bg-paleta-01 text-paleta-03 font-bold w-full col-span-full mt-4"
       >

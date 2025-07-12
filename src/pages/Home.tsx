@@ -6,6 +6,7 @@ import MapsSection from "../components/MapsSection/MapsSection";
 
 import type { DailyItineraryProps } from "../sharedInterfaces/DailyItineraryInterface";
 import type { TouristAttractionCardProps } from "../sharedInterfaces/TouristAttractionInterface";
+import type { FormsState } from "../sharedInterfaces/formInterfaces";
 
 interface mockedItinerary {
   name: string;
@@ -13,9 +14,10 @@ interface mockedItinerary {
 }
 
 export default function Home() {
-  
+  const [ formData, setFormData ] = useState<FormsState>();
   
   useEffect(() => {
+    console.log(formData);
     async function fetchTripItineraryData(message) {
     
       const BACKEND_URL: string = "http://localhost:3001";
@@ -38,8 +40,8 @@ export default function Home() {
       }
     }
 
-    /*fetchTripItineraryData(); PARADO POR AGORA*/ 
-  }, []);
+    /*fetchTripItineraryData(formData); PARADO POR AGORA*/ 
+  }, [formData]);
 
   //Testing with mocked values
   const mockItinerary: mockedItinerary = {
@@ -99,7 +101,7 @@ export default function Home() {
           Roteiros personalizados para uma experiência inesquecível
         </p>
       </div>
-      <FormSection />
+      <FormSection getFormData={setFormData} />
       <FullItinerary
         allDaysItinerary={mockItinerary.roadmap}
         nameItinerary={mockItinerary.name}
