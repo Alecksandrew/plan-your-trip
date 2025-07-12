@@ -3,26 +3,8 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createServer } from 'http';
 import { config } from 'dotenv';
 
-import { existsSync, readFileSync } from 'fs';
-import { resolve } from 'path';
-
-const envPath = resolve(process.cwd(), '.env');
-console.log(`----------------------------------------------------`);
-console.log(`🔍 Procurando pelo arquivo .env em: ${envPath}`);
-
-if (existsSync(envPath)) {
-  console.log(`✅ Arquivo .env ENCONTRADO!`);
-  console.log(`--- Conteúdo do .env que o servidor está lendo ---`);
-  console.log(readFileSync(envPath, 'utf-8'));
-  console.log(`----------------------------------------------------`);
-} else {
-  console.log(`❌ Arquivo .env NÃO ENCONTRADO neste caminho!`);
-  console.log(`----------------------------------------------------`);
-}
-
 // Carrega variáveis do .env
 config();
-console.log('Chave da API:', process.env.GOOGLE_API_KEY ? 'Carregada ✅' : 'Não encontrada ❌');
 // Cria o cliente Gemini
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
@@ -57,7 +39,7 @@ async function handleRequest(req, res) {
         const { message } = JSON.parse(body);
 
         // Pega o modelo
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
         // Gera o conteúdo
         const result = await model.generateContent(message);

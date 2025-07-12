@@ -13,6 +13,8 @@ interface mockedItinerary {
 }
 
 export default function Home() {
+  
+  
   useEffect(() => {
     async function fetchTripItineraryData(message) {
     
@@ -36,7 +38,7 @@ export default function Home() {
       }
     }
 
-    fetchTripItineraryData("Olá gemini!");
+    /*fetchTripItineraryData(); PARADO POR AGORA*/ 
   }, []);
 
   //Testing with mocked values
