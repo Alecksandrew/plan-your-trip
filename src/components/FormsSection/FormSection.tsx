@@ -167,6 +167,7 @@ export default function FormSection({getFormData}) {
     e.preventDefault();
     
     if(!state.destination.trim()) return
+    if(!state.date.trim()) return
    
     getFormData(state);
   }
