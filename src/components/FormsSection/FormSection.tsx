@@ -9,7 +9,12 @@ import LabeledMultipleSelectList from "./LabeledMultipleSelectList";
 import { FormContext } from "../../contexts/formContext";
 
 // Types & Interfaces
-import type { FormsState, FormsAction } from "../../sharedInterfaces/formInterfaces";
+import type {
+  FormsState,
+  FormsAction,
+  SetStringAction,
+  OptionsObject
+} from "../../sharedInterfaces/formInterfaces";
 
 
 function formsReducer(state: FormsState, action: FormsAction) {
@@ -46,8 +51,107 @@ const initialStateForms = {
   interests: [],
 };
 
+interface LabeledListProps {
+  title: string;
+  optionsObject: OptionsObject[];
+  dispatchType: SetStringAction['type'];
+}
+
 export default function FormSection() {
   const [state, dispatch] = useReducer(formsReducer, initialStateForms);
+
+  console.log(state)
+
+  const labeledListProps:LabeledListProps[] = [
+    {
+      title: "Orçamento",
+      optionsObject: [
+        { id: 1, name: "Econômico" },
+        { id: 2, name: "Moderado" },
+        { id: 3, name: "Luxuoso" },
+      ],
+      dispatchType: "SET_BUDGET",
+    },
+    {
+      title: "Ritmo",
+      optionsObject: [
+        { id: 1, name: "Relaxante" },
+        { id: 2, name: "Equilibrado" },
+        { id: 3, name: "Intenso" },
+      ],
+      dispatchType: "SET_PACE",
+    },
+    {
+      title: "Perfil do viajante",
+      optionsObject: [
+        { id: 1, name: "Viajante solo" },
+        { id: 2, name: "Casal" },
+        { id: 3, name: "Família" },
+        { id: 4, name: "Grupo de amigos" },
+      ],
+      dispatchType: "SET_TRAVELER_PROFILE",
+    },
+  ];
+
+  function renderLabeledLists() {
+    return labeledListProps.map((list) => {
+      return (
+        <LabeledList
+          key={list.title}
+          title={list.title}
+          optionsObject={list.optionsObject}
+          dispatchType={list.dispatchType}
+        />
+      );
+    });
+  }
+
+  const LabeledMultipleSelectListProps = [
+    {
+      title: "Transporte",
+      optionsObject: [
+        { id: 1, name: "A pé" },
+        { id: 2, name: "Transporte público" },
+        { id: 3, name: "Carro alugado/própio" },
+        { id: 4, name: "Táxi/Uber" },
+        { id: 5, name: "Bicicleta" },
+      ],
+    },
+    {
+      title: "Estilo",
+      optionsObject: [
+        { id: 1, name: "Pontos turísticos famosos" },
+        { id: 2, name: "Jóias escondidas" },
+      ],
+    },
+    {
+      title: "Interesses",
+      optionsObject: [
+        { id: 1, name: "Cultura e História" },
+        { id: 2, name: "Natureza e Ecoturismo" },
+        { id: 3, name: "Gastronomia" },
+        { id: 4, name: "Atividades radicais" },
+        { id: 5, name: "Espiritualidade" },
+        { id: 6, name: "Arte" },
+        { id: 7, name: "Relaxamento/bem-estar" },
+        { id: 8, name: "Festivais" },
+        { id: 9, name: "Vida noturna" },
+      ],
+    },
+  ];
+
+  function renderLabeledMultipleSelectLists() {
+    return LabeledMultipleSelectListProps.map((list) => {
+      return (
+        <LabeledMultipleSelectList
+          key={list.title}
+          title={list.title}
+          optionsObject={list.optionsObject}
+        />
+      );
+    });
+  }
+  
 
   return (
     <form
@@ -58,62 +162,8 @@ export default function FormSection() {
         <SearchSection />
         <DatePicker />
         <div className="grid grid-cols-2 gap-2 md:col-span-full">
-          <LabeledList
-            title="Orçamento"
-            optionsObject={[
-              { id: 1, name: "Econômico" },
-              { id: 2, name: "Moderado" },
-              { id: 3, name: "Luxuoso" },
-            ]}
-          />
-          <LabeledList
-            title="Ritmo"
-            optionsObject={[
-              { id: 1, name: "Relaxante" },
-              { id: 2, name: "Equilibrado" },
-              { id: 3, name: "Intenso" },
-            ]}
-          />
-          <LabeledList
-            title="Perfil do viajante"
-            optionsObject={[
-              { id: 1, name: "Viajante solo" },
-              { id: 2, name: "Casal" },
-              { id: 3, name: "Família" },
-              { id: 4, name: "Grupo de amigos" },
-            ]}
-          />
-          <LabeledMultipleSelectList
-            title="Transporte"
-            optionsObject={[
-              { id: 1, name: "A pé" },
-              { id: 2, name: "Transporte público" },
-              { id: 3, name: "Carro alugado/própio" },
-              { id: 4, name: "Táxi/Uber" },
-              { id: 5, name: "Bicicleta" },
-            ]}
-          />
-          <LabeledMultipleSelectList
-            title="Estilo"
-            optionsObject={[
-              { id: 1, name: "Pontos turísticos famosos" },
-              { id: 2, name: "Jóias escondidas" },
-            ]}
-          />
-          <LabeledMultipleSelectList
-            title="Interesses"
-            optionsObject={[
-              { id: 1, name: "Cultura e História" },
-              { id: 2, name: "Natureza e Ecoturismo" },
-              { id: 3, name: "Gastronomia" },
-              { id: 4, name: "Atividades radicais" },
-              { id: 5, name: "Espiritualidade" },
-              { id: 6, name: "Arte" },
-              { id: 7, name: "Relaxamento/bem-estar" },
-              { id: 8, name: "Festivais" },
-              { id: 9, name: "Vida noturna" },
-            ]}
-          />
+          {renderLabeledLists()}
+          {renderLabeledMultipleSelectLists()}
         </div>
       </FormContext.Provider>
       <button

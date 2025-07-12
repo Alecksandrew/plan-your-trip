@@ -9,7 +9,7 @@ export type FormsState = {
   interests: string[];
 };
 
-type SetStringAction = {
+export type SetStringAction = {
   type: 'SET_DESTINATION' | 'SET_DATE' | 'SET_BUDGET' | 'SET_PACE' | 'SET_TRAVELER_PROFILE';
   payload: string;
 };
@@ -20,3 +20,9 @@ type SetArrayAction = {
 };
 
 export type FormsAction = SetStringAction | SetArrayAction;
+
+
+export interface OptionsObject {
+  id: number;
+  name: string;
+}
