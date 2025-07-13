@@ -8,13 +8,43 @@ import type { DailyItineraryProps } from "../sharedInterfaces/DailyItineraryInte
 import type { TouristAttractionCardProps } from "../sharedInterfaces/TouristAttractionInterface";
 import type { FormsState } from "../sharedInterfaces/formInterfaces";
 
-interface mockedItinerary {
+
+type Attractions = {
+    title: string;
+    description: string;
+    openingHours: string;
+  };
+
+type DailyItinerary = {
+  dayNumber: number;
+  attractionsOfTheDay: Attractions[];
+  weather: string | { description: string; temperature: number };
+};
+
+type Itinerary = {
   name: string;
-  roadmap: DailyItineraryProps[];
-}
+  duration: number;
+  generalRecommendations: string[];
+  fullItinerary: DailyItinerary[];
+};
+
+
+
+
+const initialStateForms: FormsState = {
+  destination: "",
+  date: "",
+  budget: "",
+  pace: "",
+  travelerProfile: "",
+  transportation: [],
+  style: [],
+  interests: [],
+};
 
 export default function Home() {
-  const [formData, setFormData] = useState<FormsState>();
+  const [formData, setFormData] = useState<FormsState>(initialStateForms);
+  const [itinerary, setItinerary] = useState<Itinerary>();
 
   const personalizedPromptAI = `
   # PERSONA
@@ -26,11 +56,11 @@ export default function Home() {
   # REGRAS DE ANÁLISE E LÓGICA
   Você deve seguir estas regras lógicas para construir o roteiro:
   1.  **Cálculo da Duração**: Calcule o número de dias da viagem com base no campo "date" do JSON de entrada. Este será o valor do campo "duration".
-  2.  **Orçamento (\`budget\`)**: Adapte as sugestões de atividades ao orçamento. "Moderado" significa uma mistura de atividades pagas e gratuitas. "Econômico" deve focar em atividades gratuitas ou de baixo custo. "Luxo" pode incluir experiências exclusivas.
-  3.  **Ritmo (\`pace\`)**: Ajuste a quantidade de atividades por dia. "Intenso" significa 3-4 atividades. "Moderado" significa 2-3 atividades. "Relaxado" significa 1-2 atividades.
-  4.  **Perfil (\`travelerProfile\`)**: Personalize o tipo de atividade para o perfil (solo, casal, família).
-  5.  **Interesses e Estilo (\`interests\`, \`style\`)**: Use os interesses como o principal guia para selecionar as atrações.
-  6.  **Otimização de Transporte (\`transportation\`)**: Se for "Transporte público", agrupe as atividades de cada dia por proximidade geográfica para otimizar o deslocamento.
+  2.  **Orçamento (budget)**: Adapte as sugestões de atividades ao orçamento. "Moderado" significa uma mistura de atividades pagas e gratuitas. "Econômico" deve focar em atividades gratuitas ou de baixo custo. "Luxo" pode incluir experiências exclusivas.
+  3.  **Ritmo (pace)**: Ajuste a quantidade de atividades por dia. "Intenso" significa 3-4 atividades. "Moderado" significa 2-3 atividades. "Relaxado" significa 1-2 atividades.
+  4.  **Perfil (travelerProfile)**: Personalize o tipo de atividade para o perfil (solo, casal, família).
+  5.  **Interesses e Estilo (interests, style)**: Use os interesses como o principal guia para selecionar as atrações.
+  6.  **Otimização de Transporte (transportation)**: Se for "Transporte público", agrupe as atividades de cada dia por proximidade geográfica para otimizar o deslocamento.
   7.  **Restrição Geográfica**: Todas as atividades e locais sugeridos DEVEM estar localizados dentro da cidade principal ("destination") ou em suas imediações imediatas e de fácil acesso (ex: Niterói para o Rio de Janeiro, Versalhes para Paris). Não sugira viagens de um dia para cidades distantes.
   8.  **Descrição e Detalhes**: As descrições das atrações devem ser úteis e concisas. O campo "openingHours" deve ser preenchido com os horários reais de funcionamento da atração. NÃO inclua um campo de imagem.
   9.  **Geração de Recomendações Gerais**: No nível raiz do JSON de saída, adicione à propriedade chamada generalRecommendations. Esta propriedade deve ser um array contendo no máximo 5 strings. Cada string deve ser uma dica geral útil para a viagem, baseada nos dados de entrada. Considere os seguintes tópicos para as dicas:
@@ -57,7 +87,7 @@ export default function Home() {
           "Dica cultural sobre costumes locais, como gorjetas.",
           "Sugestão de um prato típico que você não pode deixar de provar."
       ],
-      "FullItinerary": [
+      "fullItinerary": [
           {
               "dayNumber": 1,
               "attractionsOfTheDay": [
@@ -80,13 +110,13 @@ export default function Home() {
 `;
 
   useEffect(() => {
-    if(!formData) return;
+    if (!formData.destination || !formData.date) return;
     console.log(formData);
 
     /*========HANDLE WITH WEATHER DATA========*/
     function isThereForecastAvailable() {
       //API only shows forecast for 10 days
-      if(!formData) return false;
+      if (!formData) return false;
 
       const dateNow = new Date();
       dateNow.setHours(0, 0, 0, 0);
@@ -94,26 +124,45 @@ export default function Home() {
       const endDate = formData.date.split(" - ")[1];
 
       const [day, month, year] = endDate.split("/");
-      
+
       const endDateObject = new Date(+year, +month - 1, +day);
 
-      const differenceInMiliseconds = endDateObject.getTime() - dateNow.getTime();
+      const differenceInMiliseconds =
+        endDateObject.getTime() - dateNow.getTime();
       const differenceInDays = Math.ceil(
         differenceInMiliseconds / (1000 * 60 * 60 * 24)
       );
 
       if (differenceInDays <= 0) {
         return false;
-      }
-      else if (differenceInDays > 10) {
+      } else if (differenceInDays > 10) {
         return false;
-      }
-      else {
+      } else {
         return differenceInDays;
       }
     }
-    async function fetchGeocodingData(placeName:string) {
-      if(!formData) return;
+
+    //Calculate if the user start the trip today or in some days
+    function calculateDaysOffset(startDate) {
+      const dateNow = new Date();
+      dateNow.setHours(0, 0, 0, 0);
+
+      const [day, month, year] = startDate.split("/");
+
+      const startDateObject = new Date(+year, +month - 1, +day);
+
+      const differenceInMiliseconds =
+        startDateObject.getTime() - dateNow.getTime();
+      const daysOffset = Math.ceil(
+        differenceInMiliseconds / (1000 * 60 * 60 * 24)
+      );
+
+      return daysOffset;
+
+    }
+
+    async function fetchGeocodingData(placeName: string) {
+      if (!formData) return;
 
       const BACKEND_URL: string = "http://localhost:3001/api/geocoding";
       const options = {
@@ -127,19 +176,18 @@ export default function Home() {
       try {
         const response = await fetch(BACKEND_URL, options);
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         return data;
-      }
-      catch(error) {
+      } catch (error) {
         console.error("Erro ao buscar dados de geocodificação:", error);
       }
     }
 
     async function fetchWeatherData() {
-      if(!isThereForecastAvailable()) return;
+      if (!isThereForecastAvailable()) return;
       const daysToFetchForecast = isThereForecastAvailable();
 
-      const geocodingData = await fetchGeocodingData(formData.destination)
+      const geocodingData = await fetchGeocodingData(formData.destination);
 
       type Location = {
         lat: number;
@@ -147,8 +195,10 @@ export default function Home() {
       };
 
       const location: Location = geocodingData.data?.geometry?.location;
-      if(!location) {
-        console.error("Erro ao buscar dados de geocodificação: Localização não encontrada");
+      if (!location) {
+        console.error(
+          "Erro ao buscar dados de geocodificação: Localização não encontrada"
+        );
         return;
       }
 
@@ -161,23 +211,70 @@ export default function Home() {
       const BACKEND_URL: string = `http://localhost:3001/api/weather?${weatherParams}`;
 
       try {
-        const response = await fetch(BACKEND_URL);
-        const data = await response.json();
-
         //I ONLY NEED THE WEATHER CONDITION OF EACH DAY
-        return data.forecastDays.map((day) => day.dayTimeForecast.weatherCondition.description.text);
-      }
-      catch(error) {
+        //API TYPE
+        type Description = {
+          text:string
+        }
+
+        type WeatherCondition = {
+          description: Description
+        }
+
+        type Temperature = {
+          degrees: number
+        }
+
+        type DayForecast = {
+          weatherCondition: WeatherCondition,
+
+        }
+
+        type ForecastDays = {
+          daytimeForecast: DayForecast,
+          maxTemperature: Temperature,
+          minTemperature: Temperature
+        }
+
+        type data2 = {
+          forecastDays: ForecastDays[]
+        }
+
+        type data1 = {
+          data: data2
+        }
+
+        const response = await fetch(BACKEND_URL);
+        const data: data1 = await response.json();
+        console.log(data)
+
+        //Calculate if the user start the trip today or in some days
+        const startDate = formData.date.split(" - ")[0];
+        const daysOffset = calculateDaysOffset(startDate);
+
+        const relevantForecast = data.data.forecastDays.slice(daysOffset - 1).map(
+          (day) => {
+            const weather = {
+              description: day.daytimeForecast?.weatherCondition?.description?.text,
+              temperature: (day.maxTemperature?.degrees + day.minTemperature?.degrees)/2 // Average temperature in Celsius
+            }
+            return weather;
+
+          });
+        
+          console.log(relevantForecast)
+          return relevantForecast;
+      } catch (error) {
         console.error("Erro ao buscar dados do tempo:", error);
-      }
-      finally {
+      } finally {
         console.log("Finalizando busca de dados do tempo");
       }
     }
 
-
     /*========HANDLE WITH AI ITINERARY DATA========*/
-    async function fetchTripItineraryData(message: string): FormsState | null {
+   
+
+    async function fetchTripItineraryData(message: string): Promise<Itinerary | null>  {
       const BACKEND_URL: string = "http://localhost:3001/api/gemini";
       const options = {
         method: "POST",
@@ -191,17 +288,43 @@ export default function Home() {
         const response = await fetch(BACKEND_URL, options);
         const data = await response.json();
         console.log(data);
-        return data;
+        return JSON.parse(data.response);
       } catch (error) {
         console.error("Erro ao buscar dados do roteiro:", error);
         return null;
       }
     }
 
-
     /*========RUNNING FUNCTIONS========*/
-    const eachDayforecast = fetchWeatherData();
+    Promise.all([
+      fetchWeatherData(),
+      fetchTripItineraryData(personalizedPromptAI + JSON.stringify(formData)),
+    ])
+      .then((values) => {
+        const [dailyForecast, itinerary] = values;
+
+        if(!itinerary) return;
+
+        const dailyItinerary = itinerary.fullItinerary;
+
+        type itineraryWithWeather = DailyItinerary & {
+          weather: string;
+          temperature: number;
+        };
+
+        const itineraryWithWeather = {
+          ...itinerary,
+          fullItinerary: dailyItinerary.map((day, index) => ({ ...day, weather: dailyForecast?.[index] || "Unknown"})),
+        }
+
+        console.log(itineraryWithWeather);
+        setItinerary(itineraryWithWeather);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      });
     /*fetchTripItineraryData(formData); PARADO POR AGORA*/
+    /*========AFTER RETURN ITINERARY DATA, ITERATE EACH ELEMENT OF FULLITINERARY AND ADD WEATHER PROPRETY========*/
   }, [formData]);
 
   //Testing with mocked values
