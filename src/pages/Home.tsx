@@ -4,8 +4,6 @@ import FormSection from "../components/FormsSection/FormSection";
 import FullItinerary from "../components/ItinerarySection/FullItinerary";
 import MapsSection from "../components/MapsSection/MapsSection";
 
-import type { DailyItineraryProps } from "../sharedInterfaces/DailyItineraryInterface";
-import type { TouristAttractionCardProps } from "../sharedInterfaces/TouristAttractionInterface";
 import type { FormsState } from "../sharedInterfaces/formInterfaces";
 
 
@@ -21,14 +19,12 @@ type DailyItinerary = {
   weather: string | { description: string; temperature: number };
 };
 
-type Itinerary = {
+export type Itinerary = {
   name: string;
   duration: number;
   generalRecommendations: string[];
   fullItinerary: DailyItinerary[];
 };
-
-
 
 
 const initialStateForms: FormsState = {
@@ -42,9 +38,16 @@ const initialStateForms: FormsState = {
   interests: [],
 };
 
+const initialStateItinerary: Itinerary = {
+  name: "",
+  duration: 0,
+  generalRecommendations: [],
+  fullItinerary: [],
+};
+
 export default function Home() {
   const [formData, setFormData] = useState<FormsState>(initialStateForms);
-  const [itinerary, setItinerary] = useState<Itinerary>();
+  const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
 
   const personalizedPromptAI = `
   # PERSONA
@@ -256,7 +259,7 @@ export default function Home() {
           (day) => {
             const weather = {
               description: day.daytimeForecast?.weatherCondition?.description?.text,
-              temperature: (day.maxTemperature?.degrees + day.minTemperature?.degrees)/2 // Average temperature in Celsius
+              temperature: Math.round((day.maxTemperature?.degrees + day.minTemperature?.degrees)/2) // Average temperature in Celsius
             }
             return weather;
 
@@ -327,55 +330,6 @@ export default function Home() {
     /*========AFTER RETURN ITINERARY DATA, ITERATE EACH ELEMENT OF FULLITINERARY AND ADD WEATHER PROPRETY========*/
   }, [formData]);
 
-  //Testing with mocked values
-  const mockItinerary: mockedItinerary = {
-    name: "Rio de Janeiro",
-    roadmap: [
-      {
-        dayNumber: 1,
-        weather: "Ensolarado",
-        temperature: 25,
-        attractionsOfTheDay: [
-          {
-            title: "Cristo Redentor",
-            description:
-              "Um dos maiores símbolos do Rio de Janeiro e do Brasil, com vistas panorâmicas espetaculares da cidade.",
-            openingHours: "8h às 19h",
-            // Caminho relativo à pasta `src` ou absoluto do seu servidor
-            imageUrl: "/src/assets/600x400.svg", // Use o caminho direto ou importe se seu bundler suportar
-          } as TouristAttractionCardProps,
-          {
-            title: "Pão de Açúcar",
-            description:
-              "Teleférico com vistas incríveis da Baía de Guanabara, praias e cidades vizinhas.",
-            openingHours: "8h30 às 20h",
-            imageUrl: "/src/assets/600x400.svg",
-          } as TouristAttractionCardProps,
-        ],
-      },
-      {
-        dayNumber: 2,
-        weather: "Nublado",
-        temperature: 20,
-        attractionsOfTheDay: [
-          {
-            title: "Jardim Botânico",
-            description:
-              "Um oásis verde com rica flora brasileira e estrangeira, incluindo a famosa Alameda das Palmeiras Imperiais.",
-            openingHours: "8h às 17h",
-            imageUrl: "/src/assets/600x400.svg",
-          } as TouristAttractionCardProps,
-          {
-            title: "Parque Lage",
-            description:
-              "Parque público histórico com uma bela mansão, grutas, aquário e trilhas para o Cristo Redentor.",
-            openingHours: "8h às 17h",
-            imageUrl: "/src/assets/600x400.svg",
-          } as TouristAttractionCardProps,
-        ],
-      },
-    ],
-  };
 
   return (
     <>
@@ -387,8 +341,8 @@ export default function Home() {
       </div>
       <FormSection getFormData={setFormData} />
       <FullItinerary
-        allDaysItinerary={mockItinerary.roadmap}
-        nameItinerary={mockItinerary.name}
+        itineraryData={itinerary}
+
       />
       <MapsSection />
     </>
