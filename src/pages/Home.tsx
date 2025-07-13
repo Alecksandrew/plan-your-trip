@@ -301,7 +301,7 @@ export default function Home() {
 
     /*=======HANDLE WITH IMAGE OF ATRACTIONS========*/
 
-    async function fetchAttractionsImages(query) {
+    async function fetchAttractionsImagesNames(query) {
       const BACKEND_URL: string = "http://localhost:3001/api/places-search";
       const options = {
         method: "POST",
@@ -315,6 +315,27 @@ export default function Home() {
         const response = await fetch(BACKEND_URL, options);
         const data = await response.json();
         console.log(data);
+        return data;
+      } catch (error) {
+        console.error("Erro ao buscar dados de imagens:", error);
+      }
+    }
+
+    async function fetchAttractionsImages(photos) {
+      const BACKEND_URL: string = "http://localhost:3001/api/place-photo";
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ photoName: photos }),
+      };
+
+      try {
+        console.log(photos)
+        const response = await fetch(BACKEND_URL, options);
+        const data = await response.json();
+        console.log("ISSO DEVERIA CONTER URL CORRETO:", data);
         return data;
       } catch (error) {
         console.error("Erro ao buscar dados de imagens:", error);
@@ -338,17 +359,28 @@ export default function Home() {
           day.attractionsOfTheDay.map((attraction) => attraction.title)
         );
 
-        const fetchToGetAttractionImages = await Promise.all(
+        const fetchToGetAttractionImagesNames = await Promise.all(
           attractionsNames.map((attraction) => 
-            fetchAttractionsImages(attraction)
+            fetchAttractionsImagesNames(attraction)
           )
         );
 
         //Array and in each index, there is a array of photos of each attraction
-        const attractionsImagesNames = fetchToGetAttractionImages.map(
+        const attractionsImagesNames = fetchToGetAttractionImagesNames.map(
           (obj) => obj.places[0].photos.map((photo) => photo.name)
         );
 
+        console.log("ESTE É O ATTRACTIONIMAGENAME", attractionsImagesNames)
+
+        const attractionImages = attractionsImagesNames.map( async (name) => {
+          const fetchedImages = await fetchAttractionsImages(name[0] /*INDEX ZERO BECAUSE IT IS THE MAIN PHOTO*/ )
+          console.log(fetchedImages)
+          return fetchedImages;
+          
+        });
+
+
+        
         const photoMap = new Map();
 
         //Map with the name of the attraction and the array of photos
@@ -378,6 +410,7 @@ export default function Home() {
           }),
         };
 
+        fetchAttractionsImages(comprehensiveItinerary.fullItinerary[0].attractionsOfTheDay[0].photos[0]);
         console.log(comprehensiveItinerary);
         setItinerary(comprehensiveItinerary);
       })
