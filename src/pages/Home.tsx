@@ -6,12 +6,12 @@ import MapsSection from "../components/MapsSection/MapsSection";
 
 import type { FormsState } from "../sharedInterfaces/formInterfaces";
 
-
 type Attractions = {
-    title: string;
-    description: string;
-    openingHours: string;
-  };
+  title: string;
+  description: string;
+  openingHours: string;
+  images: string[];
+};
 
 type DailyItinerary = {
   dayNumber: number;
@@ -25,7 +25,6 @@ export type Itinerary = {
   generalRecommendations: string[];
   fullItinerary: DailyItinerary[];
 };
-
 
 const initialStateForms: FormsState = {
   destination: "",
@@ -161,7 +160,6 @@ export default function Home() {
       );
 
       return daysOffset;
-
     }
 
     async function fetchGeocodingData(placeName: string) {
@@ -217,56 +215,58 @@ export default function Home() {
         //I ONLY NEED THE WEATHER CONDITION OF EACH DAY
         //API TYPE
         type Description = {
-          text:string
-        }
+          text: string;
+        };
 
         type WeatherCondition = {
-          description: Description
-        }
+          description: Description;
+        };
 
         type Temperature = {
-          degrees: number
-        }
+          degrees: number;
+        };
 
         type DayForecast = {
-          weatherCondition: WeatherCondition,
-
-        }
+          weatherCondition: WeatherCondition;
+        };
 
         type ForecastDays = {
-          daytimeForecast: DayForecast,
-          maxTemperature: Temperature,
-          minTemperature: Temperature
-        }
+          daytimeForecast: DayForecast;
+          maxTemperature: Temperature;
+          minTemperature: Temperature;
+        };
 
         type data2 = {
-          forecastDays: ForecastDays[]
-        }
+          forecastDays: ForecastDays[];
+        };
 
         type data1 = {
-          data: data2
-        }
+          data: data2;
+        };
 
         const response = await fetch(BACKEND_URL);
         const data: data1 = await response.json();
-        console.log(data)
+        console.log(data);
 
         //Calculate if the user start the trip today or in some days
         const startDate = formData.date.split(" - ")[0];
         const daysOffset = calculateDaysOffset(startDate);
 
-        const relevantForecast = data.data.forecastDays.slice(daysOffset - 1).map(
-          (day) => {
+        const relevantForecast = data.data.forecastDays
+          .slice(daysOffset - 1)
+          .map((day) => {
             const weather = {
-              description: day.daytimeForecast?.weatherCondition?.description?.text,
-              temperature: Math.round((day.maxTemperature?.degrees + day.minTemperature?.degrees)/2) // Average temperature in Celsius
-            }
+              description:
+                day.daytimeForecast?.weatherCondition?.description?.text,
+              temperature: Math.round(
+                (day.maxTemperature?.degrees + day.minTemperature?.degrees) / 2
+              ), // Average temperature in Celsius
+            };
             return weather;
-
           });
-        
-          console.log(relevantForecast)
-          return relevantForecast;
+
+        console.log(relevantForecast);
+        return relevantForecast;
       } catch (error) {
         console.error("Erro ao buscar dados do tempo:", error);
       } finally {
@@ -275,9 +275,10 @@ export default function Home() {
     }
 
     /*========HANDLE WITH AI ITINERARY DATA========*/
-   
 
-    async function fetchTripItineraryData(message: string): Promise<Itinerary | null>  {
+    async function fetchTripItineraryData(
+      message: string
+    ): Promise<Itinerary | null> {
       const BACKEND_URL: string = "http://localhost:3001/api/gemini";
       const options = {
         method: "POST",
@@ -298,30 +299,87 @@ export default function Home() {
       }
     }
 
+    /*=======HANDLE WITH IMAGE OF ATRACTIONS========*/
+
+    async function fetchAttractionsImages(query) {
+      const BACKEND_URL: string = "http://localhost:3001/api/places-search";
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ textQuery: query }),
+      };
+
+      try {
+        const response = await fetch(BACKEND_URL, options);
+        const data = await response.json();
+        console.log(data);
+        return data;
+      } catch (error) {
+        console.error("Erro ao buscar dados de imagens:", error);
+      }
+    }
+
     /*========RUNNING FUNCTIONS========*/
     Promise.all([
       fetchWeatherData(),
       fetchTripItineraryData(personalizedPromptAI + JSON.stringify(formData)),
     ])
-      .then((values) => {
+      .then(async (values) => {
         const [dailyForecast, itinerary] = values;
+        console.log(itinerary);
+        if (!itinerary) return;
 
-        if(!itinerary) return;
-
+        //Fetch image of each attraction
         const dailyItinerary = itinerary.fullItinerary;
 
-        type itineraryWithWeather = DailyItinerary & {
-          weather: string;
-          temperature: number;
+        const attractionsNames = dailyItinerary.flatMap((day) =>
+          day.attractionsOfTheDay.map((attraction) => attraction.title)
+        );
+
+        const fetchToGetAttractionImages = await Promise.all(
+          attractionsNames.map((attraction) => 
+            fetchAttractionsImages(attraction)
+          )
+        );
+
+        //Array and in each index, there is a array of photos of each attraction
+        const attractionsImagesNames = fetchToGetAttractionImages.map(
+          (obj) => obj.places[0].photos.map((photo) => photo.name)
+        );
+
+        const photoMap = new Map();
+
+        //Map with the name of the attraction and the array of photos
+        attractionsNames.forEach((name, index) => {
+          photoMap.set(name, attractionsImagesNames[index]);
+        });
+
+        //Put together all data
+        const comprehensiveItinerary = {
+          ...itinerary,
+          fullItinerary: dailyItinerary.map((day, index) => {
+           
+            //Putting images in each attraction
+            const attractionsWithImages = day.attractionsOfTheDay.map(
+              (attraction) => {
+                const photos = photoMap.get(attraction.title);
+                return { ...attraction, photos };
+              }
+            );
+
+            //Putting weather in each day
+            return {
+              ...day,
+              attractionsOfTheDay: attractionsWithImages,
+              weather: dailyForecast?.[index] || "Unknown",
+            };
+          }),
         };
 
-        const itineraryWithWeather = {
-          ...itinerary,
-          fullItinerary: dailyItinerary.map((day, index) => ({ ...day, weather: dailyForecast?.[index] || "Unknown"})),
-        }
-
-        console.log(itineraryWithWeather);
-        setItinerary(itineraryWithWeather);
+        console.log(comprehensiveItinerary);
+        setItinerary(comprehensiveItinerary);
       })
       .catch((error) => {
         console.error("Erro ao buscar dados:", error);
@@ -329,7 +387,6 @@ export default function Home() {
     /*fetchTripItineraryData(formData); PARADO POR AGORA*/
     /*========AFTER RETURN ITINERARY DATA, ITERATE EACH ELEMENT OF FULLITINERARY AND ADD WEATHER PROPRETY========*/
   }, [formData]);
-
 
   return (
     <>
@@ -340,10 +397,7 @@ export default function Home() {
         </p>
       </div>
       <FormSection getFormData={setFormData} />
-      <FullItinerary
-        itineraryData={itinerary}
-
-      />
+      <FullItinerary itineraryData={itinerary} />
       <MapsSection />
     </>
   );

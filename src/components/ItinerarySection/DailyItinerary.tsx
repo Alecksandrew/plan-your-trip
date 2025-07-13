@@ -23,12 +23,14 @@ export default function DailyItinerary({
     }
 
     return attractions.map((attraction) => {
+      console.log(attraction.images);
       return (
         <TouristAttractionCard
           key={attraction.title}
           title={attraction.title}
           description={attraction.description}
           openingHours={attraction.openingHours}
+          images={attraction.images}
         />
       );
     });

@@ -52,7 +52,10 @@ async function handleWeatherRequest(req, res) {
     if (!lat || !lng) {
       res.writeHead(400, { "Content-Type": "application/json" });
       res.end(
-        JSON.stringify({ success: false, error: "Latitude e Longitude são obrigatórias" })
+        JSON.stringify({
+          success: false,
+          error: "Latitude e Longitude são obrigatórias",
+        })
       );
       return;
     }
@@ -66,17 +69,19 @@ async function handleWeatherRequest(req, res) {
     // 3. O SERVIDOR faz a chamada para a API do Google
     const apiResponse = await fetch(googleApiUrl);
     const weatherData = await apiResponse.json();
-    
+
     // 4. Verificação de erro da própria API do Google
     if (weatherData.error) {
-      console.error("Erro da API do Google Weather:", weatherData.error.message);
+      console.error(
+        "Erro da API do Google Weather:",
+        weatherData.error.message
+      );
       throw new Error(weatherData.error.message);
     }
 
     // 5. Envie a resposta de volta para o seu front-end
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ success: true, data: weatherData }));
-
   } catch (error) {
     console.error("Erro ao buscar dados do tempo:", error);
     res.writeHead(500, { "Content-Type": "application/json" });
@@ -84,7 +89,7 @@ async function handleWeatherRequest(req, res) {
       JSON.stringify({
         success: false,
         error: "Erro ao buscar dados do tempo",
-        details: error.message
+        details: error.message,
       })
     );
   }
@@ -144,6 +149,98 @@ async function handleGeocodingRequest(req, res) {
   });
 }
 
+async function handlePlacesSearchRequest(req, res) {
+  let body = "";
+  req.on("data", (chunk) => (body += chunk));
+  req.on("end", async () => {
+    try {
+      // 1. O frontend vai nos enviar a string de busca
+      const { textQuery } = JSON.parse(body);
+      if (!textQuery) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(
+          JSON.stringify({ success: false, error: "textQuery é obrigatório" })
+        );
+      }
+
+      const apiKey = process.env.GOOGLE_API_KEY;
+      const url = "https://places.googleapis.com/v1/places:searchText";
+
+      // 2. Montamos o corpo da requisição para a API do Google Places
+      const requestBody = {
+        textQuery: textQuery,
+      };
+
+      // 3. O SERVIDOR faz a chamada para a API do Google
+      const apiResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": apiKey,
+          // Peça os campos que você precisa! Incluindo as fotos.
+          "X-Goog-FieldMask":
+            "places.id,places.displayName,places.formattedAddress,places.photos",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const placesData = await apiResponse.json();
+
+      if (!apiResponse.ok) {
+        // Se a API do Google retornar um erro, repasse-o
+        console.error("Erro da API do Google Places:", placesData);
+        throw new Error(
+          placesData.error?.message || "Erro desconhecido da API Places"
+        );
+      }
+
+      // 4. Envie a resposta de volta para o seu front-end
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: true, places: placesData.places }));
+    } catch (error) {
+      console.error("Erro no handlePlacesSearchRequest:", error);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          success: false,
+          error: "Erro ao buscar dados de locais",
+        })
+      );
+    }
+  });
+}
+
+
+async function handlePlacePhotoRequest(req, res) {
+  let body = "";
+  req.on("data", (chunk) => body += chunk);
+  req.on("end", async () => {
+    try {
+      const { photoName, maxWidth = 400, maxHeight = 400 } = JSON.parse(body);
+      if (!photoName) throw new Error("photoName é obrigatório");
+
+      const apiKey = process.env.GOOGLE_API_KEY;
+      // Monta a URL de Place Photos (New) com skipHttpRedirect=true
+      const url = `https://places.googleapis.com/v1/${encodeURIComponent(photoName)}/media?key=${apiKey}&maxWidthPx=${maxWidth}&maxHeightPx=${maxHeight}&skipHttpRedirect=true`;
+
+      const apiRes = await fetch(url);
+      const json = await apiRes.json();
+      if (json.error) throw new Error(json.error.message);
+
+      // photoUri vem na resposta JSON
+      const photoUri = json.photoUri;
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: true, photoUri }));
+    } catch (err) {
+      console.error("Erro handlePlacePhotoRequest:", err);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: false, error: err.message }));
+    }
+  });
+}
+
+
+
 // Função principal para processar requisições
 async function handleRequest(req, res) {
   // Configurações de CORS (essencial para seu React se comunicar com este servidor)
@@ -166,6 +263,12 @@ async function handleRequest(req, res) {
   } else if (req.url === "/api/geocoding" && req.method === "POST") {
     // <-- NOVA ROTA AQUI
     handleGeocodingRequest(req, res);
+  }
+  // ADICIONE ESTA NOVA ROTA AQUI
+  else if (req.url === "/api/places-search" && req.method === "POST") {
+    handlePlacesSearchRequest(req, res);
+  } else if (req.url === "/api/place-photo" && req.method === "POST") {
+    handlePlacePhotoRequest(req, res);
   } else {
     // Se a rota não for encontrada
     res.writeHead(404);
