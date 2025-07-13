@@ -40,52 +40,53 @@ async function handleGeminiRequest(req, res) {
   });
 }
 
-// --- NOVA LÓGICA: Para a API de Clima ---
 async function handleWeatherRequest(req, res) {
   try {
-    // Exemplo: a API de clima precisa de uma cidade, que virá do front-end
-    // Vamos assumir que o front-end enviará a cidade no corpo da requisição
-    let body = "";
-    req.on("data", (chunk) => (body += chunk));
-    req.on("end", async () => {
-      try {
-        const { city } = JSON.parse(body);
-        if (!city) {
-          res.writeHead(400, { "Content-Type": "application/json" });
-          res.end(
-            JSON.stringify({ success: false, error: "Cidade não fornecida" })
-          );
-          return;
-        }
+    // A API do Google usa GET, então os parâmetros virão na URL da requisição do nosso frontend
+    // Ex: /api/weather?lat=37.4220&lng=-122.0841
+    const requestUrl = new URL(req.url, `http://${req.headers.host}`);
+    const lat = requestUrl.searchParams.get("lat");
+    const lng = requestUrl.searchParams.get("lng");
+    const days = requestUrl.searchParams.get("days") || 7; // Pega 7 dias por padrão
 
-        // 1. Pegue sua chave secreta do .env
-        const apiKey = process.env.WEATHER_API_KEY;
+    if (!lat || !lng) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({ success: false, error: "Latitude e Longitude são obrigatórias" })
+      );
+      return;
+    }
 
-        // 2. Monte a URL da API externa (substitua pela URL real da sua API de clima)
-        const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`; // Exemplo com a WeatherAPI.com
+    // 1. Pegue sua chave secreta do Google do .env
+    const apiKey = process.env.GOOGLE_API_KEY; // Usando a chave correta do Google!
 
-        // 3. O SERVIDOR faz a chamada para a API externa
-        const apiResponse = await fetch(apiUrl);
-        const weatherData = await apiResponse.json();
+    // 2. Monte a URL da API do Google Weather, como na documentação
+    const googleApiUrl = `https://weather.googleapis.com/v1/forecast/days:lookup?key=${apiKey}&location.latitude=${lat}&location.longitude=${lng}&days=${days}`;
 
-        // 4. Envie a resposta de volta para o seu front-end
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ success: true, data: weatherData }));
-      } catch (error) {
-        console.error("Erro ao buscar dados do tempo:", error);
-        res.writeHead(500, { "Content-Type": "application/json" });
-        res.end(
-          JSON.stringify({
-            success: false,
-            error: "Erro ao buscar dados do tempo",
-          })
-        );
-      }
-    });
+    // 3. O SERVIDOR faz a chamada para a API do Google
+    const apiResponse = await fetch(googleApiUrl);
+    const weatherData = await apiResponse.json();
+    
+    // 4. Verificação de erro da própria API do Google
+    if (weatherData.error) {
+      console.error("Erro da API do Google Weather:", weatherData.error.message);
+      throw new Error(weatherData.error.message);
+    }
+
+    // 5. Envie a resposta de volta para o seu front-end
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: true, data: weatherData }));
+
   } catch (error) {
-    console.error("Erro no servidor (weather):", error);
-    res.writeHead(500);
-    res.end("Erro interno no servidor");
+    console.error("Erro ao buscar dados do tempo:", error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        success: false,
+        error: "Erro ao buscar dados do tempo",
+        details: error.message
+      })
+    );
   }
 }
 
@@ -104,7 +105,6 @@ async function handleGeocodingRequest(req, res) {
         return;
       }
 
-      // 1. Use a MESMA chave do Google que você usa para o Gemini
       const apiKey = process.env.GOOGLE_API_KEY;
 
       // 2. Monte a URL da API de Geocodificação
@@ -148,7 +148,7 @@ async function handleGeocodingRequest(req, res) {
 async function handleRequest(req, res) {
   // Configurações de CORS (essencial para seu React se comunicar com este servidor)
   res.setHeader("Access-Control-Allow-Origin", "*"); // Em produção, troque '*' pelo domínio do seu site
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
@@ -161,7 +161,7 @@ async function handleRequest(req, res) {
   // --- ROTEAMENTO: Decide o que fazer com base na URL ---
   if (req.url === "/api/gemini" && req.method === "POST") {
     handleGeminiRequest(req, res);
-  } else if (req.url === "/api/weather" && req.method === "POST") {
+  } else if (req.url.startsWith("/api/weather") && req.method === "GET") {
     handleWeatherRequest(req, res);
   } else if (req.url === "/api/geocoding" && req.method === "POST") {
     // <-- NOVA ROTA AQUI

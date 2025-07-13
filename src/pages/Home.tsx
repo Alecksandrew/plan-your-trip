@@ -83,6 +83,7 @@ export default function Home() {
     if(!formData) return;
     console.log(formData);
 
+    /*========HANDLE WITH WEATHER DATA========*/
     function isThereForecastAvailable() {
       //API only shows forecast for 10 days
       if(!formData) return false;
@@ -94,16 +95,23 @@ export default function Home() {
 
       const [day, month, year] = endDate.split("/");
       
-      const endDateObject = new Date(+day, +month - 1, +year);
+      const endDateObject = new Date(+year, +month - 1, +day);
 
       const differenceInMiliseconds = endDateObject.getTime() - dateNow.getTime();
       const differenceInDays = Math.ceil(
         differenceInMiliseconds / (1000 * 60 * 60 * 24)
       );
 
-      return 10 >= differenceInDays && differenceInDays > 0;
+      if (differenceInDays <= 0) {
+        return false;
+      }
+      else if (differenceInDays > 10) {
+        return false;
+      }
+      else {
+        return differenceInDays;
+      }
     }
-
     async function fetchGeocodingData(placeName:string) {
       if(!formData) return;
 
@@ -118,7 +126,9 @@ export default function Home() {
 
       try {
         const response = await fetch(BACKEND_URL, options);
-        return response.json();
+        const data = await response.json();
+        console.log(data)
+        return data;
       }
       catch(error) {
         console.error("Erro ao buscar dados de geocodificação:", error);
@@ -127,30 +137,48 @@ export default function Home() {
 
     async function fetchWeatherData() {
       if(!isThereForecastAvailable()) return;
+      const daysToFetchForecast = isThereForecastAvailable();
 
       const geocodingData = await fetchGeocodingData(formData.destination)
 
-      const BACKEND_URL: string = "http://localhost:3001/weather";
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ city: geocodingData.results[0].geometry.location }),
+      type Location = {
+        lat: number;
+        lng: number;
       };
 
+      const location: Location = geocodingData.data?.geometry?.location;
+      if(!location) {
+        console.error("Erro ao buscar dados de geocodificação: Localização não encontrada");
+        return;
+      }
+
+      const weatherParams = new URLSearchParams({
+        lat: location.lat.toString(),
+        lng: location.lng.toString(),
+        days: daysToFetchForecast.toString(),
+      });
+
+      const BACKEND_URL: string = `http://localhost:3001/api/weather?${weatherParams}`;
+
       try {
-        const response = await fetch(BACKEND_URL, options);
+        const response = await fetch(BACKEND_URL);
         const data = await response.json();
 
+        //I ONLY NEED THE WEATHER CONDITION OF EACH DAY
+        return data.forecastDays.map((day) => day.dayTimeForecast.weatherCondition.description.text);
       }
       catch(error) {
         console.error("Erro ao buscar dados do tempo:", error);
       }
+      finally {
+        console.log("Finalizando busca de dados do tempo");
+      }
     }
 
+
+    /*========HANDLE WITH AI ITINERARY DATA========*/
     async function fetchTripItineraryData(message: string): FormsState | null {
-      const BACKEND_URL: string = "http://localhost:3001/gemini";
+      const BACKEND_URL: string = "http://localhost:3001/api/gemini";
       const options = {
         method: "POST",
         headers: {
@@ -171,8 +199,8 @@ export default function Home() {
     }
 
 
-    const responseTest = fetchGeocodingData(formData.destination);
-    console.log(responseTest);
+    /*========RUNNING FUNCTIONS========*/
+    const eachDayforecast = fetchWeatherData();
     /*fetchTripItineraryData(formData); PARADO POR AGORA*/
   }, [formData]);
 
