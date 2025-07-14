@@ -7,7 +7,7 @@ import {
 import { useState, useContext, useEffect } from "react";
 import { FormContext } from "../../contexts/formContext";
 
-import type { SetStringAction } from "../../sharedInterfaces/formInterfaces";
+import type { SetStringAction } from "../../types/formInterfaces";
 
 interface Option {
   id: number;

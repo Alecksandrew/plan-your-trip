@@ -9,7 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 //Interfaces
-import type { TouristAttractionCardProps } from "../../sharedInterfaces/TouristAttractionInterface";
+import type { TouristAttractionCardProps } from "../../types/TouristAttractionInterface";
 
 import  cristoImg from "../../assets/cristo.jpg";
 

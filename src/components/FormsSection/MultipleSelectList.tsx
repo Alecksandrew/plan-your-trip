@@ -6,7 +6,7 @@ import {
 } from "@headlessui/react";
 import { useState, useEffect, useContext } from "react";
 import { FormContext } from "../../contexts/formContext";
-import type { SetArrayAction } from "../../sharedInterfaces/formInterfaces";
+import type { SetArrayAction } from "../../types/formInterfaces";
 
 interface Option {
   id: number;

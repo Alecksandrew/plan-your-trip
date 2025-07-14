@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import checkForecastAvailability  from "@/utils/checkForecastAvailability";
 import calculateDaysOffset from "@/utils/calculateDaysOffset";
 
+//services
+import fetchGeocodingData from "@/services/geocodingService";
+import fetchWeatherData from "@/services/weatherService";
+
 
 function useItinerary() {
   
@@ -25,97 +29,9 @@ function useItinerary() {
     const daysOffset = calculateDaysOffset(startDate);
 
    
-
-    async function fetchWeatherData() {
-      if (!isThereForecastAvailable()) return;
-      const daysToFetchForecast = isThereForecastAvailable();
-
-      const geocodingData = await fetchGeocodingData(formData.destination);
-
-      type Location = {
-        lat: number;
-        lng: number;
-      };
-
-      const location: Location = geocodingData.data?.geometry?.location;
-      if (!location) {
-        console.error(
-          "Erro ao buscar dados de geocodificação: Localização não encontrada"
-        );
-        return;
-      }
-
-      const weatherParams = new URLSearchParams({
-        lat: location.lat.toString(),
-        lng: location.lng.toString(),
-        days: daysToFetchForecast.toString(),
-      });
-
-      const BACKEND_URL: string = `http://localhost:3001/api/weather?${weatherParams}`;
-
-      try {
-        //I ONLY NEED THE WEATHER CONDITION OF EACH DAY
-        //API TYPE
-        type Description = {
-          text: string;
-        };
-
-        type WeatherCondition = {
-          description: Description;
-        };
-
-        type Temperature = {
-          degrees: number;
-        };
-
-        type DayForecast = {
-          weatherCondition: WeatherCondition;
-        };
-
-        type ForecastDays = {
-          daytimeForecast: DayForecast;
-          maxTemperature: Temperature;
-          minTemperature: Temperature;
-        };
-
-        type data2 = {
-          forecastDays: ForecastDays[];
-        };
-
-        type data1 = {
-          data: data2;
-        };
-
-        const response = await fetch(BACKEND_URL);
-        const data: data1 = await response.json();
-        console.log(data);
-
-        //Calculate if the user start the trip today or in some days
-        const startDate = formData.date.split(" - ")[0];
-        const daysOffset = calculateDaysOffset(startDate);
-
-        const relevantForecast = data.data.forecastDays
-          .slice(daysOffset - 1)
-          .map((day) => {
-            const weather = {
-              description:
-                day.daytimeForecast?.weatherCondition?.description?.text,
-              temperature: Math.round(
-                (day.maxTemperature?.degrees + day.minTemperature?.degrees) / 2
-              ), // Average temperature in Celsius
-            };
-            return weather;
-          });
-
-        console.log(relevantForecast);
-        return relevantForecast;
-      } catch (error) {
-        console.error("Erro ao buscar dados do tempo:", error);
-      } finally {
-        console.log("Finalizando busca de dados do tempo");
-      }
-    }
-
+    fetchGeocodingData(placeName)
+    fetchWeatherData(placeName, DateRange)
+   
     /*========HANDLE WITH AI ITINERARY DATA========*/
 
     async function fetchTripItineraryData(

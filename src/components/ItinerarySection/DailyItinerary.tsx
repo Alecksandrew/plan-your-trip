@@ -1,8 +1,8 @@
 import TouristAttractionCard from "./TouristAttractionCard";
 
 //interfaces
-import type { TouristAttractionCardProps } from "../../sharedInterfaces/TouristAttractionInterface";
-import type { DailyItineraryProps } from "../../sharedInterfaces/DailyItineraryInterface";
+import type { TouristAttractionCardProps } from "../../types/TouristAttractionInterface";
+import type { DailyItineraryProps } from "../../types/DailyItineraryInterface";
 
 export default function DailyItinerary({
   dayNumber,

@@ -1,5 +1,5 @@
 import MultipleSelectList from "../FormsSection/MultipleSelectList";
-import type { SetArrayAction } from "../../sharedInterfaces/formInterfaces";
+import type { SetArrayAction } from "../../types/formInterfaces";
 
 interface OptionsObject {
   id: number;

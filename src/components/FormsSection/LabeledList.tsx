@@ -1,5 +1,5 @@
 import List from "./List";
-import type { SetStringAction, OptionsObject } from "../../sharedInterfaces/formInterfaces";
+import type { SetStringAction, OptionsObject } from "../../types/formInterfaces";
 
 
 

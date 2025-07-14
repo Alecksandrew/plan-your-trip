@@ -3,7 +3,7 @@
 export default function checkForecastAvailability(
   dateRange: string,
   maxForecastDays: number = 10
-): boolean {
+): number | boolean {
   if (!dateRange.includes("-")) {
     console.log(
       "The date range is not in a valid format (DD/MM/YYYY - DD/MM/YYYY). It must contain a '-'"
@@ -46,6 +46,6 @@ export default function checkForecastAvailability(
     );
     return false;
   } else {
-    return true;
+    return differenceInDays;
   }
 }

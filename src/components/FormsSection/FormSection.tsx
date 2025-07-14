@@ -15,7 +15,7 @@ import type {
   SetStringAction,
   SetArrayAction,
   OptionsObject,
-} from "../../sharedInterfaces/formInterfaces";
+} from "../../types/formInterfaces";
 
 
 function formsReducer(state: FormsState, action: FormsAction) {

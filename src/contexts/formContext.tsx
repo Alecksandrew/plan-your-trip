@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import type { FormsAction, FormsState } from "../sharedInterfaces/formInterfaces";
+import type { FormsAction, FormsState } from "../types/formInterfaces";
 
 export type FormContextType = {
   state?: FormsState;

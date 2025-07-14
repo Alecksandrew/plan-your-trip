@@ -4,7 +4,7 @@ import FormSection from "../components/FormsSection/FormSection";
 import FullItinerary from "../components/ItinerarySection/FullItinerary";
 import MapsSection from "../components/MapsSection/MapsSection";
 
-import type { FormsState } from "../sharedInterfaces/formInterfaces";
+import type { FormsState } from "../types/formInterfaces";
 
 
 
