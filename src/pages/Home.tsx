@@ -6,6 +6,11 @@ import MapsSection from "../components/MapsSection/MapsSection";
 
 import type { FormsState } from "../sharedInterfaces/formInterfaces";
 
+
+
+///UTILS
+import { checkForecastAvailability } from "../utils/checkForecastAvailability";
+
 type Attractions = {
   title: string;
   description: string;
@@ -116,33 +121,7 @@ export default function Home() {
     console.log(formData);
 
     /*========HANDLE WITH WEATHER DATA========*/
-    function isThereForecastAvailable() {
-      //API only shows forecast for 10 days
-      if (!formData) return false;
-
-      const dateNow = new Date();
-      dateNow.setHours(0, 0, 0, 0);
-
-      const endDate = formData.date.split(" - ")[1];
-
-      const [day, month, year] = endDate.split("/");
-
-      const endDateObject = new Date(+year, +month - 1, +day);
-
-      const differenceInMiliseconds =
-        endDateObject.getTime() - dateNow.getTime();
-      const differenceInDays = Math.ceil(
-        differenceInMiliseconds / (1000 * 60 * 60 * 24)
-      );
-
-      if (differenceInDays <= 0) {
-        return false;
-      } else if (differenceInDays > 10) {
-        return false;
-      } else {
-        return differenceInDays;
-      }
-    }
+    checkForecastAvailability(formData.date);
 
     //Calculate if the user start the trip today or in some days
     function calculateDaysOffset(startDate) {

@@ -217,28 +217,45 @@ async function handlePlacePhotoRequest(req, res) {
   req.on("end", async () => {
     try {
       const { photoName, maxWidth = 400, maxHeight = 400 } = JSON.parse(body);
-      if (!photoName) throw new Error("photoName é obrigatório");
+      
+      // Log para depuração: veja exatamente o que o frontend está enviando
+      console.log(`Buscando foto para a referência: ${photoName}`);
+
+      if (!photoName) {
+        // Enviar uma resposta de erro clara se o photoName não for fornecido
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ success: false, error: "photoName é obrigatório" }));
+      }
 
       const apiKey = process.env.GOOGLE_API_KEY;
-      // Monta a URL de Place Photos (New) com skipHttpRedirect=true
-      const url = `https://places.googleapis.com/v1/${encodeURIComponent(photoName)}/media?key=${apiKey}&maxWidthPx=${maxWidth}&maxHeightPx=${maxHeight}&skipHttpRedirect=true`;
+
+      // ==================================================================
+      // AQUI ESTÁ A CORREÇÃO: Removido o encodeURIComponent()
+      // O photoName já está no formato correto para ser parte do caminho da URL.
+      // ==================================================================
+      const url = `https://places.googleapis.com/v1/${photoName}/media?key=${apiKey}&maxWidthPx=${maxWidth}&maxHeightPx=${maxHeight}&skipHttpRedirect=true`;
 
       const apiRes = await fetch(url);
       const json = await apiRes.json();
-      if (json.error) throw new Error(json.error.message);
+      
+      if (json.error) {
+        // Se a API do Google retornar um erro, registre e lance-o
+        console.error("Erro da API do Google Places Photo:", json.error);
+        throw new Error(json.error.message);
+      }
 
-      // photoUri vem na resposta JSON
+      // photoUri vem na resposta JSON da API do Google
       const photoUri = json.photoUri;
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: true, photoUri }));
+      res.end(JSON.stringify({ success: true, photoUri: photoUri })); // Corrigido para photoUri: photoUri
+
     } catch (err) {
-      console.error("Erro handlePlacePhotoRequest:", err);
+      console.error("Erro em handlePlacePhotoRequest:", err.message);
       res.writeHead(500, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ success: false, error: err.message }));
     }
   });
 }
-
 
 
 // Função principal para processar requisições
