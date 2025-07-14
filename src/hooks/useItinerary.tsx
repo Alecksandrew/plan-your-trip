@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 //Utils
 import checkForecastAvailability  from "@/utils/checkForecastAvailability";
 import calculateDaysOffset from "@/utils/calculateDaysOffset";
+import filterAttractionImagesIDs from "@/utils/filterAttractionImagesIDs";
 
 //services
 import fetchGeocodingData from "@/services/geocodingService";
 import fetchWeatherData from "@/services/weatherService";
 import fetchTripItineraryData from "@/services/tripItineraryService";
+import fetchAttractionImagesIDs from "@/services/attractionImagesIDsService";
+
 
 
 function useItinerary() {
@@ -39,25 +42,8 @@ function useItinerary() {
 
     /*=======HANDLE WITH IMAGE OF ATRACTIONS========*/
 
-    async function fetchAttractionsImagesNames(query) {
-      const BACKEND_URL: string = "http://localhost:3001/api/places-search";
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ textQuery: query }),
-      };
-
-      try {
-        const response = await fetch(BACKEND_URL, options);
-        const data = await response.json();
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.error("Erro ao buscar dados de imagens:", error);
-      }
-    }
+    const attractionImagesIDs = fetchAttractionImagesIDs(placeName)
+    const filteredAttractionIDs = filterAttractionImagesIDs(attractionImagesIDs, 3);
 
     async function fetchAttractionsImages(photos) {
       const BACKEND_URL: string = "http://localhost:3001/api/place-photo";
