@@ -1,14 +1,28 @@
-
-//WholeDate -> Start and End date
-// lengthOfForecastAPI -> How many days the API can forecast
+//WholeDate -> Start and End date -> Ex: 01/01/2021 - 02/01/2021
+// maxForecastDays -> How many days the API can forecast
 export default function checkForecastAvailability(
-  wholeDate: string,
-  lengthOfForecastAPI: number = 10
+  dateRange: string,
+  maxForecastDays: number = 10
 ): boolean {
+  if (!dateRange.includes("-")) {
+    console.log(
+      "The date range is not in a valid format (DD/MM/YYYY - DD/MM/YYYY). It must contain a '-'"
+    );
+    return false;
+  }
+
+  const parts = dateRange.split(" - ");
+  if (parts.length !== 2) {
+    console.log(
+      "The date range is not valid. It must be in the format 'DD/MM/YYYY - DD/MM/YYYY'"
+    );
+    return false;
+  }
+
   const dateNow = new Date();
   dateNow.setHours(0, 0, 0, 0);
 
-  const endDate = wholeDate.split(" - ")[1];
+  const endDate = parts[1];
 
   const [day, month, year] = endDate.split("/");
 
@@ -26,9 +40,9 @@ export default function checkForecastAvailability(
       "The end date is before the start date! You cant travel to the past."
     );
     return false;
-  } else if (differenceInDays > lengthOfForecastAPI) {
+  } else if (differenceInDays > maxForecastDays) {
     console.log(
-      `The end date is more than ${lengthOfForecastAPI} days after the start date! The API can't forecast that far.`
+      `The end date is more than ${maxForecastDays} days after the start date! The API can't forecast that far.`
     );
     return false;
   } else {
