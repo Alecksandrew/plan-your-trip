@@ -7,6 +7,7 @@ import calculateDaysOffset from "@/utils/calculateDaysOffset";
 //services
 import fetchGeocodingData from "@/services/geocodingService";
 import fetchWeatherData from "@/services/weatherService";
+import fetchTripItineraryData from "@/services/tripItineraryService";
 
 
 function useItinerary() {
@@ -34,28 +35,7 @@ function useItinerary() {
    
     /*========HANDLE WITH AI ITINERARY DATA========*/
 
-    async function fetchTripItineraryData(
-      message: string
-    ): Promise<Itinerary | null> {
-      const BACKEND_URL: string = "http://localhost:3001/api/gemini";
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      };
-
-      try {
-        const response = await fetch(BACKEND_URL, options);
-        const data = await response.json();
-        console.log(data);
-        return JSON.parse(data.response);
-      } catch (error) {
-        console.error("Erro ao buscar dados do roteiro:", error);
-        return null;
-      }
-    }
+    const itineraryData = fetchTripItineraryData(personalizedPromptAI, formData);
 
     /*=======HANDLE WITH IMAGE OF ATRACTIONS========*/
 
