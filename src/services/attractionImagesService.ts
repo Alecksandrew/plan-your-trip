@@ -1,7 +1,11 @@
-import type { photosName } from "@/types/attractionImagesTypes";
+type imagesNamesBackendResponse = {
+    photoUri: {
+      photoUri: string;
+    };
+  };
 
 ///ONLY FETCH ONE IMAGE PER TIME
-export default async function fetchAttractionImage(photoID: string) {
+export default async function fetchAttractionImage(photoID: string):Promise<string> {
   const BACKEND_URL: string = "http://localhost:3001/api/place-photo";
   const options = {
     method: "POST",
@@ -13,10 +17,10 @@ export default async function fetchAttractionImage(photoID: string) {
 
   try {
     const response = await fetch(BACKEND_URL, options);
-    const data = await response.json();
-    ARRUMAR AQUI!!!!!!============================================================================================================LER COMO O DATA VEM
-    return data; 
+    const data:imagesNamesBackendResponse = await response.json();
+    const photoURL = data.photoUri.photoUri;
+    return photoURL;
   } catch (error) {
-    console.error("Erro ao buscar dados de imagens:", error);
+    throw new Error("Error when fetching attraction image: " + error);
   }
 }

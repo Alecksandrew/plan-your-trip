@@ -10,7 +10,7 @@ import fetchGeocodingData from "@/services/geocodingService";
 import fetchWeatherData from "@/services/weatherService";
 import fetchTripItineraryData from "@/services/tripItineraryService";
 import fetchAttractionImagesIDs from "@/services/attractionImagesIDsService";
-
+import fetchAttractionImage from "@/services/attractionImagesService";
 
 
 function useItinerary() {
@@ -41,30 +41,15 @@ function useItinerary() {
     const itineraryData = fetchTripItineraryData(personalizedPromptAI, formData);
 
     /*=======HANDLE WITH IMAGE OF ATRACTIONS========*/
-
+    //==*THIS WHOLE BLOCK IS ABOUT GETTING PHOTOS OF ONLY ONE ATTRACTION -> THIS BLOCK SHOULD BE REPETEAD FOR THE AMOUNT OF EACH ATTRACTION==*/
+    
+    //Get photos IDs of only ONE attraction -> It return about 10 IDs
     const attractionImagesIDs = fetchAttractionImagesIDs(placeName)
-    const filteredAttractionIDs = filterAttractionImagesIDs(attractionImagesIDs, 3);
+    //Filter the IDs to get only 3 and show in the slider
+    const filteredAttractionIDs = filterAttractionImagesIDs(attractionImagesIDs, 3); // return e.g ["photoID1", "photoID2", "photoID3"]
 
-    async function fetchAttractionsImages(photos) {
-      const BACKEND_URL: string = "http://localhost:3001/api/place-photo";
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ photoName: photos }),
-      };
-
-      try {
-        console.log(photos);
-        const response = await fetch(BACKEND_URL, options);
-        const data = await response.json();
-        console.log("ISSO DEVERIA CONTER URL CORRETO:", data);
-        return data;
-      } catch (error) {
-        console.error("Erro ao buscar dados de imagens:", error);
-      }
-    }
+    //fetch the image of each ID
+    const attractionImages = filteredAttractionIDs.map((id) => fetchAttractionImage(id));
 
     /*========RUNNING FUNCTIONS========*/
     Promise.all([
