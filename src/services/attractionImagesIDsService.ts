@@ -1,5 +1,5 @@
 import type { imagesNamesBackendResponse } from "@/types/attractionImagesTypes";
-
+//Get photos IDs of only ONE attraction -> It return about 10 IDs
 // Before we get images from google API , we need to fetch the specific name of each image. 
 // That is why we have to fetch this before searching for the images
 

@@ -4,7 +4,7 @@ type imagesNamesBackendResponse = {
     };
   };
 
-///ONLY FETCH ONE IMAGE PER TIME
+///USE THE PHOTOID TO ONLY FETCH ONE IMAGE PER TIME
 export default async function fetchAttractionImage(photoID: string):Promise<string> {
   const BACKEND_URL: string = "http://localhost:3001/api/place-photo";
   const options = {
