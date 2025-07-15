@@ -1,203 +1,98 @@
 import { useEffect, useState } from "react";
 
-//Utils
-import checkForecastAvailability  from "@/utils/checkForecastAvailability";
-import calculateDaysOffset from "@/utils/calculateDaysOffset";
-
-
 //services
-import fetchGeocodingData from "@/services/geocodingService";
 import fetchWeatherData from "@/services/weatherService";
 import fetchTripItineraryData from "@/services/tripItineraryService";
 import getAttractionImages from "@/services/attractionImages/getAttractionImagesService";
 
-
 //types
 import type { FormsState } from "@/types/formInterfaces";
+import type { Itinerary } from "@/types/itineraryTypes";
+import type { relevantForecastDays } from "@/utils/getRelevantForecast";
 
 //const
 import { personalizedPromptAI } from "@/constants/personalizedPromptAI";
 
-function useItinerary(formData: FormsState) {
-  
-  
-  
-  
-  
-    useEffect(() => {
-    
-    if (!formData.destination || !formData.date) return;
-    const placeName = formData.destination;
-    const dateRange = formData.date;
-
-    const [itineraryData, weatherData] = await Promise.all([
-      fetchTripItineraryData(personalizedPromptAI, formData),
-      fetchWeatherData(placeName, dateRange)
-    ]);
-
-    
-    const dailyItinerary = itineraryData.fullItinerary;
-
-    //This gonna return a array with all attractions names
-    const attractionsNames = dailyItinerary.flatMap((day) =>
-      day.attractionsOfTheDay.map((attraction) => attraction.title)
-    );
-
-    const attractionsImages = attractionsNames.map(name => getAttractionImages(name, 3)); // return e.g [[photoURL1, photoURL2, photoURL3], [photoURL4, photoURL5, photoURL6], [photoURL7, photoURL8, photoURL9]]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    /*========HANDLE WITH WEATHER DATA========*/
-    checkForecastAvailability(dateRange);
-
-    const startDate = dateRange.split(" - ")[0];
-    const daysOffset = calculateDaysOffset(startDate);
-
-   
-    fetchGeocodingData(placeName)
-    fetchWeatherData(placeName, DateRange)
-   
-    /*========HANDLE WITH AI ITINERARY DATA========*/
-
-    const itineraryData = fetchTripItineraryData(personalizedPromptAI, formData);
-
-    /*=======HANDLE WITH IMAGE OF ATRACTIONS========*/
-   
-    /*========RUNNING FUNCTIONS========*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    Promise.all([
-      fetchWeatherData(),
-      fetchTripItineraryData(personalizedPromptAI + JSON.stringify(formData)),
-    ])
-      .then(async (values) => {
-        const [dailyForecast, itinerary] = values;
-        console.log(itinerary);
-        if (!itinerary) return;
-
+const initialStateItinerary: Itinerary = {
+  name: "",
+  duration: 0,
+  generalRecommendations: [],
+  fullItinerary: [],
+};
+
+export default function useItinerary(formData: FormsState) {
+  const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchItineraryData() {
+      setLoading(true);
+      setError(null);
+
+      try {
+        if (!formData.destination || !formData.date) return;
+        const placeName = formData.destination;
+        const dateRange = formData.date;
+
+        const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] = await Promise.all([
+          fetchTripItineraryData(personalizedPromptAI, formData),
+          fetchWeatherData(placeName, dateRange),
+        ]);
+
+        const dailyItinerary = itineraryData.fullItinerary;
+
+        //This gonna return a array with all attractions names
+        const attractionsNames:string[] = dailyItinerary.flatMap((day) =>
+          day.attractionsOfTheDay.map((attraction) => attraction.title)
+        );
+
+        const attractionsImages = await Promise.all( attractionsNames.map((name) =>
+          getAttractionImages(name, 3)
+        ))
         
-
-        const fetchToGetAttractionImagesNames = await Promise.all(
-          attractionsNames.map((attraction) =>
-            fetchAttractionsImagesNames(attraction)
-          )
+        const imagesMap: Map<string, string[]> = new Map();
+        attractionsNames.forEach((name, index) =>
+          imagesMap.set(name, attractionsImages[index])
         );
 
-        //Array and in each index, there is a array of photos of each attraction
-        const attractionsImagesNames = fetchToGetAttractionImagesNames.map(
-          (obj) => obj.places[0].photos.map((photo) => photo.name)
-        );
-
-        console.log("ESTE É O ATTRACTIONIMAGENAME", attractionsImagesNames);
-
-        const attractionImages = attractionsImagesNames.map(async (name) => {
-          const fetchedImages = await fetchAttractionsImages(
-            name[0] /*INDEX ZERO BECAUSE IT IS THE MAIN PHOTO*/
+        const enrichedDailyItinerary = dailyItinerary.map((day) => {
+          //Add its images to each attraction
+          const attractionsWithImages = day.attractionsOfTheDay.map(
+            (attraction) => {
+              const photos = imagesMap.get(attraction.title);
+              return { ...attraction, photos: photos || [] };
+            }
           );
-          console.log(fetchedImages);
-          return fetchedImages;
+
+          //Add and return weather for eachday
+          return {
+            ...day,
+            attractionsOfTheDay: attractionsWithImages,
+            weather: weatherData?.[day.dayNumber - 1] || "Unknown",
+          };
         });
 
-        const photoMap = new Map();
-
-        //Map with the name of the attraction and the array of photos
-        attractionsNames.forEach((name, index) => {
-          photoMap.set(name, attractionsImagesNames[index]);
-        });
-
-        //Put together all data
         const comprehensiveItinerary = {
-          ...itinerary,
-          fullItinerary: dailyItinerary.map((day, index) => {
-            //Putting images in each attraction
-            const attractionsWithImages = day.attractionsOfTheDay.map(
-              (attraction) => {
-                const photos = photoMap.get(attraction.title);
-                return { ...attraction, photos };
-              }
-            );
-
-            //Putting weather in each day
-            return {
-              ...day,
-              attractionsOfTheDay: attractionsWithImages,
-              weather: dailyForecast?.[index] || "Unknown",
-            };
-          }),
+          ...itineraryData,
+          fullItinerary: enrichedDailyItinerary,
         };
 
-        fetchAttractionsImages(
-          comprehensiveItinerary.fullItinerary[0].attractionsOfTheDay[0]
-            .photos[0]
-        );
-        console.log(comprehensiveItinerary);
         setItinerary(comprehensiveItinerary);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar dados:", error);
-      });
-    /*fetchTripItineraryData(formData); PARADO POR AGORA*/
-    /*========AFTER RETURN ITINERARY DATA, ITERATE EACH ELEMENT OF FULLITINERARY AND ADD WEATHER PROPRETY========*/
+      } catch (error:unknown) {
+        if ( error instanceof Error) {
+          setError(error.message);
+        }
+        setError("Error when creating a itinerary!");
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+
+    fetchItineraryData();
+    
   }, [formData]);
+
+  return { itinerary, loading, error };
 }

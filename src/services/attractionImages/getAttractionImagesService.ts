@@ -9,7 +9,7 @@ import filterAttractionImagesIDs from "@/utils/filterAttractionImagesIDs";
 export default async function getAttractionImages(
   placeName:string,
   amountOfImages: number
-) {
+):Promise<string[]> {
   //Get photos IDs of only ONE attraction -> It return about 10 IDs
   const attractionImagesIDs = await fetchAttractionImagesIDs(placeName);
 
@@ -20,9 +20,9 @@ export default async function getAttractionImages(
   ); // return e.g ["photoID1", "photoID2", "photoID3"]
 
   //fetch the image of each ID
-  const attractionImages = filteredAttractionIDs.map((id) =>
+  const attractionImages = await Promise.all(filteredAttractionIDs.map((id) =>
     fetchAttractionImage(id)
-  ); // return e.g ["photoURL1", "photoURL2", "photoURL3"]
+  )); // return e.g ["photoURL1", "photoURL2", "photoURL3"]
 
   return attractionImages;
 }

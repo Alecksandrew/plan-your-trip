@@ -9,28 +9,6 @@ import type { FormsState } from "../types/formInterfaces";
 
 
 ///UTILS
-
-
-type Attractions = {
-  title: string;
-  description: string;
-  openingHours: string;
-  images: string[];
-};
-
-type DailyItinerary = {
-  dayNumber: number;
-  attractionsOfTheDay: Attractions[];
-  weather: string | { description: string; temperature: number };
-};
-
-export type Itinerary = {
-  name: string;
-  duration: number;
-  generalRecommendations: string[];
-  fullItinerary: DailyItinerary[];
-};
-
 const initialStateForms: FormsState = {
   destination: "",
   date: "",
@@ -42,16 +20,8 @@ const initialStateForms: FormsState = {
   interests: [],
 };
 
-const initialStateItinerary: Itinerary = {
-  name: "",
-  duration: 0,
-  generalRecommendations: [],
-  fullItinerary: [],
-};
-
 export default function Home() {
   const [formData, setFormData] = useState<FormsState>(initialStateForms);
-  const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
 
 
 
