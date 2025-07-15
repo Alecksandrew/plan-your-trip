@@ -38,15 +38,11 @@ export default function TouristAttractionCard({
         onSwiper={(swiper) => console.log(swiper)}
         className="custom-container aspect-video sm:w-2/5"
       >
-        <SwiperSlide >
-          <img src={photos[0]} alt={`Imagem do ${title}`} className="w-full h-full object-cover" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src={photos[1]} alt={`Imagem do ${title}`} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src={photos[2]} alt={`Imagem do ${title}`} />
-        </SwiperSlide>
+        {photos.map((photo, index) => (
+          <SwiperSlide key={index} className="flex justify-center">
+            <img src={photo} alt={`Imagem do ${title}`} className="w-full h-full object-cover" />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );
