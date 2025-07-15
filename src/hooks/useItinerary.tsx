@@ -3,30 +3,68 @@ import { useEffect, useState } from "react";
 //Utils
 import checkForecastAvailability  from "@/utils/checkForecastAvailability";
 import calculateDaysOffset from "@/utils/calculateDaysOffset";
-import filterAttractionImagesIDs from "@/utils/filterAttractionImagesIDs";
+
 
 //services
 import fetchGeocodingData from "@/services/geocodingService";
 import fetchWeatherData from "@/services/weatherService";
 import fetchTripItineraryData from "@/services/tripItineraryService";
-import fetchAttractionImagesIDs from "@/services/attractionImagesIDsService";
-import fetchAttractionImage from "@/services/attractionImagesService";
+import getAttractionImages from "@/services/attractionImages/getAttractionImagesService";
 
 
-function useItinerary() {
+//types
+import type { FormsState } from "@/types/formInterfaces";
+
+//const
+import { personalizedPromptAI } from "@/constants/personalizedPromptAI";
+
+function useItinerary(formData: FormsState) {
   
   
   
   
   
     useEffect(() => {
+    
     if (!formData.destination || !formData.date) return;
-    console.log(formData);
+    const placeName = formData.destination;
+    const dateRange = formData.date;
+
+    const [itineraryData, weatherData] = await Promise.all([
+      fetchTripItineraryData(personalizedPromptAI, formData),
+      fetchWeatherData(placeName, dateRange)
+    ]);
+
+    
+    const dailyItinerary = itineraryData.fullItinerary;
+
+    //This gonna return a array with all attractions names
+    const attractionsNames = dailyItinerary.flatMap((day) =>
+      day.attractionsOfTheDay.map((attraction) => attraction.title)
+    );
+
+    const attractionsImages = attractionsNames.map(name => getAttractionImages(name, 3)); // return e.g [[photoURL1, photoURL2, photoURL3], [photoURL4, photoURL5, photoURL6], [photoURL7, photoURL8, photoURL9]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
     
     /*========HANDLE WITH WEATHER DATA========*/
-    const dateRange = formData.date;
     checkForecastAvailability(dateRange);
 
     const startDate = dateRange.split(" - ")[0];
@@ -41,17 +79,54 @@ function useItinerary() {
     const itineraryData = fetchTripItineraryData(personalizedPromptAI, formData);
 
     /*=======HANDLE WITH IMAGE OF ATRACTIONS========*/
-    //==*THIS WHOLE BLOCK IS ABOUT GETTING PHOTOS OF ONLY ONE ATTRACTION -> THIS BLOCK SHOULD BE REPETEAD FOR THE AMOUNT OF EACH ATTRACTION==*/
-    
-    //Get photos IDs of only ONE attraction -> It return about 10 IDs
-    const attractionImagesIDs = fetchAttractionImagesIDs(placeName)
-    //Filter the IDs to get only 3 and show in the slider
-    const filteredAttractionIDs = filterAttractionImagesIDs(attractionImagesIDs, 3); // return e.g ["photoID1", "photoID2", "photoID3"]
-
-    //fetch the image of each ID
-    const attractionImages = filteredAttractionIDs.map((id) => fetchAttractionImage(id));
-
+   
     /*========RUNNING FUNCTIONS========*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Promise.all([
       fetchWeatherData(),
       fetchTripItineraryData(personalizedPromptAI + JSON.stringify(formData)),
@@ -61,12 +136,7 @@ function useItinerary() {
         console.log(itinerary);
         if (!itinerary) return;
 
-        //Fetch image of each attraction
-        const dailyItinerary = itinerary.fullItinerary;
-
-        const attractionsNames = dailyItinerary.flatMap((day) =>
-          day.attractionsOfTheDay.map((attraction) => attraction.title)
-        );
+        
 
         const fetchToGetAttractionImagesNames = await Promise.all(
           attractionsNames.map((attraction) =>
