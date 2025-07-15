@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
+//hooks
+import useItinerary from "../hooks/useItinerary";
+import { useState } from "react";
 
+
+//components
 import FormSection from "../components/FormsSection/FormSection";
 import FullItinerary from "../components/ItinerarySection/FullItinerary";
 import MapsSection from "../components/MapsSection/MapsSection";
 
+
+//types
 import type { FormsState } from "../types/formInterfaces";
+
+
 
 
 
@@ -22,9 +30,15 @@ const initialStateForms: FormsState = {
 
 export default function Home() {
   const [formData, setFormData] = useState<FormsState>(initialStateForms);
+  const { fetchItineraryData, itinerary, loading, error } = useItinerary(formData);
 
 
-
+  function handleFormSubmit(e: React.FormEvent<HTMLFormElement>, formData: FormsState) {
+    e.preventDefault();
+    if(!formData.destination.trim()) return
+    if(!formData.date.trim()) return
+    fetchItineraryData(formData);
+  }
 
 
   return (
@@ -35,7 +49,7 @@ export default function Home() {
           Roteiros personalizados para uma experiência inesquecível
         </p>
       </div>
-      <FormSection getFormData={setFormData} />
+      <FormSection onSubmit={handleFormSubmit} />
       <FullItinerary itineraryData={itinerary} />
       <MapsSection />
     </>

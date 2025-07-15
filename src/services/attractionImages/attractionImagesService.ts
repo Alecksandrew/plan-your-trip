@@ -18,7 +18,7 @@ export default async function fetchAttractionImage(photoID: string):Promise<stri
   try {
     const response = await fetch(BACKEND_URL, options);
     const data:imagesNamesBackendResponse = await response.json();
-    const photoURL = data.photoUri.photoUri;
+    const photoURL = data.photoUri;
     return photoURL;
   } catch (error) {
     throw new Error("Error when fetching attraction image: " + error);

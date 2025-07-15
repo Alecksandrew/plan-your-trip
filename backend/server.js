@@ -10,6 +10,68 @@ config();
 // Cria o cliente Gemini
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
+const responseSchema = {
+  type: "OBJECT",
+  properties: {
+    name: {
+      type: "STRING",
+      description:
+        "O nome do destino da viagem, como 'Rio de Janeiro, Brasil'.",
+    },
+    duration: {
+      type: "INTEGER",
+      description:
+        "A duração total da viagem em dias, calculada a partir das datas.",
+    },
+    generalRecommendations: {
+      type: "ARRAY",
+      items: { type: "STRING" },
+      description:
+        "Uma lista de até 5 dicas e recomendações gerais para a viagem.",
+    },
+    fullItinerary: {
+      type: "ARRAY",
+      description:
+        "Uma lista de objetos, onde cada objeto representa um dia do roteiro.",
+      items: {
+        type: "OBJECT",
+        properties: {
+          dayNumber: {
+            type: "INTEGER",
+            description: "O número do dia no roteiro, começando por 1.",
+          },
+          attractionsOfTheDay: {
+            type: "ARRAY",
+            description: "Uma lista de atrações para este dia específico.",
+            items: {
+              type: "OBJECT",
+              properties: {
+                title: {
+                  type: "STRING",
+                  description:
+                    "O nome específico da atração (ex: 'Museu do Amanhã', 'Parque Lage').",
+                },
+                description: {
+                  type: "STRING",
+                  description: "Uma descrição concisa e útil da atração.",
+                },
+                openingHours: {
+                  type: "STRING",
+                  description:
+                    "O horário de funcionamento da atração (ex: '9h às 18h', '24 horas').",
+                },
+              },
+              required: ["title", "description", "openingHours"],
+            },
+          },
+        },
+        required: ["dayNumber", "attractionsOfTheDay"],
+      },
+    },
+  },
+  required: ["name", "duration", "generalRecommendations", "fullItinerary"],
+};
+
 // --- Lógica para o Gemini ---
 async function handleGeminiRequest(req, res) {
   let body = "";
@@ -17,7 +79,10 @@ async function handleGeminiRequest(req, res) {
   req.on("end", async () => {
     try {
       const { message } = JSON.parse(body);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Usei 1.5-flash, um modelo comum
+      const model = genAI.getGenerativeModel({
+        model: "gemini-2.5-flash",
+        generationConfig: { responseMimeType: "application/json", responseSchema: responseSchema },
+      });
       const result = await model.generateContent(message);
       const response = await result.response;
       const text = response.text();

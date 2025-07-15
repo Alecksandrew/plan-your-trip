@@ -15,48 +15,16 @@ export const personalizedPromptAI = `
   6.  **Otimização de Transporte (transportation)**: Se for "Transporte público", agrupe as atividades de cada dia por proximidade geográfica para otimizar o deslocamento.
   7.  **Restrição Geográfica**: Todas as atividades e locais sugeridos DEVEM estar localizados dentro da cidade principal ("destination") ou em suas imediações imediatas e de fácil acesso (ex: Niterói para o Rio de Janeiro, Versalhes para Paris). Não sugira viagens de um dia para cidades distantes.
   8.  **Descrição e Detalhes**: As descrições das atrações devem ser úteis e concisas. O campo "openingHours" deve ser preenchido com os horários reais de funcionamento da atração. NÃO inclua um campo de imagem.
-  9.  **Geração de Recomendações Gerais**: No nível raiz do JSON de saída, adicione à propriedade chamada generalRecommendations. Esta propriedade deve ser um array contendo no máximo 5 strings. Cada string deve ser uma dica geral útil para a viagem, baseada nos dados de entrada. Considere os seguintes tópicos para as dicas:
+  9.  **Especificidade das Atrações** (NÃO SEJA GENÉRICO): As atrações sugeridas devem ter nomes próprios e ser específicas. O objetivo é fornecer um item que o usuário possa pesquisar diretamente em um mapa.
+         - Proibido (Genérico demais): "Mercado de Artesanato", "Restaurante Local", "Passeio de Barco". [OBSERVAÇÃO: Você pode colocar passeio de barco, mas sempre especifique um local de referência, por exemplo: passeio de barco em Copacabana, feira em buzios... sempre coloque um ponto de referência no nome da atração]
+         - Obrigatório (Específico): "Feira Hippie de Ipanema", "Restaurante Confeitaria Colombo", "Passeio de barco para as Ilhas Tijucas".
+  10. **Geração de Recomendações Gerais**: No nível raiz do JSON de saída, adicione à propriedade chamada generalRecommendations. Esta propriedade deve ser um array contendo no máximo 5 strings. Cada string deve ser uma dica geral útil para a viagem, baseada nos dados de entrada. Considere os seguintes tópicos para as dicas:
       * **Sazonalidade**: Analise a data da viagem. É alta ou baixa temporada? Chove muito nessa época?
       * **Nível de Lotação**: Com base na sazonalidade, informe se os locais turísticos estarão mais cheios ou mais vazios.
       * **Eventos ou Feriados**: Verifique se as datas coincidem com feriados locais ou eventos importantes que possam impactar a viagem.
       * **Dicas Culturais**: Forneça uma dica de etiqueta ou costume local (ex: gorjetas, cumprimentos).
       * **Gastronomia**: Sugira um prato ou bebida local que o viajante não pode deixar de experimentar.
       * **Segurança**: Ofereça uma dica de segurança geral e relevante para o destino.
-
-  # REGRAS DE SAÍDA (MUITO IMPORTANTE)
-  Sua resposta deve ser **APENAS E SOMENTE** uma string JSON válida.
-  -   **NÃO** inclua nenhum texto antes ou depois do JSON.
-  -   **NÃO** use blocos de código como \`\`\`json.
-  -   **NÃO** adicione explicações, saudações ou comentários.
-  -   O JSON de saída deve seguir **RIGOROSAMENTE** a estrutura de dados fornecida no exemplo abaixo.
-
-  ### Exemplo da Estrutura de Saída Esperada:
-  {
-      "name": "Nome do Destino",
-      "duration": 3,
-      "generalRecommendations": [
-          "Dica sobre a lotação da cidade na época da viagem.",
-          "Dica cultural sobre costumes locais, como gorjetas.",
-          "Sugestão de um prato típico que você não pode deixar de provar."
-      ],
-      "fullItinerary": [
-          {
-              "dayNumber": 1,
-              "attractionsOfTheDay": [
-                  {
-                      "title": "Nome da Atração 1",
-                      "description": "Descrição da Atração 1.",
-                      "openingHours": "8h às 19h"
-                  },
-                  {
-                      "title": "Nome da Atração 2",
-                      "description": "Descrição da Atração 2.",
-                      "openingHours": "9h às 17h"
-                  }
-              ]
-          }
-      ]
-  }
 
   # DADOS DO CLIENTE PARA ESTA SOLICITAÇÃO:
 `;

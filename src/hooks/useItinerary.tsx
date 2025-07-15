@@ -20,79 +20,85 @@ const initialStateItinerary: Itinerary = {
   fullItinerary: [],
 };
 
-export default function useItinerary(formData: FormsState) {
+export default function useItinerary() {
   const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchItineraryData() {
-      setLoading(true);
-      setError(null);
+  async function fetchItineraryData(formData: FormsState) {
+    setLoading(true);
+    setError(null);
 
-      try {
-        if (!formData.destination || !formData.date) return;
-        const placeName = formData.destination;
-        const dateRange = formData.date;
+    try {
+      if (!formData.destination || !formData.date) return;
+      console.log("ENTREI NO TRY E ESTOU DANDO FETCH NO ITINERARY");
+      const placeName = formData.destination;
+      const dateRange = formData.date;
 
-        const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] = await Promise.all([
+      const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] =
+        await Promise.all([
           fetchTripItineraryData(personalizedPromptAI, formData),
           fetchWeatherData(placeName, dateRange),
         ]);
 
-        const dailyItinerary = itineraryData.fullItinerary;
+          console.log("DADOS BRUTOS DAS APIS:", { itineraryData, weatherData });
+      const dailyItinerary = itineraryData.fullItinerary;
 
-        //This gonna return a array with all attractions names
-        const attractionsNames:string[] = dailyItinerary.flatMap((day) =>
-          day.attractionsOfTheDay.map((attraction) => attraction.title)
+      //This gonna return a array with all attractions names
+      const attractionsNames: string[] = dailyItinerary.flatMap((day) =>
+        day.attractionsOfTheDay.map((attraction) => attraction.title)
+      );
+
+      const attractionsImages = await Promise.all(
+        attractionsNames.map((name) => getAttractionImages(name, 3))
+      );
+
+        console.log("RESULTADO COMPLETO DA BUSCA DE IMAGENS:", attractionsImages);
+      const imagesMap: Map<string, string[]> = new Map();
+      attractionsNames.forEach((name, index) =>
+        imagesMap.set(name, attractionsImages[index])
+      );
+
+      const enrichedDailyItinerary = dailyItinerary.map((day) => {
+        //Add its images to each attraction
+        const attractionsWithImages = day.attractionsOfTheDay.map(
+          (attraction) => {
+            const photos = imagesMap.get(attraction.title);
+            return { ...attraction, photos: photos || [] };
+          }
         );
 
-        const attractionsImages = await Promise.all( attractionsNames.map((name) =>
-          getAttractionImages(name, 3)
-        ))
-        
-        const imagesMap: Map<string, string[]> = new Map();
-        attractionsNames.forEach((name, index) =>
-          imagesMap.set(name, attractionsImages[index])
-        );
-
-        const enrichedDailyItinerary = dailyItinerary.map((day) => {
-          //Add its images to each attraction
-          const attractionsWithImages = day.attractionsOfTheDay.map(
-            (attraction) => {
-              const photos = imagesMap.get(attraction.title);
-              return { ...attraction, photos: photos || [] };
-            }
-          );
-
-          //Add and return weather for eachday
-          return {
-            ...day,
-            attractionsOfTheDay: attractionsWithImages,
-            weather: weatherData?.[day.dayNumber - 1] || "Unknown",
-          };
-        });
-
-        const comprehensiveItinerary = {
-          ...itineraryData,
-          fullItinerary: enrichedDailyItinerary,
+        //Add and return weather for eachday
+        return {
+          ...day,
+          attractionsOfTheDay: attractionsWithImages,
+          weather: weatherData?.[day.dayNumber - 1] || "Unknown",
         };
+      });
 
-        setItinerary(comprehensiveItinerary);
-      } catch (error:unknown) {
-        if ( error instanceof Error) {
-          setError(error.message);
-        }
+      const comprehensiveItinerary = {
+        ...itineraryData,
+        fullItinerary: enrichedDailyItinerary,
+      };
+
+      setItinerary(comprehensiveItinerary);
+      console.log(`VALOR DO ITINERARY NO HOOK: ${JSON.stringify(comprehensiveItinerary)}`);
+    } catch (error: unknown) {
+
+      console.error("ERRO CAPTURADO NO CATCH:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
         setError("Error when creating a itinerary!");
       }
-      finally {
-        setLoading(false);
-      }
+    } finally {
+      setLoading(false);
     }
+  }
 
-    fetchItineraryData();
-    
-  }, [formData]);
 
-  return { itinerary, loading, error };
+
+
+
+  return { fetchItineraryData, itinerary, loading, error };
 }

@@ -64,7 +64,7 @@ interface LabeledMultipleSelectListProps {
   dispatchType: SetArrayAction["type"];
 }
 
-export default function FormSection({getFormData}) {
+export default function FormSection({onSubmit}) {
   const [state, dispatch] = useReducer(formsReducer, initialStateForms);
 
   console.log(state);
@@ -163,20 +163,11 @@ export default function FormSection({getFormData}) {
     });
   }
 
-  function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    
-    if(!state.destination.trim()) return
-    if(!state.date.trim()) return
-   
-    getFormData(state);
-  }
-
   return (
     <form
       action=""
       className="custom-section grid grid-cols-1 md:grid-cols-2 gap-2"
-      onSubmit={handleFormSubmit}
+      onSubmit={(e) => onSubmit(e, state)}
     >
       <FormContext.Provider value={{ dispatch }}>
         <SearchSection />

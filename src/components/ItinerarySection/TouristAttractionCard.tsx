@@ -17,7 +17,7 @@ export default function TouristAttractionCard({
   title,
   description,
   openingHours,
-  images
+  photos
 }: TouristAttractionCardProps) {
   return (
     <div className="sm:flex sm:gap-x-1">
@@ -39,13 +39,13 @@ export default function TouristAttractionCard({
         className="custom-container aspect-video sm:w-2/5"
       >
         <SwiperSlide >
-          <img src={images[0]} alt={`Imagem do ${title}`} className="w-full h-full object-cover" />
+          <img src={photos[0]} alt={`Imagem do ${title}`} className="w-full h-full object-cover" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={images[1]} alt={`Imagem do ${title}`} />
+          <img src={photos[1]} alt={`Imagem do ${title}`} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={images[2]} alt={`Imagem do ${title}`} />
+          <img src={photos[2]} alt={`Imagem do ${title}`} />
         </SwiperSlide>
       </Swiper>
     </div>
