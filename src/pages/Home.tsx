@@ -7,8 +7,7 @@ import { useState } from "react";
 import FormSection from "../components/FormsSection/FormSection";
 import FullItinerary from "../components/ItinerarySection/FullItinerary";
 import MapsSection from "../components/MapsSection/MapsSection";
-import TouristAttractionCardSkeleton from "../components/ItinerarySection/Loader/TouristAttractionCardSkeleton";
-
+import ProgressBar from "../components/ProgressBar";
 
 //types
 import type { FormsState } from "../types/formInterfaces";
@@ -31,7 +30,7 @@ const initialStateForms: FormsState = {
 
 export default function Home() {
   const [formData, setFormData] = useState<FormsState>(initialStateForms);
-  const { fetchItineraryData, itinerary, loading, error } = useItinerary(formData);
+  const { fetchItineraryData, itinerary, loading, error, progress } = useItinerary(formData);
 
 
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>, formData: FormsState) {
@@ -51,8 +50,7 @@ export default function Home() {
         </p>
       </div>
       <FormSection onSubmit={handleFormSubmit} />
-
-      <FullItinerary itineraryData={itinerary} loading={loading} />
+      <FullItinerary itineraryData={itinerary} loading={loading} progress={progress} />
       <MapsSection />
     </>
   );

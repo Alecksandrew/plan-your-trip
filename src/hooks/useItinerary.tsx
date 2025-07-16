@@ -27,10 +27,12 @@ export default function useItinerary() {
   const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<`${number}%`>("0%");
 
   async function fetchItineraryData(formData: FormsState) {
     setLoading(true);
     setError(null);
+    setProgress("0%");
 
     try {
       console.log("ENTREI NO TRY E ESTOU DANDO FETCH NO ITINERARY");
@@ -39,13 +41,14 @@ export default function useItinerary() {
       
       if (!placeName || !dateRange) return;
       if (!checkDateRangeAvailability(dateRange)) return;
-      
+      setProgress("20%");
 
       const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] =
         await Promise.all([
           fetchTripItineraryData(personalizedPromptAI, formData),
           fetchWeatherData(placeName, dateRange),
         ]);
+      setProgress("50%");
 
           console.log("DADOS BRUTOS DAS APIS:", { itineraryData, weatherData });
       const dailyItinerary = itineraryData.fullItinerary;
@@ -54,10 +57,12 @@ export default function useItinerary() {
       const attractionsNames: string[] = dailyItinerary.flatMap((day) =>
         day.attractionsOfTheDay.map((attraction) => attraction.title)
       );
+      setProgress("70%");
 
       const attractionsImages = await Promise.all(
         attractionsNames.map((name) => getAttractionImages(name, 3))
       );
+      setProgress("85%");
 
         console.log("RESULTADO COMPLETO DA BUSCA DE IMAGENS:", attractionsImages);
       const imagesMap: Map<string, string[]> = new Map();
@@ -87,6 +92,7 @@ export default function useItinerary() {
         fullItinerary: enrichedDailyItinerary,
       };
 
+      setProgress("100%");
       setItinerary(comprehensiveItinerary);
       console.log(`VALOR DO ITINERARY NO HOOK: ${JSON.stringify(comprehensiveItinerary)}`);
     } catch (error: unknown) {
@@ -98,7 +104,7 @@ export default function useItinerary() {
         setError("Error when creating a itinerary!");
       }
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 1000); // Delay in order to let the ProgressBar finish its animation
     }
   }
 
@@ -106,5 +112,5 @@ export default function useItinerary() {
 
 
 
-  return { fetchItineraryData, itinerary, loading, error };
+  return { fetchItineraryData, itinerary, loading, error, progress };
 }
