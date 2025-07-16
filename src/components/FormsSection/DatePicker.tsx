@@ -42,6 +42,7 @@ export default function DatePicker() {
             name="startDate"
             className="custom-container"
             onChange={handleStartDateChange}
+            required
           />
         </label>
         <label className="flex flex-col w-fit flex-1">
@@ -52,6 +53,7 @@ export default function DatePicker() {
             name="endDate"
             className="custom-container"
             onChange={handleEndDateChange}
+            required
           />
         </label>
       </div>

@@ -13,6 +13,9 @@ import type { relevantForecastDays } from "@/utils/getRelevantForecast";
 //const
 import { personalizedPromptAI } from "@/constants/personalizedPromptAI";
 
+//utils
+import isLongTrip from "@/utils/isLongTrip";
+
 const initialStateItinerary: Itinerary = {
   name: "",
   duration: 0,
@@ -30,10 +33,13 @@ export default function useItinerary() {
     setError(null);
 
     try {
-      if (!formData.destination || !formData.date) return;
       console.log("ENTREI NO TRY E ESTOU DANDO FETCH NO ITINERARY");
       const placeName = formData.destination;
       const dateRange = formData.date;
+      
+      if (!placeName || !dateRange) return;
+      if (isLongTrip(dateRange)) return;
+      
 
       const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] =
         await Promise.all([
