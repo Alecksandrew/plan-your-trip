@@ -19,7 +19,13 @@ export default function isLongTrip(
     alert(
       `This trip is too long. We cant generate itineraries for trips longer than ${maxDays} days`
     );
+    return false;
+  }
+  else if (tripDuration <= 0) {
+    alert("The end date is before the start date! You cant travel to the past.");
+    return false;
+  } else {
     return true;
   }
-  return false;
+
 }

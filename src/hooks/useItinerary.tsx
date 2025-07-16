@@ -14,7 +14,7 @@ import type { relevantForecastDays } from "@/utils/getRelevantForecast";
 import { personalizedPromptAI } from "@/constants/personalizedPromptAI";
 
 //utils
-import isLongTrip from "@/utils/isLongTrip";
+import checkDateRangeAvailability from "@/utils/checkDateRangeAvailability";
 
 const initialStateItinerary: Itinerary = {
   name: "",
@@ -38,7 +38,7 @@ export default function useItinerary() {
       const dateRange = formData.date;
       
       if (!placeName || !dateRange) return;
-      if (isLongTrip(dateRange)) return;
+      if (!checkDateRangeAvailability(dateRange)) return;
       
 
       const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] =
