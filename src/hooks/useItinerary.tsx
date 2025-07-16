@@ -16,7 +16,7 @@ import { personalizedPromptAI } from "@/constants/personalizedPromptAI";
 //utils
 import checkDateRangeAvailability from "@/utils/checkDateRangeAvailability";
 
-const initialStateItinerary: Itinerary = {
+export const initialStateItinerary: Itinerary = {
   name: "",
   duration: 0,
   generalRecommendations: [],
@@ -35,7 +35,6 @@ export default function useItinerary() {
     setProgress("0%");
 
     try {
-      console.log("ENTREI NO TRY E ESTOU DANDO FETCH NO ITINERARY");
       const placeName = formData.destination;
       const dateRange = formData.date;
       
@@ -48,9 +47,9 @@ export default function useItinerary() {
           fetchTripItineraryData(personalizedPromptAI, formData),
           fetchWeatherData(placeName, dateRange),
         ]);
+        console.log("PRIMEIRO DADO PARA MOCK FETCHTRIPTIITNERARY E FETCHWEATHER DATA:", { itineraryData, weatherData });
       setProgress("50%");
 
-          console.log("DADOS BRUTOS DAS APIS:", { itineraryData, weatherData });
       const dailyItinerary = itineraryData.fullItinerary;
 
       //This gonna return a array with all attractions names
@@ -62,9 +61,9 @@ export default function useItinerary() {
       const attractionsImages = await Promise.all(
         attractionsNames.map((name) => getAttractionImages(name, 3))
       );
+      console.log("RESULTADO DO FETCH do getAttractionImages:", attractionsImages);
       setProgress("85%");
 
-        console.log("RESULTADO COMPLETO DA BUSCA DE IMAGENS:", attractionsImages);
       const imagesMap: Map<string, string[]> = new Map();
       attractionsNames.forEach((name, index) =>
         imagesMap.set(name, attractionsImages[index])
@@ -94,7 +93,7 @@ export default function useItinerary() {
 
       setProgress("100%");
       setItinerary(comprehensiveItinerary);
-      console.log(`VALOR DO ITINERARY NO HOOK: ${JSON.stringify(comprehensiveItinerary)}`);
+      console.log("RESULTADO FINAL DO ITINERARY:", comprehensiveItinerary);
     } catch (error: unknown) {
 
       console.error("ERRO CAPTURADO NO CATCH:", error);
@@ -111,6 +110,6 @@ export default function useItinerary() {
 
 
 
-
+  console.log("VALOR DO ITINERARY NO HOOK:", { fetchItineraryData, itinerary, loading, error, progress });
   return { fetchItineraryData, itinerary, loading, error, progress };
 }
