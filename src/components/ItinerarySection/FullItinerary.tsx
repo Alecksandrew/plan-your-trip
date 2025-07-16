@@ -1,13 +1,15 @@
 import DailyItinerary from "./DailyItinerary";
+import DailyItinerarySkeleton from "./Loader/DailyAttractionSkeleton";
 
 //interfaces
 import type { Itinerary } from "../../pages/Home";
 
 interface ItineraryProps {
   itineraryData: Itinerary;
+  loading: boolean;
 }
 
-export default function FullItinerary({ itineraryData }: ItineraryProps) {
+export default function FullItinerary({ itineraryData, loading }: ItineraryProps) {
 
   return (
     <div className="custom-section flex flex-col gap-15">
@@ -21,8 +23,8 @@ export default function FullItinerary({ itineraryData }: ItineraryProps) {
           {/*-ARRUMAR LOGICA DEPOIS -> objeto com propiedade de breve descrição-*/}
         </p>
       </div>
-
-      {itineraryData.fullItinerary.map((specificItinerary) => {
+      { loading && <DailyItinerarySkeleton /> }
+      {!loading && itineraryData.fullItinerary.map((specificItinerary) => {
         return (
           <DailyItinerary
             key={specificItinerary.dayNumber}
@@ -35,6 +37,7 @@ export default function FullItinerary({ itineraryData }: ItineraryProps) {
             }
             attractionsOfTheDay={specificItinerary.attractionsOfTheDay}
           />
+
         );
       })}
     </div>

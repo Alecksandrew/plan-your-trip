@@ -7,6 +7,7 @@ import { useState } from "react";
 import FormSection from "../components/FormsSection/FormSection";
 import FullItinerary from "../components/ItinerarySection/FullItinerary";
 import MapsSection from "../components/MapsSection/MapsSection";
+import TouristAttractionCardSkeleton from "../components/ItinerarySection/Loader/TouristAttractionCardSkeleton";
 
 
 //types
@@ -50,7 +51,8 @@ export default function Home() {
         </p>
       </div>
       <FormSection onSubmit={handleFormSubmit} />
-      <FullItinerary itineraryData={itinerary} />
+
+      <FullItinerary itineraryData={itinerary} loading={loading} />
       <MapsSection />
     </>
   );
