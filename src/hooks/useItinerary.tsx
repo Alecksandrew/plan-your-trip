@@ -39,9 +39,12 @@ export default function useItinerary() {
       const dateRange = formData.date;
       
       if (!placeName || !dateRange) return;
+      setTimeout(() => setProgress("10%"), 0); // I used timeout to react dont group the two setProgress in one render and my progress animation dont work properly
       checkDateRangeAvailability(dateRange);
-      setProgress("20%");
 
+      
+      
+      setTimeout(() => setProgress("20%"), 0); //Same as above
       const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] =
         await Promise.all([
           fetchTripItineraryData(personalizedPromptAI, formData),
