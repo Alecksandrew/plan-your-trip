@@ -1,4 +1,4 @@
-export default function isLongTrip(
+export default function checkDateRangeAvailability(
   dateRange: string,
   maxDays: number = 14
 ): boolean {
@@ -16,14 +16,10 @@ export default function isLongTrip(
   const tripDuration = differenceInDays + 1; //if the user put trip is only one day 
 
   if (tripDuration > maxDays) {
-    alert(
-      `This trip is too long. We cant generate itineraries for trips longer than ${maxDays} days`
-    );
-    return false;
+    throw new Error ( `This trip is too long. We cant generate itineraries for trips longer than ${maxDays} days`);
   }
   else if (tripDuration <= 0) {
-    alert("The end date is before the start date! You cant travel to the past.");
-    return false;
+    throw new Error ("The end date is before the start date! You cant travel to the past.");
   } else {
     return true;
   }

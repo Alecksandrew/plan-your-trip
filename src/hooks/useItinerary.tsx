@@ -39,7 +39,7 @@ export default function useItinerary() {
       const dateRange = formData.date;
       
       if (!placeName || !dateRange) return;
-      if (!checkDateRangeAvailability(dateRange)) return;
+      checkDateRangeAvailability(dateRange);
       setProgress("20%");
 
       const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] =
