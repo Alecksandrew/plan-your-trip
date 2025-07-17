@@ -23,6 +23,8 @@ export const initialStateItinerary: Itinerary = {
   fullItinerary: [],
 };
 
+import enrichItinerary from "@/utils/enrichItinerary";
+
 export default function useItinerary() {
   const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,26 +39,27 @@ export default function useItinerary() {
     try {
       const placeName = formData.destination;
       const dateRange = formData.date;
-      
+
       if (!placeName || !dateRange) return;
       setTimeout(() => setProgress("10%"), 0); // I used timeout to react dont group the two setProgress in one render and my progress animation dont work properly
       checkDateRangeAvailability(dateRange);
 
-      
-      
       setTimeout(() => setProgress("20%"), 0); //Same as above
-      const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[] | undefined] =
-        await Promise.all([
-          fetchTripItineraryData(personalizedPromptAI, formData),
-          fetchWeatherData(placeName, dateRange),
-        ]);
-        console.log("PRIMEIRO DADO PARA MOCK FETCHTRIPTIITNERARY E FETCHWEATHER DATA:", { itineraryData, weatherData });
+
+      const [itineraryData, weatherData]: [
+        Itinerary,
+        relevantForecastDays[] | undefined
+      ] = await Promise.all([
+        fetchTripItineraryData(personalizedPromptAI, formData),
+        fetchWeatherData(placeName, dateRange),
+      ]);
+
       setProgress("50%");
 
       const dailyItinerary = itineraryData?.fullItinerary;
-      if(!dailyItinerary) {
+      if (!dailyItinerary) {
         throw new Error("Error when accessing itineraryData property!");
-      };
+      }
 
       //This gonna return a array with all attractions names
       const attractionsNames: string[] = dailyItinerary.flatMap((day) =>
@@ -67,41 +70,19 @@ export default function useItinerary() {
       const attractionsImages = await Promise.all(
         attractionsNames.map((name) => getAttractionImages(name, 3))
       );
-      console.log("RESULTADO DO FETCH do getAttractionImages:", attractionsImages);
+
       setProgress("85%");
 
-      const imagesMap: Map<string, string[]> = new Map();
-      attractionsNames.forEach((name, index) =>
-        imagesMap.set(name, attractionsImages[index])
+      const enrichedItinerary = enrichItinerary(
+        attractionsNames,
+        attractionsImages,
+        itineraryData,
+        weatherData
       );
 
-      const enrichedDailyItinerary = dailyItinerary.map((day) => {
-        //Add its images to each attraction
-        const attractionsWithImages = day.attractionsOfTheDay.map(
-          (attraction) => {
-            const photos = imagesMap.get(attraction.title);
-            return { ...attraction, photos: photos || [] };
-          }
-        );
-
-        //Add and return weather for eachday
-        return {
-          ...day,
-          attractionsOfTheDay: attractionsWithImages,
-          weather: weatherData?.[day.dayNumber - 1] || "Unavailable",
-        };
-      });
-
-      const comprehensiveItinerary = {
-        ...itineraryData,
-        fullItinerary: enrichedDailyItinerary,
-      };
-
       setProgress("100%");
-      setItinerary(comprehensiveItinerary);
-      console.log("RESULTADO FINAL DO ITINERARY:", comprehensiveItinerary);
+      setItinerary(enrichedItinerary);
     } catch (error: unknown) {
-
       console.error("ERRO CAPTURADO NO CATCH:", error);
       if (error instanceof Error) {
         setError(error.message);
@@ -113,9 +94,5 @@ export default function useItinerary() {
     }
   }
 
-
-
-
-  console.log("VALOR DO ITINERARY NO HOOK:", { fetchItineraryData, itinerary, loading, error, progress });
   return { fetchItineraryData, itinerary, loading, error, progress };
 }
