@@ -45,7 +45,7 @@ export default function useItinerary() {
       
       
       setTimeout(() => setProgress("20%"), 0); //Same as above
-      const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] =
+      const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[] | undefined] =
         await Promise.all([
           fetchTripItineraryData(personalizedPromptAI, formData),
           fetchWeatherData(placeName, dateRange),
@@ -85,7 +85,7 @@ export default function useItinerary() {
         return {
           ...day,
           attractionsOfTheDay: attractionsWithImages,
-          weather: weatherData?.[day.dayNumber - 1] || "Unknown",
+          weather: weatherData?.[day.dayNumber - 1] || "Unavailable",
         };
       });
 

@@ -25,10 +25,16 @@ export default async function fetchGeocodingData(
 
   try {
     const response = await fetch(BACKEND_URL, options);
+
+    if (!response.ok) {
+      throw new Error(
+        "Error when fetching geocoding data: " + response.statusText
+      );
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error when fetching geocoding data:", error);
-    return;
+    throw new Error("Error when fetching geocoding data:" + error);
   }
 }

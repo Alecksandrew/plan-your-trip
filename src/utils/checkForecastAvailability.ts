@@ -3,20 +3,18 @@
 export default function checkForecastAvailability(
   dateRange: string,
   maxForecastDays: number = 10
-): number | boolean {
+): number {
   if (!dateRange.includes("-")) {
-    console.log(
+    throw new Error(
       "The date range is not in a valid format (DD/MM/YYYY - DD/MM/YYYY). It must contain a '-'"
     );
-    return false;
   }
 
   const parts = dateRange.split(" - ");
   if (parts.length !== 2) {
-    console.log(
+    throw new Error(
       "The date range is not valid. It must be in the format 'DD/MM/YYYY - DD/MM/YYYY'"
     );
-    return false;
   }
 
   const dateNow = new Date();
@@ -36,15 +34,13 @@ export default function checkForecastAvailability(
   //If the difference between today and end date is more than 10 days, then the API wont return data,
   // so we need to return false
   if (differenceInDays <= 0) {
-    console.log(
+    throw new Error(
       "The end date is before the start date! You cant travel to the past."
     );
-    return false;
   } else if (differenceInDays > maxForecastDays) {
-    console.log(
+    throw new Error(
       `The end date is more than ${maxForecastDays} days after the start date! The API can't forecast that far.`
     );
-    return false;
   } else {
     return differenceInDays;
   }

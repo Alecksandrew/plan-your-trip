@@ -1,8 +1,7 @@
 //Calculate if the user start the trip today or in some days
-export default function calculateDaysOffset(startDate:string):number | undefined {
+export default function calculateDaysOffset(startDate:string):number{
     if(!startDate.includes("/")) {
-        console.log("The start date is not in a valid format (DD/MM/YYYY)");
-        return
+        throw new Error("Error when calculating days offset: The start date is not in a valid format (DD/MM/YYYY)");
     }
     
     const dateNow = new Date();

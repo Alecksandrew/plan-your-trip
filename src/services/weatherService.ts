@@ -10,12 +10,12 @@ import fetchGeocodingData from "./geocodingService";
 import type { weatherBackendResponse } from "@/types/weatherTypes";
 import type { relevantForecastDays } from "@/utils/getRelevantForecast";
 
+// i handled error with console.error and not throw new Error because this property is not a must
 export default async function fetchWeatherData(
   placeName: string,
   dateRange: string
 ): Promise<relevantForecastDays[] | undefined> {
   const daysToFetchForecast = checkForecastAvailability(dateRange);
-  if (!daysToFetchForecast) return;
 
   const geocodingData = await fetchGeocodingData(placeName);
 
@@ -34,6 +34,7 @@ export default async function fetchWeatherData(
   try {
     //I ONLY NEED THE WEATHER CONDITION OF EACH DAY
     const response = await fetch(BACKEND_URL);
+
     if (!response.ok) {
       throw new Error(
         "Error when fetching weather data: " + response.statusText
@@ -45,19 +46,20 @@ export default async function fetchWeatherData(
     //Calculate if the user start the trip today or in some days
     const startDate = dateRange.split(" - ")[0];
     const daysOffset = calculateDaysOffset(startDate);
-    if (daysOffset == undefined) {
-      console.log(
-        "Error when calculating days offset! The value is undefined!"
-      );
-      return;
-    }
 
     //Slice the forecast to get only the days that the user will be in the destination
-    const forecastDays = data.data.forecastDays;
+    const forecastDays = data?.data?.forecastDays;
+    if (forecastDays == undefined) {
+      throw new Error(
+        "Error when fetching weather data: Forecast days not found"
+      );
+    }
     const relevantForecast = getRelevantForecast(forecastDays, daysOffset);
 
     return relevantForecast;
   } catch (error) {
-    throw new Error("Error when fetching weather data: " + error);
+    console.log("OBJETO", error);
+    console.error("Error when fetching weather data: " + error);
+    return;
   }
 }
