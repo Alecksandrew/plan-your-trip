@@ -1,15 +1,8 @@
-type PlacesSearchResponse = {
-  success: boolean;
-  places: {
-    photos: {
-      name: string;
-    }[];
-  }[];
-};
+import type { imagesNameAPIResponse } from "@/types/attractionImagesTypes";
 
 //Filter the IDs to get only the amount you wanna show in the slider
 export default function filterAttractionImagesIDs(
-  backendResponse: PlacesSearchResponse,
+  backendResponse: imagesNameAPIResponse,
   amountOfPhotosWanted: number
 ): string[] {
   const photos = backendResponse?.places?.[0]?.photos ?? [];

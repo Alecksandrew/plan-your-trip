@@ -9,7 +9,3 @@ export type photos = {
 export type imagesNameAPIResponse = {
     places: photos[]
 }
-
-export type imagesNamesBackendResponse = {
-    data: imagesNameAPIResponse
-}
