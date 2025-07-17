@@ -2,7 +2,7 @@ type Attractions = {
   title: string;
   description: string;
   openingHours: string;
-  images: string[];
+  photos: string[];
 };
 
 type DailyItinerary = {

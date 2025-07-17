@@ -15,6 +15,7 @@ import { personalizedPromptAI } from "@/constants/personalizedPromptAI";
 
 //utils
 import checkDateRangeAvailability from "@/utils/checkDateRangeAvailability";
+import enrichItinerary from "@/utils/enrichItinerary";
 
 export const initialStateItinerary: Itinerary = {
   name: "",
@@ -23,7 +24,6 @@ export const initialStateItinerary: Itinerary = {
   fullItinerary: [],
 };
 
-import enrichItinerary from "@/utils/enrichItinerary";
 
 export default function useItinerary() {
   const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
