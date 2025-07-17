@@ -27,6 +27,12 @@ export default async function fetchTripItineraryData(
 
     const data = await response.json();
 
+    if (!data?.response) {
+      throw new Error(
+        "Error when fetching trip itinerary data: No response from backend Gemini"
+      );
+    }
+
     return JSON.parse(data.response);
   } catch (error) {
     throw new Error("Error when fetching trip itinerary data: " + error);

@@ -53,7 +53,10 @@ export default function useItinerary() {
         console.log("PRIMEIRO DADO PARA MOCK FETCHTRIPTIITNERARY E FETCHWEATHER DATA:", { itineraryData, weatherData });
       setProgress("50%");
 
-      const dailyItinerary = itineraryData.fullItinerary;
+      const dailyItinerary = itineraryData?.fullItinerary;
+      if(!dailyItinerary) {
+        throw new Error("Error when accessing itineraryData property!");
+      };
 
       //This gonna return a array with all attractions names
       const attractionsNames: string[] = dailyItinerary.flatMap((day) =>

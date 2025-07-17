@@ -10,6 +10,7 @@ export default async function getAttractionImages(
   placeName:string,
   amountOfImages: number
 ):Promise<string[]> {
+  
   //Get photos IDs of only ONE attraction -> It return about 10 IDs
   const attractionImagesIDs = await fetchAttractionImagesIDs(placeName);
 
