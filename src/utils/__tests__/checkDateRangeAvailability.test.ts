@@ -1,8 +1,6 @@
 import checkDateRangeAvailability from "@/utils/checkDateRangeAvailability";
 import {
   describe,
-  render,
-  screen,
   it,
   expect,
   vi,
