@@ -15,6 +15,17 @@
   --color-paleta-dark-02: #ff4444;
   --color-paleta-dark-03: #1f2937;
   --color-paleta-dark-04: #e5e7eb;
+
+  --animate-shimmer: shimmer 1.5s infinite;
+
+  @keyframes shimmer {
+    0% {
+      left:-100%;
+    }
+    100% {
+      left:100%;
+    }
+  }
 }
 
 
@@ -153,5 +164,11 @@
 
   .custom-section {
     @apply min-w-[325px] w-9/10 max-w-4xl mx-auto my-10
+  }
+}
+
+@layer utilities {
+  .shimmer {
+    @apply relative before:content-[''] before:bg-paleta-03 before:opacity-70 before:blur-md before:w-10 before:absolute before:inset-0 before:animate-shimmer;
   }
 }

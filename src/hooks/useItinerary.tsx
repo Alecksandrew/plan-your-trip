@@ -42,6 +42,7 @@ export default function useItinerary() {
 
       if (!placeName || !dateRange) return;
       checkDateRangeAvailability(dateRange);
+
       setProgress("20%");
 
       const [itineraryData, weatherData]: [
@@ -52,7 +53,7 @@ export default function useItinerary() {
         fetchWeatherData(placeName, dateRange),
       ]);
 
-      setProgress("50%");
+      setProgress("60%");
 
       const dailyItinerary = itineraryData?.fullItinerary;
       if (!dailyItinerary) {
@@ -63,13 +64,10 @@ export default function useItinerary() {
       const attractionsNames: string[] = dailyItinerary.flatMap((day) =>
         day.attractionsOfTheDay.map((attraction) => attraction.title)
       );
-      setProgress("70%");
 
       const attractionsImages = await Promise.all(
         attractionsNames.map((name) => getAttractionImages(name, 3))
       );
-
-      setProgress("85%");
 
       const enrichedItinerary = enrichItinerary(
         attractionsNames,
