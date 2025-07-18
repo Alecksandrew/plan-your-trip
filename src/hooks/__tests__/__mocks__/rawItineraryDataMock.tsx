@@ -1,4 +1,4 @@
-export const mockedItineraryData = {
+export const rawItineraryDataMock = {
     duration: 4,
     fullItinerary: [
         {

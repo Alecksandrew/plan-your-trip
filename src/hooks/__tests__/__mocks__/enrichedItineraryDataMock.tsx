@@ -1,4 +1,4 @@
-export const mockedFetchItineraryData = {
+export const enrichedItineraryDataMock = {
     duration: 4,
     fullItinerary: [
         {
