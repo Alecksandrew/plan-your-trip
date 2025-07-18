@@ -20,28 +20,38 @@ export default function checkForecastAvailability(
   const dateNow = new Date();
   dateNow.setHours(0, 0, 0, 0);
 
+  const startDate = parts[0];
   const endDate = parts[1];
 
-  const [day, month, year] = endDate.split("/");
+  const [startDay, startMonth, startYear] = startDate.split("/");
+  const [endDay, endMonth, endYear] = endDate.split("/");
 
-  const endDateObject = new Date(+year, +month - 1, +day);
+  const startDateObject = new Date(+startYear, +startMonth - 1, +startDay);
+  const endDateObject = new Date(+endYear, +endMonth - 1, +endDay);
 
-  const differenceInMiliseconds = endDateObject.getTime() - dateNow.getTime();
-
-  const differenceInDays = Math.ceil(
-    differenceInMiliseconds / (1000 * 60 * 60 * 24)
-  );
-  //If the difference between today and end date is more than 10 days, then the API wont return data,
-  // so we need to return false
-  if (differenceInDays <= 0) {
+  if (startDateObject < dateNow) {
+    throw new Error(
+      "The start date is before today! You cant travel to the past."
+    );
+  }
+  if (endDateObject < startDateObject) {
     throw new Error(
       "The end date is before the start date! You cant travel to the past."
     );
-  } else if (differenceInDays > maxForecastDays) {
+  }
+
+  //Forecast API only calculate forecast from today to 10 days, so we need to verify this
+  const differenceInMiliseconds = endDateObject.getTime() - dateNow.getTime();
+  const differenceInDays = Math.ceil(
+    differenceInMiliseconds / (1000 * 60 * 60 * 24)
+  );
+
+  //If the difference between today and end date is more than 10 days, then the API wont return data,
+  if (differenceInDays > maxForecastDays) {
     throw new Error(
       `The end date is more than ${maxForecastDays} days after the start date! The API can't forecast that far.`
     );
-  } else {
-    return differenceInDays;
   }
+
+  return differenceInDays;
 }
