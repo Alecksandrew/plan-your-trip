@@ -24,7 +24,7 @@ export default function getRelevantForecast(
   forecastDays: ForecastDays[],
   daysOffset: number
 ) {
-  if (!daysOffset) return;
+  if (daysOffset <= 0) return;
 
   const relevantForecast = forecastDays.slice(daysOffset - 1);
   return getRelevantForecastData(relevantForecast);
