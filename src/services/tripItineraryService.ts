@@ -1,5 +1,5 @@
 import type { FormsState } from "@/types/formInterfaces";
-import type { Itinerary } from "@/pages/Home";
+import type { Itinerary } from "@/types/itineraryTypes";
 
 export default async function fetchTripItineraryData(
   promptAI: string,
@@ -18,7 +18,20 @@ export default async function fetchTripItineraryData(
 
   try {
     const response = await fetch(BACKEND_URL, options);
+
+    if (!response.ok) {
+      throw new Error(
+        "Error when fetching trip itinerary data: " + response.statusText
+      );
+    }
+
     const data = await response.json();
+
+    if (!data?.response) {
+      throw new Error(
+        "Error when fetching trip itinerary data: No response from backend Gemini"
+      );
+    }
 
     return JSON.parse(data.response);
   } catch (error) {

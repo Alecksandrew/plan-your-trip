@@ -1,0 +1,272 @@
+export const enrichedItineraryDataMock = {
+    duration: 4,
+    fullItinerary: [
+        {
+            attractionsOfTheDay: [
+                {
+                    description: "Considerada uma das praias mais bonitas do Brasil, famosa por sua escadaria de acesso e águas cristalinas. Perfeita para fotos e mergulho.",
+                    openingHours: "07h às 18h (acesso às escadarias)",
+                    title: "Prainhas do Pontal do Atalaia",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cx0-0zVsaB4dIoGYXy3RmOwdO9CmlnFVL0dCP7M8xFBfid2avchLw2jalHnC9f_-5HKtHZYvMWf11OmXFA0wuTURgCusnBqphPGsuPbJpAW_3BwgNf12tYHHOagoGHE0u0S9-1BiBHj6IiAcg=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czHydVh0-fIxnjZw-weovRW_KLaYkFg7UeX6KxPejy0lVh_IU6Z39gAJi79bdhgg99kwoHtoLUxR5oxK6jks-VPPgO_VuPxyEiBqXPeioqRzprUW3Ff_BVIEq3EDr14M20kLrjczD3xv1vZ7Q=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czZ4kD43nk1_SEQ0PcvkcBnWry0oPDtCalLEL1cAmwMMAhANZQuRQLwe2MFYSBWDVfxisyx-rf6EZ0qdmOa50WMYISfDs5QJLTy_kiw4AkHUcWerNVYo5UrPpfjKRQZqeIsoujaPBAdgRsahA=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Um ponto elevado que oferece vistas panorâmicas espetaculares das Prainhas do Pontal e do oceano, ideal para apreciar a paisagem.",
+                    openingHours: "24 horas",
+                    title: "Mirante do Pontal do Atalaia",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cynwRTqSqMHQ-cs97sr2PwkS_EaKD_o0_RA8c4CJXkwa1w12bAimFa9PFDtXbEHO6PIRj4SvTBoWoCvWUEzlfKI5JE3xTAUsF_JFZI_cWo3CRtWnZ2sa_V-xp1jfndMUin3mGvrhqGdQPS9=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxVl6Fde_v718sTNyXrbiCgYBLb_eMU520l49YQK-mm1-or-vzARpsyjgvTvEh1wKQOyorI32h1SIWGB08DxlRgRICpR81uOPcuepwfPZ15DaBIKLU_akGaVOIXQKrIpHUEDmpEL1fnla3p=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cyiCZWV9DjUTCrenIanPueTOgh7DTKJi6RYI0XJF4lRPixl9ijmrql6oZbJ5UHssksok8Mto0t8BH1ZzBrqORINdQD5CCGwKLi1IQK5J4BGC3bk6NwTriAruadbcAUTQ_z8n38M2HO--dzJrOo=s4800-w400-h400"
+                    ]
+                }
+            ],
+            dayNumber: 1,
+            weather: {
+                description: "Mostly cloudy",
+                temperature: 21
+            }
+        },
+        {
+            attractionsOfTheDay: [
+                {
+                    description: "Tour de barco essencial para conhecer as belezas escondidas de Arraial do Cabo, incluindo paradas em praias isoladas e grutas fascinantes como a Gruta Azul.",
+                    openingHours: "Saídas a partir das 09h às 14h (verificar com operadoras locais)",
+                    title: "Passeio de Barco (inclui Praia do Farol, Gruta Azul, Fenda de Nossa Senhora)",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwkxKfR77YDtGFPp3eM5pO1P04F0TkRhdUmJw31e5cenyca8lYWYSxHehe5VQYL0EQAOwM1kuDCT4c0e5WI-2JAYq2g8RfsgXioyJRV_48NvsKVQEOldjgTs_o7INqrOA-Wfeh9Pj34Avwu6A=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cw-59YWx0aecaBmfnW7pqDnw_roWT9egc4mc75HPiQF92wJcLRvXw_m4KJ7sBVzmxiR3ZCjXmoSlheuug_pZXRTHn0cPMvDLIA3dTdWMu2UacXhYNcCsZJC2c5Zhz0wwqWDutyv09rm3-9P0A=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwtdwmRmnI91hPTikaAoaXb-jT1t3RLXCwBV4xmm02PQYeDdu9JfRG2SQmrtwnZxwojlkb7CYluk4zlhDoIn5yHMUffK_HcC8OHZHRxwwS5odc9dKraUyAoBzR7Hlrs6DiKyUNAgA6Z-w6ZKX4=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Acessível por trilha ou táxi-barco a partir da Praia dos Anjos, esta praia encanta com suas águas calmas e transparentes, ideais para snorkeling.",
+                    openingHours: "Durante o dia",
+                    title: "Praia do Forno",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxpAvarrev3dB9ayif7EGqbzKZo3RCsEWJYmJJDnPvNvsjbsQT7HzS0QK9k8IEUuoSLtL1B2djQpLhqz0rSBR4tBzmtcCaLOoKW4-mfWzq2WRdBle0XDCdlteDh8KzR-erc3AFs5M8f2ufOCQ=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czgjG9EVppz_tJ8XQv7c6LWzNz4Tima-r-KvxwFtasrJyXqxML_o27n48-q35mqpBikOQ_SgwOyfyBcavwbW7VGlprGa6fcsUW-Mj_I2RnCuW3V0BtqDv0JOh-D6gto9Ai4ehwhObYa1YZPTw=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czrbsFu2Ka7qR9VL6CvH0kgPcmTW_pZcOVKqc2XYmPTx_9NyzxSlb2xtp4xmNYnJycRMXiWlNu19UeAzKRwFlOLRSZoRn0WhyCLSxTBWpWg009XFGbKgQYHJDJgK6tGXf4TR22LJ-V3QX5BgiziCOA6DQ=s4800-w400-h400"
+                    ]
+                }
+            ],
+            dayNumber: 2,
+            weather: {
+                description: "Sunny",
+                temperature: 23
+            }
+        },
+        {
+            attractionsOfTheDay: [
+                {
+                    description: "A praia mais extensa de Arraial do Cabo, conhecida por suas areias claras e mar agitado, perfeito para longas caminhadas e para apreciar o pôr do sol.",
+                    openingHours: "24 horas",
+                    title: "Praia Grande",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwS6gH8ITgOnTqw734tH3KJnB31ZZAOeovwIM4vKUbubsT-yl4RTvJ9SZBaUcAmrREMMicDegqHb7fBsQTaOA8RzEhsSVTcWVfu_zRuaPnURSqENwNvOajgkrQoOP4GnlZQSfiYt_uSXHTFbw=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cyGjwth78j-yFUIJKADykplt1qyrC8nidRazG4R4owO5owcvW2wUTwrscRsH-RWvKLTgdE2lp3F7oFlzjKRum4GV79RsNXajCPqpHvMtuvNjNvgId7dH1kK5sLFg4A5SiEbn87XKdIBGtsBKA=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czc-612f_94zpWVWKOxcWrWLpRJVMX0DHMkUGQUdXDzpU8AwaVomjM6HIm_C1l0YDcXAyJ2Xw-09FI_9ScU6rYvHqfoYF3EUjNcYIpa3y3pufeH0PMWktEYQtlAAVGPegqCPfAY1yLw9pZY4w=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Passeio de carro ou caminhada pela orla de Arraial do Cabo, batizada em homenagem à atriz Flávia Alessandra, ideal para desfrutar da brisa marítima e do movimento local.",
+                    openingHours: "24 horas",
+                    title: "Orla Flávia Alessandra",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cw2fzBR3WjMQmdbinIfNLAJOXVoURXtp5vqtCoF3hnWSIUQXtYCZgDMkHHCTi8tnKMfvRNERK-MQ53NJgDukh6-Y_k0Yum9Hz3DNo2Zcx2_wA8OqgnhCwiMgpyncmaqjk7QDEcv7Wj6_KGt=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxWkize1l3ggHdfx2R-uA0LVa6UGWGeNslXQeZk1LTY_DNE8PYuIS2ASmkMMpnu1aI3HUQ0t5M2YSHPQUG6OvnIS1P5bYDcb2U10k6njWNVGT2Fvptgnba7reCVq6dIkjWdN4SQp6snnr1vLgI=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cy5Adnux1I6nuK7KOJKwEbSHoS0CfI7C3mU85exbxLfnQ7xA5Hih1PzTohEJidIT3BBTdbRBojlZ6kiqqb_QMGSkB4qREpR2KR47tEwrmBmAx1UqCC0wVrxCMhd533Zy54LZ2MIgwYzG-zhSw=s4800-w400-h400"
+                    ]
+                }
+            ],
+            dayNumber: 3,
+            weather: {
+                description: "Mostly cloudy",
+                temperature: 21
+            }
+        },
+        {
+            attractionsOfTheDay: [
+                {
+                    description: "Onde se concentra a maioria dos barcos de pesca e de turismo, é também um ponto histórico da cidade e o principal acesso para as praias mais isoladas via táxi-barco.",
+                    openingHours: "24 horas",
+                    title: "Praia dos Anjos",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwqak1g0GFpM9sC8jlYuDT5BTDuZfbbrfZJ7DKmLtad_bpI1_EvwotbM86exRiuDLXMc-0oWSXPKgSToXpaa9vVBmSOCuJMINwiiwBSVNcxyNgoNvurHve2NXEI3V4pZSvUh901_ahpyD0B=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwvSwcFgoJpGjJuv1uVCA6EP-b02ZeS9b2_gCd2qY8QtJWxnQdt9t8Inv13fUJ81OPRkGHpp5ydgSqalrhRgKtzpguBksjfMCJxXXiEALMmWDfK8aoiZb0JzpXBbO1V77wylay7cnSpEXf68w=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxnZZ3Td5rXecX9fRYEdReYilMxLDNoXSmq8nTPiMH74BtAuvDfry6gY_UgIvRvifspjK-l1dSk4S-TMDxQacdGer9xoV-_s9lftoNPFCU6qoWz0_W0WH243v0t-k8smendNcSvSKygVD19Kg=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Uma pequena e charmosa enseada localizada perto da Praia dos Anjos, famosa pela tranquilidade e por abrigar a estátua de uma sereia, local de partida de alguns passeios.",
+                    openingHours: "Durante o dia",
+                    title: "Porto do Forno",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwBUtdYqU0RO_rnHlwCtbNKvtdggh4ETdMbcZbOiKR0Vxe6RDFSSziPY6qZue0TQ3s_a1rpA_RzNKpGB9SF8Ri413kOsZjyB9wu_ozUqTD6H4umG02VwHE4SjHHpTn4UArS3iP_P85O99MnYug=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cz_54mAFnj0W_QUBoKTuPhnWlMyegj8OUOzEKfJzwNYWBbfbzJhjCxhEZQSP0sVfF_KCTPWVofevBPZwqMAnyL7FzpFC_Dinz9Ne92FDPIqEcY2vHsu-rLzx_UrzJN9YWIrcweW4_9iJRg41g=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cyrAADZuGjvIT0_-eFaNcPVovRRJKKaYUv8PSjGDKMC4GKOxz2eDl4y-aQ8cInE7xGXOUQli8pnMPMFlxxvSqVjgHU-jWRrwn6LZmVwGJlGGmSJu0FbYJBfBye65GoUv2qR5gpqjXCRZSK5fTY=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Um ponto alto da cidade que proporciona vistas deslumbrantes do centro de Arraial do Cabo, da Praia dos Anjos e do horizonte.",
+                    openingHours: "24 horas",
+                    title: "Mirante da Boa Vista",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cyFBlrzWeIcsG5HL1HZftTjj5CucPiFcsU2zeOxbUc_Ln1Aft3QKgnhWSP8nz-_1B9kHy9cwQP4KJ23aDflyejLu1BB0QwMV4hoYyTxHzCiEONqKTakqi7c0n37qLCaVGCzBg77nH4bsQFU8FQ=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxtFI4dEpZc07Y5NKwcncPKpsQ45a1B5ab4J_dcDFasWHvCkqcqAgsVHHOc3wf_1UML-OeUoAcrLExsjvwtlis4GtxlUUZ6XC86Eg_RzFO83PSEB_4XU-A2_bW-UhkrtYb_JVC-A9XiIq8XhA=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxF-58yR4SAwDDKy_ua-m8xo1Th2CR2jrhmO_A91aOmjM-bEQMyrUf1RvSCOLo1Q2srxQxzheP4UDUXwSKHpS40JmlxYPv-4pCm2FWF_KS4Dp-IjePQ5d75gZyOczTJG0JzGfJ-K2CSMzYzOw=s4800-w400-h400"
+                    ]
+                }
+            ],
+            dayNumber: 4,
+            weather: {
+                description: "Partly sunny",
+                temperature: 20
+            }
+        }
+    ],
+    generalRecommendations: [
+        "Julho marca o inverno no Sudeste do Brasil, o que significa águas mais frias em Arraial do Cabo, mas geralmente dias ensolarados e menos chuvas. Esteja preparado para a variação de temperatura.",
+        "Apesar de ser inverno, julho é mês de férias escolares no Brasil, o que pode trazer um fluxo moderado de turistas a Arraial do Cabo, especialmente nos fins de semana. Reserve passeios e hospedagem com antecedência.",
+        "Não deixe de experimentar os frescos frutos do mar, especialidade da região. Procure restaurantes na Praia dos Anjos ou na Orla Flávia Alessandra para opções saborosas.",
+        "Para passeios de barco e trilhas, use protetor solar, chapéu e óculos de sol, mesmo em dias nublados. A radiação solar é forte o ano todo.",
+        "Mantenha seus pertences seguros e evite exibir objetos de valor, especialmente em locais muito movimentados ou durante a noite.",
+        "Por ser uma cidade praiana, o uso de chinelos e roupas leves é amplamente aceito e confortável.",
+        "Os moradores locais são geralmente muito receptivos; um 'bom dia' pode abrir muitas portas."
+    ],
+    name: "Arraial do Cabo, Brasil"
+};
+
+
+export const enrichedItineraryDataNoWeatherMock = {
+    duration: 4,
+    fullItinerary: [
+        {
+            attractionsOfTheDay: [
+                {
+                    description: "Considerada uma das praias mais bonitas do Brasil, famosa por sua escadaria de acesso e águas cristalinas. Perfeita para fotos e mergulho.",
+                    openingHours: "07h às 18h (acesso às escadarias)",
+                    title: "Prainhas do Pontal do Atalaia",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cx0-0zVsaB4dIoGYXy3RmOwdO9CmlnFVL0dCP7M8xFBfid2avchLw2jalHnC9f_-5HKtHZYvMWf11OmXFA0wuTURgCusnBqphPGsuPbJpAW_3BwgNf12tYHHOagoGHE0u0S9-1BiBHj6IiAcg=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czHydVh0-fIxnjZw-weovRW_KLaYkFg7UeX6KxPejy0lVh_IU6Z39gAJi79bdhgg99kwoHtoLUxR5oxK6jks-VPPgO_VuPxyEiBqXPeioqRzprUW3Ff_BVIEq3EDr14M20kLrjczD3xv1vZ7Q=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czZ4kD43nk1_SEQ0PcvkcBnWry0oPDtCalLEL1cAmwMMAhANZQuRQLwe2MFYSBWDVfxisyx-rf6EZ0qdmOa50WMYISfDs5QJLTy_kiw4AkHUcWerNVYo5UrPpfjKRQZqeIsoujaPBAdgRsahA=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Um ponto elevado que oferece vistas panorâmicas espetaculares das Prainhas do Pontal e do oceano, ideal para apreciar a paisagem.",
+                    openingHours: "24 horas",
+                    title: "Mirante do Pontal do Atalaia",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cynwRTqSqMHQ-cs97sr2PwkS_EaKD_o0_RA8c4CJXkwa1w12bAimFa9PFDtXbEHO6PIRj4SvTBoWoCvWUEzlfKI5JE3xTAUsF_JFZI_cWo3CRtWnZ2sa_V-xp1jfndMUin3mGvrhqGdQPS9=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxVl6Fde_v718sTNyXrbiCgYBLb_eMU520l49YQK-mm1-or-vzARpsyjgvTvEh1wKQOyorI32h1SIWGB08DxlRgRICpR81uOPcuepwfPZ15DaBIKLU_akGaVOIXQKrIpHUEDmpEL1fnla3p=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cyiCZWV9DjUTCrenIanPueTOgh7DTKJi6RYI0XJF4lRPixl9ijmrql6oZbJ5UHssksok8Mto0t8BH1ZzBrqORINdQD5CCGwKLi1IQK5J4BGC3bk6NwTriAruadbcAUTQ_z8n38M2HO--dzJrOo=s4800-w400-h400"
+                    ]
+                }
+            ],
+            dayNumber: 1,
+            weather: "Unavailable" 
+        },
+        {
+            attractionsOfTheDay: [
+                {
+                    description: "Tour de barco essencial para conhecer as belezas escondidas de Arraial do Cabo, incluindo paradas em praias isoladas e grutas fascinantes como a Gruta Azul.",
+                    openingHours: "Saídas a partir das 09h às 14h (verificar com operadoras locais)",
+                    title: "Passeio de Barco (inclui Praia do Farol, Gruta Azul, Fenda de Nossa Senhora)",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwkxKfR77YDtGFPp3eM5pO1P04F0TkRhdUmJw31e5cenyca8lYWYSxHehe5VQYL0EQAOwM1kuDCT4c0e5WI-2JAYq2g8RfsgXioyJRV_48NvsKVQEOldjgTs_o7INqrOA-Wfeh9Pj34Avwu6A=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cw-59YWx0aecaBmfnW7pqDnw_roWT9egc4mc75HPiQF92wJcLRvXw_m4KJ7sBVzmxiR3ZCjXmoSlheuug_pZXRTHn0cPMvDLIA3dTdWMu2UacXhYNcCsZJC2c5Zhz0wwqWDutyv09rm3-9P0A=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwtdwmRmnI91hPTikaAoaXb-jT1t3RLXCwBV4xmm02PQYeDdu9JfRG2SQmrtwnZxwojlkb7CYluk4zlhDoIn5yHMUffK_HcC8OHZHRxwwS5odc9dKraUyAoBzR7Hlrs6DiKyUNAgA6Z-w6ZKX4=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Acessível por trilha ou táxi-barco a partir da Praia dos Anjos, esta praia encanta com suas águas calmas e transparentes, ideais para snorkeling.",
+                    openingHours: "Durante o dia",
+                    title: "Praia do Forno",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxpAvarrev3dB9ayif7EGqbzKZo3RCsEWJYmJJDnPvNvsjbsQT7HzS0QK9k8IEUuoSLtL1B2djQpLhqz0rSBR4tBzmtcCaLOoKW4-mfWzq2WRdBle0XDCdlteDh8KzR-erc3AFs5M8f2ufOCQ=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czgjG9EVppz_tJ8XQv7c6LWzNz4Tima-r-KvxwFtasrJyXqxML_o27n48-q35mqpBikOQ_SgwOyfyBcavwbW7VGlprGa6fcsUW-Mj_I2RnCuW3V0BtqDv0JOh-D6gto9Ai4ehwhObYa1YZPTw=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czrbsFu2Ka7qR9VL6CvH0kgPcmTW_pZcOVKqc2XYmPTx_9NyzxSlb2xtp4xmNYnJycRMXiWlNu19UeAzKRwFlOLRSZoRn0WhyCLSxTBWpWg009XFGbKgQYHJDJgK6tGXf4TR22LJ-V3QX5BgiziCOA6DQ=s4800-w400-h400"
+                    ]
+                }
+            ],
+            dayNumber: 2,
+            weather: "Unavailable"
+        },
+        {
+            attractionsOfTheDay: [
+                {
+                    description: "A praia mais extensa de Arraial do Cabo, conhecida por suas areias claras e mar agitado, perfeito para longas caminhadas e para apreciar o pôr do sol.",
+                    openingHours: "24 horas",
+                    title: "Praia Grande",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwS6gH8ITgOnTqw734tH3KJnB31ZZAOeovwIM4vKUbubsT-yl4RTvJ9SZBaUcAmrREMMicDegqHb7fBsQTaOA8RzEhsSVTcWVfu_zRuaPnURSqENwNvOajgkrQoOP4GnlZQSfiYt_uSXHTFbw=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cyGjwth78j-yFUIJKADykplt1qyrC8nidRazG4R4owO5owcvW2wUTwrscRsH-RWvKLTgdE2lp3F7oFlzjKRum4GV79RsNXajCPqpHvMtuvNjNvgId7dH1kK5sLFg4A5SiEbn87XKdIBGtsBKA=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2czc-612f_94zpWVWKOxcWrWLpRJVMX0DHMkUGQUdXDzpU8AwaVomjM6HIm_C1l0YDcXAyJ2Xw-09FI_9ScU6rYvHqfoYF3EUjNcYIpa3y3pufeH0PMWktEYQtlAAVGPegqCPfAY1yLw9pZY4w=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Passeio de carro ou caminhada pela orla de Arraial do Cabo, batizada em homenagem à atriz Flávia Alessandra, ideal para desfrutar da brisa marítima e do movimento local.",
+                    openingHours: "24 horas",
+                    title: "Orla Flávia Alessandra",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cw2fzBR3WjMQmdbinIfNLAJOXVoURXtp5vqtCoF3hnWSIUQXtYCZgDMkHHCTi8tnKMfvRNERK-MQ53NJgDukh6-Y_k0Yum9Hz3DNo2Zcx2_wA8OqgnhCwiMgpyncmaqjk7QDEcv7Wj6_KGt=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxWkize1l3ggHdfx2R-uA0LVa6UGWGeNslXQeZk1LTY_DNE8PYuIS2ASmkMMpnu1aI3HUQ0t5M2YSHPQUG6OvnIS1P5bYDcb2U10k6njWNVGT2Fvptgnba7reCVq6dIkjWdN4SQp6snnr1vLgI=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cy5Adnux1I6nuK7KOJKwEbSHoS0CfI7C3mU85exbxLfnQ7xA5Hih1PzTohEJidIT3BBTdbRBojlZ6kiqqb_QMGSkB4qREpR2KR47tEwrmBmAx1UqCC0wVrxCMhd533Zy54LZ2MIgwYzG-zhSw=s4800-w400-h400"
+                    ]
+                }
+            ],
+            dayNumber: 3,
+            weather: "Unavailable"
+        },
+        {
+            attractionsOfTheDay: [
+                {
+                    description: "Onde se concentra a maioria dos barcos de pesca e de turismo, é também um ponto histórico da cidade e o principal acesso para as praias mais isoladas via táxi-barco.",
+                    openingHours: "24 horas",
+                    title: "Praia dos Anjos",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwqak1g0GFpM9sC8jlYuDT5BTDuZfbbrfZJ7DKmLtad_bpI1_EvwotbM86exRiuDLXMc-0oWSXPKgSToXpaa9vVBmSOCuJMINwiiwBSVNcxyNgoNvurHve2NXEI3V4pZSvUh901_ahpyD0B=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwvSwcFgoJpGjJuv1uVCA6EP-b02ZeS9b2_gCd2qY8QtJWxnQdt9t8Inv13fUJ81OPRkGHpp5ydgSqalrhRgKtzpguBksjfMCJxXXiEALMmWDfK8aoiZb0JzpXBbO1V77wylay7cnSpEXf68w=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxnZZ3Td5rXecX9fRYEdReYilMxLDNoXSmq8nTPiMH74BtAuvDfry6gY_UgIvRvifspjK-l1dSk4S-TMDxQacdGer9xoV-_s9lftoNPFCU6qoWz0_W0WH243v0t-k8smendNcSvSKygVD19Kg=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Uma pequena e charmosa enseada localizada perto da Praia dos Anjos, famosa pela tranquilidade e por abrigar a estátua de uma sereia, local de partida de alguns passeios.",
+                    openingHours: "Durante o dia",
+                    title: "Porto do Forno",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cwBUtdYqU0RO_rnHlwCtbNKvtdggh4ETdMbcZbOiKR0Vxe6RDFSSziPY6qZue0TQ3s_a1rpA_RzNKpGB9SF8Ri413kOsZjyB9wu_ozUqTD6H4umG02VwHE4SjHHpTn4UArS3iP_P85O99MnYug=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cz_54mAFnj0W_QUBoKTuPhnWlMyegj8OUOzEKfJzwNYWBbfbzJhjCxhEZQSP0sVfF_KCTPWVofevBPZwqMAnyL7FzpFC_Dinz9Ne92FDPIqEcY2vHsu-rLzx_UrzJN9YWIrcweW4_9iJRg41g=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cyrAADZuGjvIT0_-eFaNcPVovRRJKKaYUv8PSjGDKMC4GKOxz2eDl4y-aQ8cInE7xGXOUQli8pnMPMFlxxvSqVjgHU-jWRrwn6LZmVwGJlGGmSJu0FbYJBfBye65GoUv2qR5gpqjXCRZSK5fTY=s4800-w400-h400"
+                    ]
+                },
+                {
+                    description: "Um ponto alto da cidade que proporciona vistas deslumbrantes do centro de Arraial do Cabo, da Praia dos Anjos e do horizonte.",
+                    openingHours: "24 horas",
+                    title: "Mirante da Boa Vista",
+                    photos: [
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cyFBlrzWeIcsG5HL1HZftTjj5CucPiFcsU2zeOxbUc_Ln1Aft3QKgnhWSP8nz-_1B9kHy9cwQP4KJ23aDflyejLu1BB0QwMV4hoYyTxHzCiEONqKTakqi7c0n37qLCaVGCzBg77nH4bsQFU8FQ=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxtFI4dEpZc07Y5NKwcncPKpsQ45a1B5ab4J_dcDFasWHvCkqcqAgsVHHOc3wf_1UML-OeUoAcrLExsjvwtlis4GtxlUUZ6XC86Eg_RzFO83PSEB_4XU-A2_bW-UhkrtYb_JVC-A9XiIq8XhA=s4800-w400-h400",
+                        "https://lh3.googleusercontent.com/place-photos/AJnk2cxF-58yR4SAwDDKy_ua-m8xo1Th2CR2jrhmO_A91aOmjM-bEQMyrUf1RvSCOLo1Q2srxQxzheP4UDUXwSKHpS40JmlxYPv-4pCm2FWF_KS4Dp-IjePQ5d75gZyOczTJG0JzGfJ-K2CSMzYzOw=s4800-w400-h400"
+                    ]
+                }
+            ],
+            dayNumber: 4,
+            weather: "Unavailable"
+        }
+    ],
+    generalRecommendations: [
+        "Julho marca o inverno no Sudeste do Brasil, o que significa águas mais frias em Arraial do Cabo, mas geralmente dias ensolarados e menos chuvas. Esteja preparado para a variação de temperatura.",
+        "Apesar de ser inverno, julho é mês de férias escolares no Brasil, o que pode trazer um fluxo moderado de turistas a Arraial do Cabo, especialmente nos fins de semana. Reserve passeios e hospedagem com antecedência.",
+        "Não deixe de experimentar os frescos frutos do mar, especialidade da região. Procure restaurantes na Praia dos Anjos ou na Orla Flávia Alessandra para opções saborosas.",
+        "Para passeios de barco e trilhas, use protetor solar, chapéu e óculos de sol, mesmo em dias nublados. A radiação solar é forte o ano todo.",
+        "Mantenha seus pertences seguros e evite exibir objetos de valor, especialmente em locais muito movimentados ou durante a noite.",
+        "Por ser uma cidade praiana, o uso de chinelos e roupas leves é amplamente aceito e confortável.",
+        "Os moradores locais são geralmente muito receptivos; um 'bom dia' pode abrir muitas portas."
+    ],
+    name: "Arraial do Cabo, Brasil"
+};

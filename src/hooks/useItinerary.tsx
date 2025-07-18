@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 //services
 import fetchWeatherData from "@/services/weatherService";
@@ -13,36 +13,52 @@ import type { relevantForecastDays } from "@/utils/getRelevantForecast";
 //const
 import { personalizedPromptAI } from "@/constants/personalizedPromptAI";
 
-const initialStateItinerary: Itinerary = {
+//utils
+import checkDateRangeAvailability from "@/utils/checkDateRangeAvailability";
+import enrichItinerary from "@/utils/enrichItinerary";
+
+export const initialStateItinerary: Itinerary = {
   name: "",
   duration: 0,
   generalRecommendations: [],
   fullItinerary: [],
 };
 
+
 export default function useItinerary() {
   const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<`${number}%`>("0%");
 
   async function fetchItineraryData(formData: FormsState) {
     setLoading(true);
     setError(null);
+    setProgress("0%");
 
     try {
-      if (!formData.destination || !formData.date) return;
-      console.log("ENTREI NO TRY E ESTOU DANDO FETCH NO ITINERARY");
       const placeName = formData.destination;
       const dateRange = formData.date;
 
-      const [itineraryData, weatherData]: [Itinerary, relevantForecastDays[]] =
-        await Promise.all([
-          fetchTripItineraryData(personalizedPromptAI, formData),
-          fetchWeatherData(placeName, dateRange),
-        ]);
+      if (!placeName || !dateRange) return;
+      checkDateRangeAvailability(dateRange);
 
-          console.log("DADOS BRUTOS DAS APIS:", { itineraryData, weatherData });
-      const dailyItinerary = itineraryData.fullItinerary;
+      setProgress("20%");
+
+      const [itineraryData, weatherData]: [
+        Itinerary,
+        relevantForecastDays[] | undefined
+      ] = await Promise.all([
+        fetchTripItineraryData(personalizedPromptAI, formData),
+        fetchWeatherData(placeName, dateRange),
+      ]);
+
+      setProgress("60%");
+
+      const dailyItinerary = itineraryData?.fullItinerary;
+      if (!dailyItinerary) {
+        throw new Error("Error when accessing itineraryData property!");
+      }
 
       //This gonna return a array with all attractions names
       const attractionsNames: string[] = dailyItinerary.flatMap((day) =>
@@ -53,38 +69,16 @@ export default function useItinerary() {
         attractionsNames.map((name) => getAttractionImages(name, 3))
       );
 
-        console.log("RESULTADO COMPLETO DA BUSCA DE IMAGENS:", attractionsImages);
-      const imagesMap: Map<string, string[]> = new Map();
-      attractionsNames.forEach((name, index) =>
-        imagesMap.set(name, attractionsImages[index])
+      const enrichedItinerary = enrichItinerary(
+        attractionsNames,
+        attractionsImages,
+        itineraryData,
+        weatherData
       );
 
-      const enrichedDailyItinerary = dailyItinerary.map((day) => {
-        //Add its images to each attraction
-        const attractionsWithImages = day.attractionsOfTheDay.map(
-          (attraction) => {
-            const photos = imagesMap.get(attraction.title);
-            return { ...attraction, photos: photos || [] };
-          }
-        );
-
-        //Add and return weather for eachday
-        return {
-          ...day,
-          attractionsOfTheDay: attractionsWithImages,
-          weather: weatherData?.[day.dayNumber - 1] || "Unknown",
-        };
-      });
-
-      const comprehensiveItinerary = {
-        ...itineraryData,
-        fullItinerary: enrichedDailyItinerary,
-      };
-
-      setItinerary(comprehensiveItinerary);
-      console.log(`VALOR DO ITINERARY NO HOOK: ${JSON.stringify(comprehensiveItinerary)}`);
+      setProgress("100%");
+      setItinerary(enrichedItinerary);
     } catch (error: unknown) {
-
       console.error("ERRO CAPTURADO NO CATCH:", error);
       if (error instanceof Error) {
         setError(error.message);
@@ -96,9 +90,5 @@ export default function useItinerary() {
     }
   }
 
-
-
-
-
-  return { fetchItineraryData, itinerary, loading, error };
+  return { fetchItineraryData, itinerary, loading, error, progress };
 }
