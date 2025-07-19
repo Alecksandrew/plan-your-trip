@@ -15,6 +15,8 @@ export default async function fetchWeatherData(
   placeName: string,
   dateRange: string
 ): Promise<relevantForecastDays[] | undefined> {
+  
+  try {
   const daysToFetchForecast = checkForecastAvailability(dateRange);
 
   const geocodingData = await fetchGeocodingData(placeName);
@@ -31,7 +33,7 @@ export default async function fetchWeatherData(
   });
   const BACKEND_URL: string = `http://localhost:3001/api/weather?${weatherParams}`;
 
-  try {
+  
     //I ONLY NEED THE WEATHER CONDITION OF EACH DAY
     const response = await fetch(BACKEND_URL);
 

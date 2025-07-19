@@ -4,7 +4,7 @@ import {
   enrichedItineraryDataNoWeatherMock,
 } from "@/hooks/__tests__/__mocks__/enrichedItineraryDataMock";
 import { rawItineraryDataMock } from "@/hooks/__tests__/__mocks__/rawItineraryDataMock";
-import { allAttractionsImages } from "./__mocks__/allAttractionsImages";
+import { allAttractionsImages } from "./__mocks__/allAttractionsImagesMock";
 import { mockedWeatherData } from "@/hooks/__tests__/__mocks__/fetchWeatherDataMock";
 import { describe, it, expect, vi, afterAll, beforeAll } from "vitest";
 
