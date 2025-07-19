@@ -20,32 +20,32 @@ describe("function tripItinerary", () => {
     expect(result).toEqual(rawItineraryDataMock);
   });
 
-  it("should throw an error if the server return a bad answer", async() => {
-
+  it("should throw an error if the server return a bad answer", async () => {
     global.fetch = vi.fn().mockResolvedValue({
-        ok: false,
-        statusText: "Unavailable itinerary"
-    })
+      ok: false,
+      statusText: "Unavailable itinerary",
+    });
 
-    await expect(fetchTripItineraryData(
-      personalizedPromptAI,
-      mockedFormData
-    )).rejects.toThrow("Unavailable itinerary");
-    })
+    await expect(
+      fetchTripItineraryData(personalizedPromptAI, mockedFormData)
+    ).rejects.toThrow("Unavailable itinerary");
+  });
 
-    it("should throw an error if the communication with the server fails", async() => {
+  it("should throw an error if the communication with the server fails", async () => {
+    global.fetch = vi.fn().mockRejectedValue(new Error());
 
-        global.fetch = vi.fn().mockRejectedValue(new Error())
+    await expect(
+      fetchTripItineraryData(personalizedPromptAI, mockedFormData)
+    ).rejects.toThrow();
+  });
 
-        await expect(fetchTripItineraryData(personalizedPromptAI, mockedFormData)).rejects.toThrow()
-    })
+  it("should throw an error if server return malformed response", async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValue({ ok: true, json: () => Promise.resolve({}) });
 
-    it("should throw an error if server return malformed response", async() => {
-
-        global.fetch = vi.fn().mockResolvedValue({ok: true, json: () => Promise.resolve({})})
-
-        await expect(fetchTripItineraryData(personalizedPromptAI, mockedFormData)).rejects.toThrow()
-    })
-
-    
+    await expect(
+      fetchTripItineraryData(personalizedPromptAI, mockedFormData)
+    ).rejects.toThrow();
+  });
 });
