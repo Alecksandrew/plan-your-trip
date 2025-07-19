@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeAll } from "vitest";
-import { act } from "@testing-library/react";
 import fetchWeatherData from "../weatherService";
 import { mockedWeatherData } from "./__mocks__/weatherDataMock";
 import { mockedRelevantForecast } from "./__mocks__/getRelevantForecastMock";
@@ -44,49 +43,46 @@ describe("function fetchWeatherData", () => {
   });
 
   it("should return undefined if geocoding data is malformed", async () => {
-  // Simula um retorno de sucesso, mas com um objeto 'vazio'
-  vi.mocked(fetchGeocodingData).mockResolvedValue({ data: {} });
+    // Simula um retorno de sucesso, mas com um objeto 'vazio'
+    vi.mocked(fetchGeocodingData).mockResolvedValue({ data: {} });
 
-  const result = await fetchWeatherData(
-    "Rio de Janeiro",
-    "20/07/2025 - 23/07/2025"
-  );
+    const result = await fetchWeatherData(
+      "Rio de Janeiro",
+      "20/07/2025 - 23/07/2025"
+    );
 
-  expect(result).toBeUndefined();
-});
-
-it("should return undefined if weather API fetch fails", async () => {
-
-  vi.mocked(fetchGeocodingData).mockResolvedValue(mockedGeocodingData);
-
-
-  global.fetch = vi.fn().mockResolvedValue({
-    ok: false,
-    statusText: "Not Found",
+    expect(result).toBeUndefined();
   });
 
-  const result = await fetchWeatherData(
-    "Rio de Janeiro",
-    "20/07/2025 - 23/07/2025"
-  );
+  it("should return undefined if weather API fetch fails", async () => {
+    vi.mocked(fetchGeocodingData).mockResolvedValue(mockedGeocodingData);
 
-  expect(result).toBeUndefined();
-});
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      statusText: "Not Found",
+    });
 
-it("should return undefined if weather data is malformed", async () => {
-  vi.mocked(fetchGeocodingData).mockResolvedValue(mockedGeocodingData);
+    const result = await fetchWeatherData(
+      "Rio de Janeiro",
+      "20/07/2025 - 23/07/2025"
+    );
 
- 
-  global.fetch = vi.fn().mockResolvedValue({
-    ok: true,
-    json: async () => ({ data: {} }),
+    expect(result).toBeUndefined();
   });
 
-  const result = await fetchWeatherData(
-    "Rio de Janeiro",
-    "20/07/2025 - 23/07/2025"
-  );
+  it("should return undefined if weather data is malformed", async () => {
+    vi.mocked(fetchGeocodingData).mockResolvedValue(mockedGeocodingData);
 
-  expect(result).toBeUndefined();
-});
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: {} }),
+    });
+
+    const result = await fetchWeatherData(
+      "Rio de Janeiro",
+      "20/07/2025 - 23/07/2025"
+    );
+
+    expect(result).toBeUndefined();
+  });
 });
