@@ -1,20 +1,18 @@
 import { describe, it, expect, vi } from "vitest";
 import fetchAttractionImagesIDs from "@/services/attractionImages/attractionImagesIDsService";
+import { mockedAttractionImagesIDs } from "../__mocks__/attractionsImagesIDsMock";
 
 describe("fetchAttractionImagesIDs", () => {
-  it("should return photo IDs on a successful fetch", async () => {
-    const mockApiResponse = {
-      places: [{ photos: [{ name: "id1" }, { name: "id2" }] }],
-    };
+  it("should return photo IDs on a successful fetch", async () => { 
 
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockApiResponse),
+      json: () => Promise.resolve(mockedAttractionImagesIDs),
     });
 
     const result = await fetchAttractionImagesIDs("Eiffel Tower");
 
-    expect(result).toEqual(mockApiResponse);
+    expect(result).toEqual(mockedAttractionImagesIDs);
   });
 
   it("should throw an error if the API response is not ok", async () => {

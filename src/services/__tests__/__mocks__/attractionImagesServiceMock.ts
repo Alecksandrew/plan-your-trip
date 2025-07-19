@@ -1,0 +1,1 @@
+export const mockedAttractionImagesURL = { photoUri: "https://example.com/photo.png" };
