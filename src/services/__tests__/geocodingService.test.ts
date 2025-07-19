@@ -31,7 +31,6 @@ describe("function fetchgeocoding", () => {
   });
 
   it("should return undefined for invalid input without calling fetch", async () => {
-    // Cria um espião do fetch para garantir que ele não seja chamado
     global.fetch = vi.fn();
 
     const resultEmpty = await fetchGeocodingData("");
@@ -40,7 +39,6 @@ describe("function fetchgeocoding", () => {
     expect(resultEmpty).toBeUndefined();
     expect(resultNull).toBeUndefined();
 
-    // Verifica se a API nunca foi chamada
     expect(global.fetch).not.toHaveBeenCalled();
   });
 });
