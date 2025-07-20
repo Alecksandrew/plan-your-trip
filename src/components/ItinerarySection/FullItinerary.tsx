@@ -64,13 +64,7 @@ export default function FullItinerary({
             <DailyItinerary
               key={specificItinerary.dayNumber}
               dayNumber={specificItinerary.dayNumber}
-              weather={
-                typeof specificItinerary.weather === "string"
-                  ? specificItinerary.weather
-                  : specificItinerary.weather?.temperature +
-                    "ºC " +
-                    specificItinerary.weather?.description
-              }
+              weather={specificItinerary.weather}
               attractionsOfTheDay={specificItinerary.attractionsOfTheDay}
             />
           );
