@@ -19,29 +19,32 @@ export default function FullItinerary({
   loading,
   progress,
 }: ItineraryProps) {
-  const [ delayedLoading, setDelayedLoading ] = useState(false);
+  const [delayedLoading, setDelayedLoading] = useState(false);
 
   useEffect(() => {
-      
     if (loading) {
       setDelayedLoading(loading);
-    }
-    else { //Only delay in the end of animation
-       const timer = setTimeout(() => {
+    } else {
+      //Only delay in the end of animation
+      const timer = setTimeout(() => {
         setDelayedLoading(loading);
       }, 1000); //Delay in order to let the ProgressBar finish its animation
 
       return () => clearTimeout(timer);
     }
-   
-    }, [loading]);
+  }, [loading]);
 
+  const name = itineraryData?.name || "";
+  const duration = itineraryData?.duration || 0;
+  const fullItinerary = itineraryData?.fullItinerary || [];
+
+  
 
   return (
     <div className="custom-section flex flex-col gap-5">
       <div className="text-center">
         <h2>
-          Roteiro: {itineraryData.name} - {itineraryData.duration} dias
+          Roteiro: {name} - {duration} dias
         </h2>
         {/*-ARRUMAR LOGICA DEPOIS -> objeto com propiedade de nome do itinerario e numero de dias-*/}
         <p>
@@ -52,29 +55,32 @@ export default function FullItinerary({
       {delayedLoading && (
         <div>
           <div className="flex flex-col gap-2 mb-8">
-            <p className="mx-auto font-bold">Wait, we are creating your itinerary! :)</p>
+            <p className="mx-auto font-bold">
+              Wait, we are creating your itinerary! :)
+            </p>
             <ProgressBar progress={progress} />
           </div>
           <DailyItinerarySkeleton />
         </div>
       )}
       {!delayedLoading &&
-        itineraryData.fullItinerary.map((specificItinerary) => {
+        fullItinerary.length > 0 &&
+        fullItinerary.map((specificItinerary) => {
           return (
             <DailyItinerary
               key={specificItinerary.dayNumber}
               dayNumber={specificItinerary.dayNumber}
-              weather={
-                typeof specificItinerary.weather === "string"
-                  ? specificItinerary.weather
-                  : specificItinerary.weather?.temperature +
-                    "ºC " +
-                    specificItinerary.weather?.description
-              }
+              weather={specificItinerary.weather}
               attractionsOfTheDay={specificItinerary.attractionsOfTheDay}
             />
           );
         })}
+
+      {!delayedLoading && fullItinerary.length === 0 && (
+        <div className="text-center text-gray-500">
+          <p>Nenhum itinerário disponível</p>
+        </div>
+      )}
     </div>
   );
 }

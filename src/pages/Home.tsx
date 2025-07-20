@@ -8,7 +8,7 @@ import FormSection from "../components/FormsSection/FormSection";
 import FullItinerary from "../components/ItinerarySection/FullItinerary";
 import MapsSection from "../components/MapsSection/MapsSection";
 import ProgressBar from "../components/ProgressBar";
-
+import Warning from "@/components/Warning";
 //types
 import type { FormsState } from "../types/formInterfaces";
 
@@ -30,7 +30,7 @@ const initialStateForms: FormsState = {
 
 export default function Home() {
   const [formData, setFormData] = useState<FormsState>(initialStateForms);
-  const { fetchItineraryData, itinerary, loading, error, progress } = useItinerary(formData);
+  const { fetchItineraryData, itinerary, loading, error, setError, progress } = useItinerary(formData);
 
 
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>, formData: FormsState) {
@@ -43,7 +43,8 @@ export default function Home() {
 
   return (
     <>
-      <div className="text-center custom-section">
+      {error && <Warning errorMessage={error} onClick={setError}/>}
+      <div className="text-center custom-section mt-0 pt-10">
         <h1>Descubra seu próximo destino</h1>
         <p className="text-2xl">
           Roteiros personalizados para uma experiência inesquecível

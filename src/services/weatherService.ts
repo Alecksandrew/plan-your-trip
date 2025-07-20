@@ -15,12 +15,16 @@ export default async function fetchWeatherData(
   placeName: string,
   dateRange: string
 ): Promise<relevantForecastDays[] | undefined> {
+  
+  try {
   const daysToFetchForecast = checkForecastAvailability(dateRange);
 
   const geocodingData = await fetchGeocodingData(placeName);
 
   const location = geocodingData?.data?.geometry?.location;
   if (!location || location.lat == null || location.lng == null) {
+    //If geocoding fails, this means te location doesnt exist, so i have to stop everything!!!
+    // The others erros can return undefined without problem
     throw new Error("Error when fetching geocoding data: Location not found");
   }
 
@@ -31,15 +35,16 @@ export default async function fetchWeatherData(
   });
   const BACKEND_URL: string = `http://localhost:3001/api/weather?${weatherParams}`;
 
-  try {
+  
     //I ONLY NEED THE WEATHER CONDITION OF EACH DAY
     const response = await fetch(BACKEND_URL);
 
-    if (!response.ok) {
-      throw new Error(
-        "Error when fetching weather data: " + response.statusText
-      );
+if (!response.ok) {
+    if (response.status === 404) {
+        throw new Error("Location not found");
     }
+    throw new Error(`Error when fetching weather data: ${response.statusText}`);
+}
 
     const data: weatherBackendResponse = await response.json();
 
@@ -58,8 +63,20 @@ export default async function fetchWeatherData(
 
     return relevantForecast;
   } catch (error) {
-    console.log("OBJETO", error);
+   if (
+    error instanceof Error &&
+    (
+      error.message.includes("Location not found") ||
+      error.message.includes("Error when fetching weather data") ||
+      error.message.includes("Error when fetching geocoding data")
+    )
+    ) {
+      // Relança APENAS se for um dos dois erros específicos
+      throw new Error("Location not found! Verify if the name of the destination is correct");
+    }
+
+    // Para qualquer outro erro, apenas loga e retorna undefined
     console.error("Error when fetching weather data: " + error);
     return;
-  }
+    }
 }

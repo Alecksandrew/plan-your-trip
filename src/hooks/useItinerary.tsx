@@ -24,7 +24,6 @@ export const initialStateItinerary: Itinerary = {
   fullItinerary: [],
 };
 
-
 export default function useItinerary() {
   const [itinerary, setItinerary] = useState<Itinerary>(initialStateItinerary);
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,15 +44,15 @@ export default function useItinerary() {
 
       setProgress("20%");
 
-      const [itineraryData, weatherData]: [
-        Itinerary,
-        relevantForecastDays[] | undefined
-      ] = await Promise.all([
-        fetchTripItineraryData(personalizedPromptAI, formData),
-        fetchWeatherData(placeName, dateRange),
-      ]);
+      const weatherData: relevantForecastDays[] | undefined =
+        await fetchWeatherData(placeName, dateRange);
+      setProgress("40%");
 
-      setProgress("60%");
+      const itineraryData: Itinerary = await fetchTripItineraryData(
+        personalizedPromptAI,
+        formData
+      );
+      setProgress("70%");
 
       const dailyItinerary = itineraryData?.fullItinerary;
       if (!dailyItinerary) {
@@ -90,5 +89,5 @@ export default function useItinerary() {
     }
   }
 
-  return { fetchItineraryData, itinerary, loading, error, progress };
+  return { fetchItineraryData, itinerary, loading, error, setError, progress };
 }

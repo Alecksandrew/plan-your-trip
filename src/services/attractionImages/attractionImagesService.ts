@@ -27,7 +27,7 @@ export default async function fetchAttractionImage(
     const data: imagesNamesBackendResponse = await response.json();
     const photoURL = data.photoUri;
     return photoURL;
-  } catch (error) {
-    throw new Error("Error when fetching attraction image: " + error);
+  } catch {
+    return "@/assets/placeholder-image.png";
   }
 }
