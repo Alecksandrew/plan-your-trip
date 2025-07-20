@@ -39,11 +39,12 @@ export default async function fetchWeatherData(
     //I ONLY NEED THE WEATHER CONDITION OF EACH DAY
     const response = await fetch(BACKEND_URL);
 
-    if (!response.ok) {
-      throw new Error(
-        "Error when fetching weather data: " + response.statusText
-      );
+if (!response.ok) {
+    if (response.status === 404) {
+        throw new Error("Location not found");
     }
+    throw new Error(`Error when fetching weather data: ${response.statusText}`);
+}
 
     const data: weatherBackendResponse = await response.json();
 
@@ -62,13 +63,20 @@ export default async function fetchWeatherData(
 
     return relevantForecast;
   } catch (error) {
-    if (error instanceof Error && error.message.includes("Location not found")) {
-      throw new Error("location not found")
+   if (
+    error instanceof Error &&
+    (
+      error.message.includes("Location not found") ||
+      error.message.includes("Error when fetching weather data") ||
+      error.message.includes("Error when fetching geocoding data")
+    )
+    ) {
+      // Relança APENAS se for um dos dois erros específicos
+      throw new Error("Location not found! Verify if the name of the destination is correct");
     }
-    if (error instanceof Error && error.message.includes("Error when fetching weather data")) {
-      throw new Error("location not found")
-    }
+
+    // Para qualquer outro erro, apenas loga e retorna undefined
     console.error("Error when fetching weather data: " + error);
     return;
-  }
+    }
 }

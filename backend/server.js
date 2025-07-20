@@ -81,7 +81,10 @@ async function handleGeminiRequest(req, res) {
       const { message } = JSON.parse(body);
       const model = genAI.getGenerativeModel({
         model: "gemini-2.5-flash",
-        generationConfig: { responseMimeType: "application/json", responseSchema: responseSchema },
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: responseSchema,
+        },
       });
       const result = await model.generateContent(message);
       const response = await result.response;
@@ -175,8 +178,21 @@ async function handleGeocodingRequest(req, res) {
 
       const apiResponse = await fetch(apiUrl);
       const geocodingData = await apiResponse.json();
+      if (geocodingData.status === "ZERO_RESULTS") {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(
+          JSON.stringify({
+            success: false,
+            error: "Location not found",
+          })
+        );
+        return;
+      }
 
       if (geocodingData.status !== "OK") {
+        console.error(
+          `API de Geocodificação retornou status inesperado: ${geocodingData.status}`
+        );
         throw new Error(
           `API de Geocodificação retornou status: ${geocodingData.status}`
         );
