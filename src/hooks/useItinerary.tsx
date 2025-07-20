@@ -90,5 +90,5 @@ export default function useItinerary() {
     }
   }
 
-  return { fetchItineraryData, itinerary, loading, error, progress };
+  return { fetchItineraryData, itinerary, loading, error, setError, progress };
 }

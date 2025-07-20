@@ -23,6 +23,8 @@ export default async function fetchWeatherData(
 
   const location = geocodingData?.data?.geometry?.location;
   if (!location || location.lat == null || location.lng == null) {
+    //If geocoding fails, this means te location doesnt exist, so i have to stop everything!!!
+    // The others erros can return undefined without problem
     throw new Error("Error when fetching geocoding data: Location not found");
   }
 
@@ -60,7 +62,12 @@ export default async function fetchWeatherData(
 
     return relevantForecast;
   } catch (error) {
-    console.log("OBJETO", error);
+    if (error instanceof Error && error.message.includes("Location not found")) {
+      throw new Error("location not found")
+    }
+    if (error instanceof Error && error.message.includes("Error when fetching weather data")) {
+      throw new Error("location not found")
+    }
     console.error("Error when fetching weather data: " + error);
     return;
   }
