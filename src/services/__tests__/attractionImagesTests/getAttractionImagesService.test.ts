@@ -3,7 +3,6 @@ import getAttractionImages from "@/services/attractionImages/getAttractionImages
 
 import fetchAttractionImage from "@/services/attractionImages/attractionImagesService";
 import fetchAttractionImagesIDs from "@/services/attractionImages/attractionImagesIDsService";
-import filterAttractionImagesIDs from "@/utils/filterAttractionImagesIDs";
 
 import { mockedAttractionImagesIDs } from "../__mocks__/attractionsImagesIDsMock";
 import { mockedAttractionImagesURL } from "../__mocks__/attractionImagesServiceMock";

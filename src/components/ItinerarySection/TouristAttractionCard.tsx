@@ -11,7 +11,9 @@ import "swiper/css/navigation";
 //Interfaces
 import type { TouristAttractionCardProps } from "../../types/TouristAttractionInterface";
 
-import  cristoImg from "../../assets/cristo.jpg";
+//
+import placeholderImage from "@/assets/placeholder-image.jpg";
+
 
 export default function TouristAttractionCard({
   title,
@@ -38,7 +40,7 @@ export default function TouristAttractionCard({
         onSwiper={(swiper) => console.log(swiper)}
         className="custom-container aspect-video sm:w-2/5"
       >
-        {photos.map((photo, index) => (
+        {(photos.length > 0 ? photos : [placeholderImage]).map((photo, index) => (
           <SwiperSlide key={index} className="flex justify-center">
             <img src={photo} alt={`Imagem do ${title}`} className="w-full h-full object-cover" />
           </SwiperSlide>
