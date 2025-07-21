@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useContext, createContext } from "react";
+import { useReducer } from "react";
 
 import LabeledList from "./LabeledList";
 import SearchSection from "./SearchSection";
@@ -41,6 +41,10 @@ function formsReducer(state: FormsState, action: FormsAction) {
   }
 }
 
+type FormSectionProps = {
+  onSubmit: (e: React.FormEvent<HTMLFormElement>, formData: FormsState) => void;
+};
+
 const initialStateForms = {
   destination: "",
   date: "",
@@ -64,7 +68,7 @@ interface LabeledMultipleSelectListProps {
   dispatchType: SetArrayAction["type"];
 }
 
-export default function FormSection({onSubmit}) {
+export default function FormSection({onSubmit}: FormSectionProps) {
   const [state, dispatch] = useReducer(formsReducer, initialStateForms);
 
   console.log(state);

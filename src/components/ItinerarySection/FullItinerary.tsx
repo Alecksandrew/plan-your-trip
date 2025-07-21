@@ -6,7 +6,7 @@ import DailyItinerarySkeleton from "./Loader/DailyAttractionSkeleton";
 import ProgressBar from "../ProgressBar";
 
 //interfaces
-import type { Itinerary } from "../../pages/Home";
+import type { Itinerary } from "@/types/itineraryTypes";
 
 interface ItineraryProps {
   itineraryData: Itinerary;

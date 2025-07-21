@@ -2,7 +2,7 @@ import type { ForecastDays } from "@/types/weatherTypes";
 
 export type relevantForecastDays = {
   description: string;
-  temperature: number;
+  temperature: number | null;
 };
 
 export function getRelevantForecastData(

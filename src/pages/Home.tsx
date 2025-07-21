@@ -7,7 +7,6 @@ import { useState, useRef, useEffect } from "react";
 import FormSection from "../components/FormsSection/FormSection";
 import FullItinerary from "../components/ItinerarySection/FullItinerary";
 import MapsSection from "../components/MapsSection/MapsSection";
-import ProgressBar from "../components/ProgressBar";
 import Warning from "@/components/Warning";
 //types
 import type { FormsState } from "../types/formInterfaces";
@@ -17,21 +16,9 @@ const SEARCH_COUNT_KEY = 'searchCounter';
 const EXPIRATION_TIMESTAMP_KEY = 'searchExpirationTimestamp';
 const SEARCH_LIMIT = 5; 
 
-///UTILS
-const initialStateForms: FormsState = {
-  destination: "",
-  date: "",
-  budget: "",
-  pace: "",
-  travelerProfile: "",
-  transportation: [],
-  style: [],
-  interests: [],
-};
 
 export default function Home() {
-  const [formData, setFormData] = useState<FormsState>(initialStateForms);
-  const { fetchItineraryData, itinerary, loading, error, setError, progress } = useItinerary(formData);
+  const { fetchItineraryData, itinerary, loading, error, setError, progress } = useItinerary();
   const [unlockMessage, setUnlockMessage] = useState<string | null>(null)
 
   useEffect(() => {
