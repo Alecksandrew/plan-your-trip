@@ -44,6 +44,7 @@ describe("function fetchWeatherData", () => {
 
   it("should return undefined if geocoding data is malformed", async () => {
     // Simula um retorno de sucesso, mas com um objeto 'vazio'
+    // @ts-expect-error: : Propositalmente a testar uma resposta incompleta da API
     vi.mocked(fetchGeocodingData).mockResolvedValue({ data: {} });
 
     const result = await fetchWeatherData(

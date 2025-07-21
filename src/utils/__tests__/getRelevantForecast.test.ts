@@ -29,10 +29,8 @@ describe("function getRelevantForecast", () => {
       }
     );
 
-    const result = getRelevantForecast(
-      forecastDaysMockWithoutMaxTemperature,
-      2
-    );
+    //@ts-expect-error: Testing bad responses from API
+    const result = getRelevantForecast(forecastDaysMockWithoutMaxTemperature, 2);
 
     expect(result).toEqual(expected);
   });
@@ -53,6 +51,7 @@ describe("function getRelevantForecast", () => {
       },
     }));
 
+    //@ts-expect-error: Testing bad responses from API
     const result = getRelevantForecast(forecastDaysMockWithoutDescription, 2);
 
     expect(result).toEqual(expected);

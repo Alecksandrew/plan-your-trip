@@ -3,7 +3,7 @@ import { cleanup, render, screen, act } from "@testing-library/react";
 import FullItinerary from "../ItinerarySection/FullItinerary";
 
 import { enrichedItineraryDataMock } from "@/hooks/__tests__/__mocks__/enrichedItineraryDataMock";
-
+import type { Itinerary } from '@/types/itineraryTypes';
 export const initialStateItinerary: Itinerary = {
   name: "",
   duration: 0,

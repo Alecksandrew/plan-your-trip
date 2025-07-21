@@ -1,6 +1,5 @@
 //Configs
-import React from "react";
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { act} from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { renderHook } from "@testing-library/react";
 
@@ -99,7 +98,7 @@ describe("Custom hook useItinerary", () => {
     ...enrichedItineraryDataMock,
     fullItinerary: enrichedItineraryDataMock.fullItinerary.map(day => ({
       ...day,
-      weather: "Unknown",
+      weather: undefined,
     })),
     };
     vi.mocked(enrichItinerary).mockReturnValue(expectedItineraryWithoutWeather);

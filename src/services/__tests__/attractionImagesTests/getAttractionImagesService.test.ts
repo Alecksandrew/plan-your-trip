@@ -29,7 +29,7 @@ describe("function getAttractionImages", () => {
   });
 
   it("should return the placeholder image if no photo IDs are found", async () => {
-    vi.mocked(fetchAttractionImagesIDs).mockResolvedValue(null);
+    vi.mocked(fetchAttractionImagesIDs).mockResolvedValue({ places: [] });
 
     const result = await getAttractionImages("Unknown place", 3);
 

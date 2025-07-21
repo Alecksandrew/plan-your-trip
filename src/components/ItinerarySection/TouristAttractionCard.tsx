@@ -9,7 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 //Interfaces
-import type { TouristAttractionCardProps } from "../../types/TouristAttractionInterface";
+import type { Attractions } from "@/types/itineraryTypes";
 
 //
 import placeholderImage from "@/assets/placeholder-image.jpg";
@@ -19,8 +19,8 @@ export default function TouristAttractionCard({
   title,
   description,
   openingHours,
-  photos
-}: TouristAttractionCardProps) {
+  photos = []
+}: Attractions) {
   return (
     <article className="sm:flex sm:gap-x-1">
       <div className="sm:w-4/5">

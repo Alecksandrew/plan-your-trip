@@ -1,8 +1,6 @@
 import calculateDaysOffset from "@/utils/calculateDaysOffset";
 import {
   describe,
-  render,
-  screen,
   it,
   expect,
   vi,

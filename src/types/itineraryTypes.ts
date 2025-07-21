@@ -1,12 +1,21 @@
-type Attractions = {
+export type Weather = {
+  description: string,
+  temperature: number | null,
+}
+
+
+
+export type Attractions = {
   title: string;
   description: string;
   openingHours: string;
+  photos?: string[];
 };
 
-type DailyItinerary = {
+export type DailyItinerary = {
   dayNumber: number;
   attractionsOfTheDay: Attractions[];
+  weather?:Weather;
 };
 
 export type Itinerary = {

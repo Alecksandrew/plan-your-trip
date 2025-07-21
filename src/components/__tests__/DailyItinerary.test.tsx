@@ -1,4 +1,4 @@
-import { describe, it, vi, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 
 import DailyItinerary from "../ItinerarySection/DailyItinerary";

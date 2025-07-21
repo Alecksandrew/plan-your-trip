@@ -34,6 +34,7 @@ describe("function fetchgeocoding", () => {
     global.fetch = vi.fn();
 
     const resultEmpty = await fetchGeocodingData("");
+    //@ts-expect-error: Testing bad cases in tests
     const resultNull = await fetchGeocodingData(null);
 
     expect(resultEmpty).toBeUndefined();

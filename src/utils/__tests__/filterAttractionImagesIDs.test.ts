@@ -62,6 +62,7 @@ describe("function filterAttractionImagesIDs", () => {
       places: [{}],
     };
 
+    //@ts-expect-error: Im testing if my site will be bad if the API dont give me data in the correct format
     const result = filterAttractionImagesIDs(mockBackendResponseNoPhotos, 5);
 
     expect(result).toEqual([]);
@@ -70,6 +71,7 @@ describe("function filterAttractionImagesIDs", () => {
   it("it should return a empty array if places property is undefined", () => {
     const mockBackendResponseNoPlaces = {};
 
+    //@ts-expect-error: Im testing if my site will be bad if the API dont give me data in the correct format
     const result = filterAttractionImagesIDs(mockBackendResponseNoPlaces, 5);
 
     expect(result).toEqual([]);

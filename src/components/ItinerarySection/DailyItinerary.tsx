@@ -1,9 +1,9 @@
 import TouristAttractionCard from "./TouristAttractionCard";
 
 //interfaces
-import type { TouristAttractionCardProps } from "../../types/TouristAttractionInterface";
-import type { DailyItineraryProps } from "../../types/DailyItineraryInterface";
-import type { weather } from "../../types/DailyItineraryInterface";
+
+import type { DailyItinerary as DailyItineraryProps, Weather, Attractions } from "@/types/itineraryTypes";
+
 
 export default function DailyItinerary({
   dayNumber,
@@ -11,8 +11,8 @@ export default function DailyItinerary({
   attractionsOfTheDay,
 }: DailyItineraryProps) {
   
-  function getWeatherText(weatherObject:weather) {
-    if(!weatherObject.description && weatherObject.temperature == null) {
+  function getWeatherText(weatherObject?:Weather) {
+    if(!weatherObject || ( !weatherObject.description && weatherObject.temperature == null)) {
       return "Unavailable"
     }
 
@@ -22,7 +22,7 @@ export default function DailyItinerary({
   }
 
   function renderTouristAttractionCard(
-    attractions: TouristAttractionCardProps[]
+    attractions: Attractions[]
   ) {
     if (!attractions || attractions.length === 0) {
       return (
@@ -40,7 +40,7 @@ export default function DailyItinerary({
           title={attraction.title}
           description={attraction.description}
           openingHours={attraction.openingHours}
-          photos={attraction.photos}
+          photos={attraction.photos || []}
         />
       );
     });

@@ -6,7 +6,7 @@ import {
 import { rawItineraryDataMock } from "@/hooks/__tests__/__mocks__/rawItineraryDataMock";
 import { allAttractionsImages } from "./__mocks__/allAttractionsImagesMock";
 import { mockedWeatherData } from "@/hooks/__tests__/__mocks__/fetchWeatherDataMock";
-import { describe, it, expect, vi, afterAll, beforeAll } from "vitest";
+import { describe, it, expect} from "vitest";
 
 describe("function enrichItinerary", () => {
   //OBS: I didnt make a test without images because they will always show up even if it will be only a simple placeholder image
@@ -39,9 +39,11 @@ describe("function enrichItinerary", () => {
 
   it("should throw an error if the itineraryData is not valid", () => {
     const invalidItineraryData = {
-      duration: 4,
-      fullItinerary: [],
-    };
+  name: 'Teste',
+  duration: 4,
+  generalRecommendations: [],
+  fullItinerary: []
+};
 
     expect(() =>
       enrichItinerary(

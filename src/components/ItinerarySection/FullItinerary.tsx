@@ -9,7 +9,7 @@ import ProgressBar from "../ProgressBar";
 import type { Itinerary } from "@/types/itineraryTypes";
 
 interface ItineraryProps {
-  itineraryData: Itinerary;
+  itineraryData: Itinerary | undefined;
   loading: boolean;
   progress: `${number}%`;
 }
@@ -35,6 +35,8 @@ export default function FullItinerary({
   }, [loading]);
 
   function renderGeneralRecomendations() {
+    if (!itineraryData) return null;
+    
     return itineraryData.generalRecommendations.map((recomendation) => {
       return (
         <li key={recomendation} className="text-left mb-4 leading-tight ">

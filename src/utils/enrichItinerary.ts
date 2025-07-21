@@ -29,7 +29,7 @@ export default function enrichItinerary(
     imagesMap.set(name, attractionsImages[index])
   );
 
-  const enrichedDailyItinerary = dailyItinerary.map((day) => {
+  const enrichedDailyItinerary = dailyItinerary.map((day, index) => {
     if (!day || !day.dayNumber || !day.attractionsOfTheDay) {
       throw new Error(
         "Error when enriching itinerary: Invalid daily itinerary data. day, dayNumber or attractionsOfTheDay are missing."
@@ -49,10 +49,11 @@ export default function enrichItinerary(
     });
 
     //Add and return weather for eachday
+
     return {
       ...day,
       attractionsOfTheDay: attractionsWithImages,
-      weather: weatherData?.[day.dayNumber - 1] || "Unavailable",
+      weather: weatherData ? weatherData[index] : undefined,
     };
   });
 
