@@ -10,6 +10,8 @@ import fetchGeocodingData from "./geocodingService";
 import type { weatherBackendResponse } from "@/types/weatherTypes";
 import type { relevantForecastDays } from "@/utils/getRelevantForecast";
 
+import { API_BASE_URL } from "@/config/api"
+
 // i handled error with console.error and not throw new Error because this property is not a must
 export default async function fetchWeatherData(
   placeName: string,
@@ -33,7 +35,7 @@ export default async function fetchWeatherData(
     lng: location.lng.toString(),
     days: daysToFetchForecast.toString(),
   });
-  const BACKEND_URL: string = `http://localhost:3001/api/weather?${weatherParams}`;
+  const BACKEND_URL: string = `${API_BASE_URL}/api/weather?${weatherParams}`;
 
   
     //I ONLY NEED THE WEATHER CONDITION OF EACH DAY

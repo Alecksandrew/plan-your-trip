@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "@/config/api"
+
 type imagesNamesBackendResponse = {
   photoUri: string;
 };
@@ -6,7 +8,7 @@ type imagesNamesBackendResponse = {
 export default async function fetchAttractionImage(
   photoID: string
 ): Promise<string> {
-  const BACKEND_URL: string = "http://localhost:3001/api/place-photo";
+  const BACKEND_URL: string = `${API_BASE_URL}/api/place-photo`;
   const options = {
     method: "POST",
     headers: {

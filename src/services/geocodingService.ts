@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "@/config/api"
+
 type GeocodingData = {
   data: {
     geometry: {
@@ -14,7 +16,7 @@ export default async function fetchGeocodingData(
 ): Promise<GeocodingData | undefined> {
   if (!placeName || typeof placeName !== "string") return;
 
-  const BACKEND_URL: string = "http://localhost:3001/api/geocoding";
+  const BACKEND_URL: string = `${API_BASE_URL}/api/geocoding`;
   const options = {
     method: "POST",
     headers: {

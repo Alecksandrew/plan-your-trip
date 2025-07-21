@@ -1,5 +1,6 @@
 import type { FormsState } from "@/types/formInterfaces";
 import type { Itinerary } from "@/types/itineraryTypes";
+import { API_BASE_URL } from "@/config/api";
 
 export default async function fetchTripItineraryData(
   promptAI: string,
@@ -7,7 +8,7 @@ export default async function fetchTripItineraryData(
 ): Promise<Itinerary> {
   const message = promptAI + JSON.stringify(formData);
 
-  const BACKEND_URL: string = "http://localhost:3001/api/gemini";
+  const BACKEND_URL: string = `${API_BASE_URL}/api/gemini`;
   const options = {
     method: "POST",
     headers: {
