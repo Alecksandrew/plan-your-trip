@@ -338,8 +338,9 @@ async function handleRequest(req, res) {
   }
 }
 
+const port = process.env.PORT || 3001;
 const server = createServer(handleRequest);
-server.listen(3001, () => {
+server.listen(port, () => {
   console.log("🚀 Servidor rodando em http://localhost:3001");
   console.log(
     "✅ Pronto para receber requisições para: /api/gemini e /api/weather"
