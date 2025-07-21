@@ -34,29 +34,32 @@ export default function FullItinerary({
     }
   }, [loading]);
 
+  function renderGeneralRecomendations() {
+    return itineraryData.generalRecommendations.map((recomendation) => {
+      return (
+        <li key={recomendation} className="text-left mb-4 leading-tight ">
+          {recomendation}
+        </li>
+      );
+    });
+  }
+
   const name = itineraryData?.name || "";
   const duration = itineraryData?.duration || 0;
   const fullItinerary = itineraryData?.fullItinerary || [];
 
-  
-
   return (
-    <div className="custom-section flex flex-col gap-5">
+    <section className="custom-section flex flex-col gap-5">
       <div className="text-center">
         <h2>
           Roteiro: {name} - {duration} dias
         </h2>
-        {/*-ARRUMAR LOGICA DEPOIS -> objeto com propiedade de nome do itinerario e numero de dias-*/}
-        <p>
-          Breve descrição
-          {/*-ARRUMAR LOGICA DEPOIS -> objeto com propiedade de breve descrição-*/}
-        </p>
       </div>
       {delayedLoading && (
         <div>
           <div className="flex flex-col gap-2 mb-8">
             <p className="mx-auto font-bold">
-              Wait, we are creating your itinerary! :)
+              Aguarde, estamos criando seu roteiro! :)
             </p>
             <ProgressBar progress={progress} />
           </div>
@@ -81,6 +84,18 @@ export default function FullItinerary({
           <p>Nenhum itinerário disponível</p>
         </div>
       )}
-    </div>
+      <div className="custom-section text-center bg-paleta-03 rounded w-full border-paleta-01 border-2 p-2 shadow-xl">
+        <h2 className="mb-4">Recomendações gerais</h2>
+        {!delayedLoading && fullItinerary.length > 0 && (
+          <ol className="w-4/5 min-w-75 mx-auto list-decimal">
+            {renderGeneralRecomendations()}
+          </ol>
+        )}
+
+        {!delayedLoading && fullItinerary.length === 0 && (
+          <p>Nenhuma recomendação disponível</p>
+      )}
+      </div>
+    </section>
   );
 }

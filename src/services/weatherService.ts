@@ -72,7 +72,7 @@ if (!response.ok) {
     )
     ) {
       // Relança APENAS se for um dos dois erros específicos
-      throw new Error("Location not found! Verify if the name of the destination is correct");
+      throw new Error("Destino não encontrado! Verifique se o nome do local existe");
     }
 
     // Para qualquer outro erro, apenas loga e retorna undefined
