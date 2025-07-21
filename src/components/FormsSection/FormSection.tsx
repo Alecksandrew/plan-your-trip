@@ -182,7 +182,7 @@ export default function FormSection({onSubmit}) {
         className="custom-container
        bg-paleta-01 text-paleta-03 font-bold w-full col-span-full mt-4"
       >
-        Search your itinerary
+        Busque seu roteiro
       </button>
     </form>
   );
