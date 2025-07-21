@@ -22,7 +22,7 @@ export default function TouristAttractionCard({
   photos
 }: TouristAttractionCardProps) {
   return (
-    <div className="sm:flex sm:gap-x-1">
+    <article className="sm:flex sm:gap-x-1">
       <div className="sm:w-4/5">
         <h2 className="text-2xl font-bold">{title}</h2>
         <p className="leading-tight">{description}</p>
@@ -46,6 +46,6 @@ export default function TouristAttractionCard({
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </article>
   );
 }
