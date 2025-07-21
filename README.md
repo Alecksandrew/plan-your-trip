@@ -38,14 +38,14 @@ Através de uma interface intuitiva, o viajante pode customizar sua jornada com 
 
  - **Visualização de Atrações**: Apresentação de imagens reais dos pontos turísticos para enriquecer a experiência visual.
 
- - **Mecanismos de UX**: Interface aprimorada com autocomplete, estados de carregamento, tratamento de erros, skeleton loaders (e em breve com autocomplete de endereço).
+ - **Mecanismos de UX**: Interface aprimorada com estados de carregamento, tratamento de erros, skeleton loaders (e em breve com autocomplete de endereço).
 
  - **Layout 100% Responsivo**: Experiência de usuário consistente em dispositivos mobile, tablets e desktops.
 
 ## 💡 Aprendizados
 Através do desenvolvimento do "Plan Your Trip", os principais pontos de evolução foram:
 
- - **Domínio de TypeScript em Aplicações Complexas**:
+ - **Domínio de TypeScript**:
    - Aplicação de tipagem estática para prevenir erros críticos com null e undefined.
    - Criação de tipos personalizados reutilizáveis com interface e type para garantir a consistência dos dados entre componentes.
    - Uso de técnicas avançadas como narrowing para refinar tipos.
@@ -56,7 +56,7 @@ Através do desenvolvimento do "Plan Your Trip", os principais pontos de evoluç
    - Integração de dados de múltiplas APIs (Google, Weather) para compor um resultado final unificado e coeso para o usuário.
    - Aprimoramento significativo da UX com a implementação de mecanismos de feedback, como estados de carregamento, tratamento de erros e skeleton loaders para melhorar a performance percebida.
  - **Aprofundamento em Testes Automatizados**:
-   - Evolução do estudo de testes, iniciando com Jest e aprofundando com Vitest e React Testing Library.
+   - Evolução do estudo de testes,utilizando Vitest e React Testing Library.
    - Desenvolvimento de habilidades para mockar chamadas de API e lidar com Promises em testes, garantindo a confiabilidade de componentes que dependem de dados assíncronos e documentando o comportamento esperado do código.
 
 ## 📱 Demonstração
