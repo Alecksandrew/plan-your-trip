@@ -62,15 +62,19 @@ Através do desenvolvimento do "Plan Your Trip", os principais pontos de evoluç
 ## 📱 Demonstração
 
 PÁGINA INICIAL E FORMULÁRIO DE PREFERÊNCIAS
+![chrome-capture-2025-7-21 (4) (1)](https://github.com/user-attachments/assets/e762b24d-f268-461c-a235-3f9337373cc6)
 
 
 GERAÇÃO DO ROTEIRO COM SKELETON LOADER
+![chrome-capture-2025-7-21 (online-video-cutter com)](https://github.com/user-attachments/assets/8d6f3765-cf58-45d2-abc3-bf2f92995ca2)
+
 
 
 RESULTADO DO ROTEIRO PERSONALIZADO
-
+![chrome-capture-2025-7-21 (1)](https://github.com/user-attachments/assets/f734fefb-b677-428b-8bba-16b0305f05a1)
 
 RESPONSIVIDADE
+![chrome-capture-2025-7-21 (2)](https://github.com/user-attachments/assets/5eb863a3-f3c8-4a4f-a5bc-42453379179d)
 
 
 ## 📋 Roadmap
