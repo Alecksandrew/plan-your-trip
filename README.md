@@ -1,7 +1,7 @@
 # 🌎 [Projeto Plan Your Trip]
 
 Receba roteiros personalizados de viagem em questão de segundos! 
-<br>[DEPLOY](https://plan-your-trip-cplb.onrender.com/)
+<br>[DEPLOY](https://plan-your-trip-cplb.onrender.com/) - ⚠️ DEPLOY FORA DO AR TEMPORARIAMENTE
 
 ## 📖 Sobre o Projeto
 
